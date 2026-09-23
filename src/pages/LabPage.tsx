@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DivergingColumns, StatTile } from "../components/charts";
 import { teamName } from "../data/teams";
@@ -22,7 +22,7 @@ const RELIABILITY_OPTIONS = [8, 12, 16, 20, 24, 32, 40, 48];
 const EDGE_STEPS = [0, 1, 2, 3, 4, 5, 6];
 const GAP_STEPS = [1, 4, 8, 12, 16, 20, 24];
 const GRID_RELIABILITY: (number | null)[] = [8, 16, 24, 32, 40, null];
-const SMALL_SAMPLE = 100;
+const MIN_N_OPTIONS = [50, 100, 200, 400];
 
 export function strategySummary(s: Strategy): string {
   const parts: string[] = [];
@@ -47,19 +47,16 @@ function verdict(r: BetRecord) {
 
 /** Diverging fill around break-even: blue arm above, red arm below, gray at the midpoint. */
 function cellStyle(c: GridCell) {
-  const n = c.record.wins + c.record.losses;
-  if (!n) return {};
   const d = Math.max(-1, Math.min(1, (c.record.pct - BREAK_EVEN) / 0.06));
   const pole = d >= 0 ? "var(--pos)" : "var(--neg)";
   const mix = Math.round(Math.abs(d) * 85);
   return {
     background: `color-mix(in oklab, ${pole} ${mix}%, var(--mid))`,
     color: mix > 55 ? "#fff" : "var(--ink)",
-    opacity: n < SMALL_SAMPLE ? 0.45 : 1,
   };
 }
 
-function Grid({ cells, gapMode, title }: { cells: GridCell[]; gapMode: boolean; title: string }) {
+function Grid({ cells, gapMode, title, minN }: { cells: GridCell[]; gapMode: boolean; title: string; minN: number }) {
   const rows = [...new Set(cells.map((c) => c.minEdge))];
   return (
     <div className="grid-panel">
@@ -82,13 +79,20 @@ function Grid({ cells, gapMode, title }: { cells: GridCell[]; gapMode: boolean; 
                   .filter((c) => c.minEdge === e)
                   .map((c) => {
                     const n = c.record.wins + c.record.losses;
+                    // Too few bets: leave the cell blank so noise can't read as a signal.
+                    if (n < minN)
+                      return (
+                        <td key={String(c.maxReliability)} className="blank" title={`Only ${n} bets (minimum ${minN})`}>
+                          <div className="heat-n">n {n}</div>
+                        </td>
+                      );
                     return (
                       <td
                         key={String(c.maxReliability)}
                         style={cellStyle(c)}
                         title={`${c.record.wins}-${c.record.losses}-${c.record.pushes}, 95% range ${pct(c.record.lo)}–${pct(c.record.hi)}`}
                       >
-                        <div className="heat-pct">{n ? pct(c.record.pct) : "–"}</div>
+                        <div className="heat-pct">{pct(c.record.pct)}</div>
                         <div className="heat-n">n {n}</div>
                       </td>
                     );
@@ -148,6 +152,7 @@ export function LabPage() {
   const s = strategies[kind];
   const gapMode = s.pick !== "model";
   const set = (patch: Partial<Strategy>) => setStrategy(kind, { ...s, ...patch });
+  const [minN, setMinN] = useState(100);
 
   const lastSeason = preds.filter((p) => isFinal(p.game)).at(-1)?.game.season ?? 2026;
   const from = Math.max(2002, s.fromSeason);
@@ -292,12 +297,24 @@ export function LabPage() {
         <h2>{gapMode ? "Rank gap" : "Edge"} × reliability, split into two eras</h2>
         <p className="muted small">
           Holding your other filters fixed. Blue beats break-even and red loses to it, with full color at ±6 points.
-          Faded cells have under {SMALL_SAMPLE} bets. A real effect should look similar in both eras; a lone bright
-          cell is usually luck.
+          Cells with fewer bets than the minimum are left blank. A real effect should look similar in both eras;
+          a lone bright cell is usually luck.
         </p>
+        <div className="controls">
+          <label>
+            Minimum bets per cell{" "}
+            <select value={minN} onChange={(e) => setMinN(Number(e.target.value))}>
+              {MIN_N_OPTIONS.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
         <div className="grids">
           {grids.map((g) => (
-            <Grid key={g.title} cells={g.cells} gapMode={gapMode} title={g.title} />
+            <Grid key={g.title} cells={g.cells} gapMode={gapMode} title={g.title} minN={minN} />
           ))}
         </div>
       </section>
