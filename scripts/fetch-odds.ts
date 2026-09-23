@@ -6,7 +6,7 @@
 // Run after `npm run data`: npm run odds
 import { readFile, writeFile } from "node:fs/promises";
 import { median, type BookOdds, type GameOdds, type OddsFile } from "../src/data/odds";
-import { TEAMS } from "../src/data/teams";
+import { matchGame } from "../src/data/oddsTeams";
 import type { GamesFile } from "../src/data/types";
 import { currentWeek } from "../src/data/week";
 
@@ -32,13 +32,6 @@ interface ApiEvent {
     markets: { key: string; outcomes: ApiOutcome[] }[];
   }[];
 }
-
-const abbrByName = new Map(Object.entries(TEAMS).map(([abbr, t]) => [t.name, abbr]));
-// Names The Odds API has used that differ from ours.
-abbrByName.set("Washington Football Team", "WAS");
-abbrByName.set("Oakland Raiders", "LV");
-abbrByName.set("San Diego Chargers", "LAC");
-abbrByName.set("St. Louis Rams", "LA");
 
 async function reuseDeployed(): Promise<boolean> {
   const site = process.env.SITE_URL;
@@ -115,12 +108,7 @@ async function main() {
   // Match to this week's nflverse game ids by teams, allowing a day either side (UTC vs US dates).
   const out: GameOdds[] = [];
   for (const ev of events) {
-    const home = abbrByName.get(ev.home_team);
-    const away = abbrByName.get(ev.away_team);
-    const t = Date.parse(ev.commence_time);
-    const game = week.games.find(
-      (g) => g.home === home && g.away === away && Math.abs(Date.parse(`${g.date}T12:00:00Z`) - t) < 1.5 * 86400e3,
-    );
+    const game = matchGame(week.games, ev.home_team, ev.away_team, ev.commence_time);
     if (!game || !thisWeek.has(game.id)) {
       console.warn(`No schedule match for ${ev.away_team} at ${ev.home_team} (${ev.commence_time})`);
       continue;

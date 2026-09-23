@@ -16,6 +16,8 @@ export interface Game {
   week: number;
   type: GameType;
   date: string; // YYYY-MM-DD
+  /** Kickoff time, US Eastern (HH:MM), as nflverse lists it. */
+  time?: string;
   away: string;
   home: string;
   awayScore: number | null;

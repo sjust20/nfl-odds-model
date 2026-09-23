@@ -70,6 +70,24 @@ over/under statistics remain (`src/model/ats.ts`, verified against the spreadshe
   are written with the line available at the time. An entry freezes on game day, so it's a true
   out-of-sample record.
 
+## Historical odds (private)
+
+Opening and closing lines since 2020 from The Odds API's historical endpoint, stored in a private
+Neon Postgres database (`sql/schema.sql`), not in this repo: the provider's terms allow storing
+their data but not redistributing it raw. Needs a paid plan for one month; the full plan is ~18,800
+credits (fits the 20K plan). Put `ODDS_API_KEY` and `DATABASE_URL` in `.env.local` (git-ignored), then:
+
+```sh
+npm run odds-history -- migrate                      # create tables and the game_open_close view
+npm run odds-history -- plan                         # queue a Tuesday opener per week + a close per kickoff time
+npm run odds-history -- live-test                    # free-tier end-to-end check (~2 credits)
+npm run odds-history -- run --season 2024 --week 1   # trial one week (160 credits), then check
+npm run odds-history -- run                          # the rest (resumable; stops at a credit reserve)
+npm run odds-history -- status
+```
+
+Books: Pinnacle plus nine US books (ten books cost one region). Markets: spreads and totals.
+
 ## Develop
 
 ```sh

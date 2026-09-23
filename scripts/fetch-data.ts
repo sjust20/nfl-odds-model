@@ -62,7 +62,7 @@ async function main() {
   };
   const c = {
     id: col("game_id"), season: col("season"), type: col("game_type"), week: col("week"),
-    date: col("gameday"), away: col("away_team"), awayScore: col("away_score"),
+    date: col("gameday"), time: col("gametime"), away: col("away_team"), awayScore: col("away_score"),
     home: col("home_team"), homeScore: col("home_score"), location: col("location"),
     line: col("spread_line"), total: col("total_line"),
     awayCoach: col("away_coach"), homeCoach: col("home_coach"),
@@ -80,6 +80,7 @@ async function main() {
       week: Number(r[c.week]),
       type: r[c.type] as GameType,
       date: r[c.date],
+      time: r[c.time] && r[c.time] !== "NA" ? r[c.time] : undefined,
       away: RELOCATED[r[c.away]] ?? r[c.away],
       home: RELOCATED[r[c.home]] ?? r[c.home],
       awayScore: num(r[c.awayScore]),

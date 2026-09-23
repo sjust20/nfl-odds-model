@@ -5,3 +5,5 @@ public/data/games.json
 *.xlsm
 ~$*
 public/data/odds.json
+.env
+.env.*

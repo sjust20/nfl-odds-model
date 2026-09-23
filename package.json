@@ -12,9 +12,11 @@
     "tune": "tsx scripts/tune.ts",
     "log-picks": "tsx scripts/log-picks.ts",
     "odds": "tsx scripts/fetch-odds.ts",
-    "pbp": "tsx scripts/build-pbp.ts"
+    "pbp": "tsx scripts/build-pbp.ts",
+    "odds-history": "tsx --env-file=.env.local scripts/history/odds-history.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-router-dom": "^7.18.4"
