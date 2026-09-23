@@ -18,26 +18,35 @@ A team's history resets whenever its head coach changes, interim coaches include
 - **Strategy lab**: separate Sides and Totals tabs, one rule each. Backtest any rule (model edge,
   reliability, minimum games, or, for sides, betting the high- or low-variance team), with results by
   season, an edge × reliability grid split into two eras, and the live out-of-sample record. The
+  live record includes closing line value (how far the closing line moved toward each pick). The
   Sides tab also tracks one fixed idea without betting it: Market edge over 6 with no QB change on
   either side (`src/model/tracked.ts`).
-- **Model settings**: every model parameter, including the "spreadsheet exactly" preset. Changes
+- **Model settings**: every parameter of both models. Changes
   recompute in the browser.
 
 ## Models
 
-- **Classic** (`src/model/classic.ts`): a port of the spreadsheet, verified to 10 decimal places
-  against its cached values (`src/test/classic.test.ts`). Rating = average (or EMA) line faced minus
-  average cover. Algebraically the line cancels, so this equals minus the team's average scoring
-  margin under its coach (exactly for the plain average; approximately for the EMA, whose two
-  averages warm up differently). The matchup formula is Sheet3's (half the gap, or 0.55× when the teams sit on
-  opposite sides of average, with 3 points of home field split between them). One optional change:
-  thin samples are blended toward the Market view (`shrinkGames`; 0 = exact spreadsheet).
-- **Market** (`src/model/market.ts`): weighted least squares over recent closing lines, blended 30%
-  with actual margins, with one rating per coaching tenure. A new coach starts from part of the
-  previous regime's evidence (a soft reset), which fades as old games do. Defaults were tuned on
-  2003–2015 and checked on 2016 onward (`npm run tune`).
-- **Engine** (`src/model/engine.ts`): steps week by week, predicting each week using only earlier
-  data. The same pass produces the backtest and the live predictions.
+Both models are the same weighted least-squares fit over recent closing lines (`src/model/market.ts`),
+one rating per coaching tenure, adjusted for opponents and home field. They differ in what each
+game's target blends in besides the line:
+
+- **Market**: 30% toward the final margin.
+- **Play-by-play**: 15% toward the efficiency margin (net expected points added, from nflverse
+  play-by-play) and 10% toward the final margin.
+
+Both add a **starting-QB adjustment** (`src/model/qbValue.ts`): each QB's recent EPA per dropback,
+shrunk toward replacement level, compared with the team's recent QB mix. Defaults were tuned on
+2003–2015 and checked on 2016 onward (`npm run tune`). Held-out margin RMSE: closing line 12.71,
+Market 12.90, play-by-play 12.91 (13.01 each without the QB adjustment; 13.85 → 13.44 on games with a
+QB change). Efficiency added little once lines were in; the QB adjustment is the main gain.
+
+The **engine** (`src/model/engine.ts`) steps week by week, predicting each week using only earlier
+data, so the same pass produces the backtest and the live predictions.
+
+The spreadsheet's **Classic** model was retired: its rating (average line faced minus average cover)
+is algebraically minus the team's average margin, and it predicted worse than Market. Its cover and
+over/under statistics remain (`src/model/ats.ts`, verified against the spreadsheet in
+`src/test/ats.test.ts`) because the reliability measure is built from them.
 
 ## Data
 
@@ -47,6 +56,10 @@ A team's history resets whenever its head coach changes, interim coaches include
   books. Each pull costs 2 credits (2 markets × 1 region). The workflow pulls at most once a day and
   otherwise reuses the copy on the live site if it's under 20 hours old, so about 60 credits a month.
   Check The Odds API's terms before publishing their data on a public site.
+- Play-by-play: nflverse `play_by_play_<season>.csv.gz`, aggregated per game and team (plays,
+  expected points added, success, dropbacks, and each QB's dropbacks and EPA) into
+  `data/pbp/<season>.json` (`npm run pbp`). Past seasons are committed; the nightly job rebuilds the
+  current season and commits it.
 - Head-coach corrections: nflverse sometimes carries last season's coach into a new season (2026:
   ARI, ATL, BUF). Each nightly run checks every team's current coach against ESPN's (unofficial) API
   and corrects the current season; near-identical names are only respelled, so they can't cause a
@@ -60,7 +73,8 @@ A team's history resets whenever its head coach changes, interim coaches include
 
 ```sh
 npm install
-npm run data        # download games
+npm run pbp         # current season's play-by-play (npx tsx scripts/build-pbp.ts 1999 2025 to backfill)
+npm run data        # download games and merge play-by-play
 npm run dev         # http://localhost:5173
 npm test            # model tests
 npm run odds        # needs ODDS_API_KEY in the environment

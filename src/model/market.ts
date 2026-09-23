@@ -1,7 +1,7 @@
 // Market-implied power ratings: weighted least squares over recent closing lines
 // (optionally blended with actual results), one rating per coaching tenure.
 import { solveSpd } from "./linalg";
-import type { MarketSettings } from "./settings";
+import type { RatingSettings } from "./settings";
 
 export interface Observation {
   home: string; // tenure id
@@ -11,6 +11,9 @@ export interface Observation {
   total: number | null;
   margin: number | null; // home - away, null if not final
   points: number | null;
+  /** Net expected points added (home offense minus away offense), all plays / competitive plays scaled to all. */
+  effAll: number | null;
+  effNeutral: number | null;
   /** Index of the game's week in the global chronological week list. */
   weekIndex: number;
   season: number;
@@ -38,7 +41,7 @@ export function fitMarket(
   obs: Observation[],
   weekIndex: number,
   season: number,
-  s: MarketSettings,
+  s: RatingSettings,
   prevOf: (tenure: string) => string | null,
   required: Iterable<string>,
 ): MarketFit {
@@ -79,12 +82,17 @@ export function fitMarket(
   const bTotal = new Float64Array(size);
   const weight = new Map<string, number>();
   const rw = s.resultWeight;
+  const ew = s.efficiencyWeight;
+  // Totals have no efficiency analogue, so they learn from actual points with the combined weight.
+  const tw = Math.min(1, rw + ew);
 
   for (const { o, w } of used) {
     const h = index.get(o.home)!;
     const a = index.get(o.away)!;
     const x = o.neutral ? 0 : 1;
-    const y = o.margin === null ? o.line : o.line + rw * (o.margin - o.line);
+    // Target: the line, pulled toward the final margin and the efficiency margin.
+    const eff = (s.efficiency === "neutral" ? o.effNeutral : o.effAll) ?? o.margin;
+    const y = o.margin === null ? o.line : o.line + rw * (o.margin - o.line) + ew * (eff! - o.line);
     // Spread row: r_h - r_a + hfa*x = y
     A[h * size + h] += w;
     A[a * size + a] += w;
@@ -100,7 +108,7 @@ export function fitMarket(
     bSpread[n] += w * x * y;
     // Total row: t_h + t_a + base = y
     if (o.total !== null) {
-      const yt = o.points === null ? o.total : o.total + rw * (o.points - o.total);
+      const yt = o.points === null ? o.total : o.total + tw * (o.points - o.total);
       T[h * size + h] += w;
       T[a * size + a] += w;
       T[h * size + a] += w;

@@ -1,3 +1,6 @@
+/** Relocated franchises use their current abbreviation throughout. */
+export const RELOCATED: Record<string, string> = { OAK: "LV", SD: "LAC", STL: "LA" };
+
 export const TEAMS: Record<string, { name: string; short: string }> = {
   ARI: { name: "Arizona Cardinals", short: "Arizona" },
   ATL: { name: "Atlanta Falcons", short: "Atlanta" },

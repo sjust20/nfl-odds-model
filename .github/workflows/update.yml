@@ -30,6 +30,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Play-by-play for the current season
+        run: npm run pbp
+
       - name: Download games from nflverse
         run: npm run data
 
@@ -46,13 +49,13 @@ jobs:
       - name: Log upcoming predictions
         run: npm run log-picks
 
-      - name: Commit pick log
+      - name: Commit pick log and play-by-play
         run: |
-          if ! git diff --quiet -- public/data/pick-log.json; then
+          git add public/data/pick-log.json data/pbp
+          if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add public/data/pick-log.json
-            git commit -m "Log upcoming predictions [skip ci]"
+            git commit -m "Log upcoming predictions, refresh play-by-play [skip ci]"
             git push
           fi
 

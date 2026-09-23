@@ -8,19 +8,20 @@
    "date": "2026-09-24",
    "home": "GB",
    "away": "ATL",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 4.5,
    "total": 42.5,
-   "bookLine": 5,
-   "bookTotal": 43,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 9.432999305978361,
+    "line": 7.789212083441354,
     "total": 44.34652445719979
    },
-   "classic": {
-    "line": 8.183548961871853,
-    "total": 40.390400025501386
+   "pbp": {
+    "line": 7.707173491278027,
+    "total": 44.372517828337266
    },
+   "qbAdj": -2.1917162967160095,
    "reliability": 39,
    "totalReliability": 22,
    "coverRanks": [
@@ -48,19 +49,20 @@
    "date": "2026-09-27",
    "home": "SF",
    "away": "ARI",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 8.5,
    "total": 47.5,
-   "bookLine": 8.5,
-   "bookTotal": 48,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 9.743844712231127,
+    "line": 9.857892028548243,
     "total": 44.9665511235317
    },
-   "classic": {
-    "line": 5.349265943667732,
-    "total": 43.24723188630344
+   "pbp": {
+    "line": 9.390651968379524,
+    "total": 44.61652667262128
    },
+   "qbAdj": 0.15206308842282046,
    "reliability": 53,
    "totalReliability": 30,
    "coverRanks": [
@@ -88,19 +90,20 @@
    "date": "2026-09-27",
    "home": "DAL",
    "away": "BAL",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -3.5,
    "total": 52.5,
-   "bookLine": -3.5,
-   "bookTotal": 52.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.581708482482245,
+    "line": -2.6961211390814985,
     "total": 51.29443669251142
    },
-   "classic": {
-    "line": -2.623707960716896,
-    "total": 53.98976608187134
+   "pbp": {
+    "line": -4.123651110260547,
+    "total": 50.464454567792224
    },
+   "qbAdj": -0.15255020879900438,
    "reliability": 49,
    "totalReliability": 25,
    "coverRanks": [
@@ -128,19 +131,20 @@
    "date": "2026-09-27",
    "home": "CLE",
    "away": "CAR",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -2.5,
    "total": 42.5,
-   "bookLine": -3,
-   "bookTotal": 42,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.703198032071849,
+    "line": -1.4104245803235003,
     "total": 45.13070425121729
    },
-   "classic": {
-    "line": 0.20162970750578424,
-    "total": 45.16753639170687
+   "pbp": {
+    "line": -2.4031848313525663,
+    "total": 45.193490588315086
    },
+   "qbAdj": 1.7236979356644653,
    "reliability": 59,
    "totalReliability": 30,
    "coverRanks": [
@@ -168,19 +172,20 @@
    "date": "2026-09-27",
    "home": "PIT",
    "away": "CIN",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -3.5,
    "total": 42.5,
-   "bookLine": -3.5,
-   "bookTotal": 42.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.7076903627552675,
+    "line": -2.8259445775936984,
     "total": 44.080027905000954
    },
-   "classic": {
-    "line": -0.14713676277159166,
-    "total": 39.46829258804666
+   "pbp": {
+    "line": -3.294012421884414,
+    "total": 44.231188259411965
    },
+   "qbAdj": -0.1576722864512412,
    "reliability": 22,
    "totalReliability": 30,
    "coverRanks": [
@@ -208,19 +213,20 @@
    "date": "2026-09-27",
    "home": "IND",
    "away": "HOU",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -2.5,
    "total": 42.5,
-   "bookLine": -2.5,
-   "bookTotal": 42.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -1.9623445816319642,
+    "line": -2.044487100933641,
     "total": 46.599325311142366
    },
-   "classic": {
-    "line": -1.0485072465930705,
-    "total": 47.48699100720502
+   "pbp": {
+    "line": -2.6349578644176623,
+    "total": 46.308346662478044
    },
+   "qbAdj": -0.10952335906890263,
    "reliability": 29,
    "totalReliability": 40,
    "coverRanks": [
@@ -248,19 +254,20 @@
    "date": "2026-09-27",
    "home": "MIA",
    "away": "KC",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -11.5,
    "total": 46.5,
-   "bookLine": -11.5,
-   "bookTotal": 46,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -7.709278282752065,
+    "line": -8.81718204461045,
     "total": 43.832376581134845
    },
-   "classic": {
-    "line": -4.993274652753181,
-    "total": 43.04310203813084
+   "pbp": {
+    "line": -8.359489954773448,
+    "total": 43.824766664340366
    },
+   "qbAdj": -1.4772050158111802,
    "reliability": 14,
    "totalReliability": 23,
    "coverRanks": [
@@ -288,19 +295,20 @@
    "date": "2026-09-27",
    "home": "DEN",
    "away": "LA",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -2.5,
    "total": 45.5,
-   "bookLine": -2.5,
-   "bookTotal": 45,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.0555304517442154,
+    "line": -1.5679149789665343,
     "total": 42.99796554827246
    },
-   "classic": {
-    "line": 0.14201258504607495,
-    "total": 45.02297096423768
+   "pbp": {
+    "line": -2.3834928952464787,
+    "total": 43.15003270599525
    },
+   "qbAdj": 0.6501539637035749,
    "reliability": 43,
    "totalReliability": 53,
    "coverRanks": [
@@ -328,19 +336,20 @@
    "date": "2026-09-27",
    "home": "BUF",
    "away": "LAC",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 7,
    "total": 50.5,
-   "bookLine": 7.5,
-   "bookTotal": 50,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 7.453328967639081,
+    "line": 7.132568834631426,
     "total": 51.31991967956507
    },
-   "classic": {
-    "line": 5.225881143191488,
-    "total": 55.133356402638555
+   "pbp": {
+    "line": 6.945721476376315,
+    "total": 51.22727840294374
    },
+   "qbAdj": -0.42768017734353886,
    "reliability": 27,
    "totalReliability": 16,
    "coverRanks": [
@@ -368,19 +377,20 @@
    "date": "2026-09-27",
    "home": "NO",
    "away": "LV",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 3,
    "total": 43.5,
-   "bookLine": 3,
-   "bookTotal": 43.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 1.5585878216609397,
+    "line": 0.954480695316256,
     "total": 41.258802672513596
    },
-   "classic": {
-    "line": -1.2849156806528725,
-    "total": 41.026315789473685
+   "pbp": {
+    "line": 1.0307298518711754,
+    "total": 41.58444789949413
    },
+   "qbAdj": -0.8054761684595783,
    "reliability": 13,
    "totalReliability": 12,
    "coverRanks": [
@@ -408,19 +418,20 @@
    "date": "2026-09-27",
    "home": "TB",
    "away": "MIN",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -1.5,
    "total": 42.5,
-   "bookLine": -1.5,
-   "bookTotal": 42.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.5729051188963883,
+    "line": -5.426951695343115,
     "total": 41.544200180583914
    },
-   "classic": {
-    "line": -0.008706500861670574,
-    "total": 43.25892895770167
+   "pbp": {
+    "line": -5.1398728488538055,
+    "total": 42.22415200688249
    },
+   "qbAdj": -3.8053954352623025,
    "reliability": 28,
    "totalReliability": 40,
    "coverRanks": [
@@ -448,19 +459,20 @@
    "date": "2026-09-27",
    "home": "JAX",
    "away": "NE",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 3,
    "total": 45.5,
-   "bookLine": 3,
-   "bookTotal": 45.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -0.5071067505037328,
+    "line": -0.5267821591033987,
     "total": 42.66728261870147
    },
-   "classic": {
-    "line": 1.5796442751988056,
-    "total": 43.35688579155399
+   "pbp": {
+    "line": -0.6742834454466308,
+    "total": 42.66216530381215
    },
+   "qbAdj": -0.02623387813288778,
    "reliability": 22,
    "totalReliability": 31,
    "coverRanks": [
@@ -488,19 +500,20 @@
    "date": "2026-09-27",
    "home": "DET",
    "away": "NYJ",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 6.5,
    "total": 47.5,
-   "bookLine": 6.5,
-   "bookTotal": 47.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 7.259314916454324,
+    "line": 6.007287395046035,
     "total": 47.26268846584876
    },
-   "classic": {
-    "line": 8.533160396382456,
-    "total": 49.81662053701386
+   "pbp": {
+    "line": 4.5614045948678275,
+    "total": 46.8737585971229
    },
+   "qbAdj": -1.6693700285443849,
    "reliability": 33,
    "totalReliability": 60,
    "coverRanks": [
@@ -528,19 +541,20 @@
    "date": "2026-09-27",
    "home": "WAS",
    "away": "SEA",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -7,
    "total": 40.5,
-   "bookLine": -7,
-   "bookTotal": 40,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -10.107505582665516,
+    "line": -8.478246838393249,
     "total": 44.27155569915653
    },
-   "classic": {
-    "line": -6.4042039501614765,
-    "total": 46.57986301457109
+   "pbp": {
+    "line": -7.707264040126966,
+    "total": 44.628084501480586
    },
+   "qbAdj": 2.172344992363022,
    "reliability": 41,
    "totalReliability": 45,
    "coverRanks": [
@@ -568,19 +582,20 @@
    "date": "2026-09-27",
    "home": "NYG",
    "away": "TEN",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": 2.5,
    "total": 39.5,
-   "bookLine": 3,
-   "bookTotal": 39.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 5.3670191182976055,
+    "line": 5.490610742000297,
     "total": 41.58623027551416
    },
-   "classic": {
-    "line": 3.08905856541839,
-    "total": 39.75
+   "pbp": {
+    "line": 3.7294554511865226,
+    "total": 42.01331195314737
    },
+   "qbAdj": 0.16478883160358865,
    "reliability": 31,
    "totalReliability": 16,
    "coverRanks": [
@@ -608,19 +623,20 @@
    "date": "2026-09-28",
    "home": "CHI",
    "away": "PHI",
-   "loggedAt": "2026-09-23T20:25:56.242Z",
+   "loggedAt": "2026-09-23T20:48:21.779Z",
    "line": -4.5,
    "total": 41.5,
-   "bookLine": -4.5,
-   "bookTotal": 41,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 3.70237245982706,
+    "line": 0.7456156705821133,
     "total": 44.637122240307576
    },
-   "classic": {
-    "line": 0.6305212115293548,
-    "total": 46.445471382456574
+   "pbp": {
+    "line": 0.6670915952344196,
+    "total": 44.382238286417135
    },
+   "qbAdj": -3.942342385659929,
    "reliability": 24,
    "totalReliability": 52,
    "coverRanks": [

@@ -3,37 +3,32 @@ import { Link } from "react-router-dom";
 import { Sparkline } from "../components/charts";
 import { teamName } from "../data/teams";
 import { num, shortDate, signed } from "../format";
+import type { ModelKey } from "../model/engine";
 import { useApp } from "../state";
-
-type SortKey = "market" | "classic";
 
 export function RankingsPage() {
   const { run, settings, data } = useApp();
   const fixes = (data!.coachCorrections ?? []).filter((c) => c.kind !== "spelling");
-  const [sort, setSort] = useState<SortKey>("market");
+  const [sort, setSort] = useState<ModelKey>("market");
   const r = run!;
   const season = r.history.at(-1)?.season;
   // Trend: this season's weekly snapshots, plus last season's final one as the starting point.
   const trendWeeks = r.history.filter((h, i, all) => h.season === season || (i + 1 < all.length && all[i + 1].season === season));
-
-  // Both columns read as "points better than an average team"; Classic's native scale is the reverse.
-  const classicScore = (t: (typeof r.current)[number]) => (t.classicBlended === null ? null : -t.classicBlended);
-  const rows = [...r.current].sort((a, b) =>
-    sort === "market" ? b.market - a.market : (classicScore(b) ?? -99) - (classicScore(a) ?? -99),
-  );
+  const rows = [...r.current].sort((a, b) => b[sort] - a[sort]);
 
   return (
     <>
       <div className="page-head">
         <h1>Power rankings</h1>
         <p className="muted">
-          Ratings are points better than a league-average team on a neutral field. <strong>Market</strong> fits
-          recent closing lines (and {Math.round(settings.market.resultWeight * 100)}% actual results) across all
-          teams at once, so it adjusts for opponents and home games. <strong>Classic</strong> is the spreadsheet
-          formula (average line faced minus average cover)
-          {settings.classic.shrinkGames > 0 && `, blended toward Market for teams with few games`}. History
+          Ratings are points better than a league-average team on a neutral field, with the team's recent QB mix.
+          Both models fit recent closing lines across all teams at once, so they adjust for opponents and home
+          games. <strong>Market</strong> also learns {Math.round(settings.market.resultWeight * 100)}% from final
+          margins. <strong>Play-by-play</strong> learns from final margins (
+          {Math.round(settings.pbp.resultWeight * 100)}%) and efficiency, net expected points added per play (
+          {Math.round(settings.pbp.efficiencyWeight * 100)}%). History
           {settings.resetOnCoachChange ? " resets when the head coach changes." : " spans coaching changes."} Home-field
-          advantage is currently {num(r.hfa)} points.
+          advantage is currently {num(r.hfa.market)} points.
         </p>
       </div>
       {fixes.length > 0 && (
@@ -52,9 +47,9 @@ export function RankingsPage() {
       <div className="controls">
         <label>
           Sort by{" "}
-          <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+          <select value={sort} onChange={(e) => setSort(e.target.value as ModelKey)}>
             <option value="market">Market rating</option>
-            <option value="classic">Classic rating</option>
+            <option value="pbp">Play-by-play rating</option>
           </select>
         </label>
       </div>
@@ -66,17 +61,16 @@ export function RankingsPage() {
               <th>Team</th>
               <th>Head coach</th>
               <th className="num">Market</th>
-              <th>This season</th>
-              <th className="num">Classic</th>
-              <th className="num" title="Classic average (or EMA) cover margin under this coach">Avg cover</th>
+              <th className="num">Play-by-play</th>
+              <th>This season (Market)</th>
+              <th className="num" title="EMA of cover margin under this coach (the spreadsheet's Average Cover)">Avg cover</th>
               <th className="num" title="Standard deviation of cover margin; rank 1 = steadiest">Cover SD (rank)</th>
-              <th className="num" title="Classic average over/under margin">Avg O/U</th>
+              <th className="num" title="EMA of over/under margin">Avg O/U</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((t, i) => {
               const trend = trendWeeks.map((h) => h.ratings.get(t.team)?.market).filter((v): v is number => v !== undefined);
-              const cs = classicScore(t);
               return (
                 <tr key={t.team}>
                   <td className="num">{i + 1}</td>
@@ -89,19 +83,17 @@ export function RankingsPage() {
                       since {shortDate(t.since)} · {t.games} {t.games === 1 ? "game" : "games"}
                     </div>
                   </td>
-                  <td className="num strong">{signed(t.market)}</td>
+                  <td className={`num ${sort === "market" ? "strong" : ""}`}>{signed(t.market)}</td>
+                  <td className={`num ${sort === "pbp" ? "strong" : ""}`}>{signed(t.pbp)}</td>
                   <td>
                     <Sparkline values={trend} />
                   </td>
-                  <td className="num" title={t.classic ? `Unblended spreadsheet value: ${signed(-t.classic.rating)}` : undefined}>
-                    {cs === null ? "–" : signed(cs)}
-                  </td>
-                  <td className="num">{t.classic ? signed(t.classic.cover) : "–"}</td>
+                  <td className="num">{t.ats ? signed(t.ats.cover) : "–"}</td>
                   <td className="num">
-                    {t.classic ? `${num(t.classic.sdCover)} (${t.coverRank})` : "–"}
+                    {t.ats ? `${num(t.ats.sdCover)} (${t.coverRank})` : "–"}
                     {t.games > 0 && t.games < 8 && <span className="muted small"> thin</span>}
                   </td>
-                  <td className="num">{t.classic ? signed(t.classic.ou) : "–"}</td>
+                  <td className="num">{t.ats ? signed(t.ats.ou) : "–"}</td>
                 </tr>
               );
             })}

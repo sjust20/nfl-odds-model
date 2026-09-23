@@ -2,19 +2,23 @@ import { describe, expect, it } from "vitest";
 import type { Game } from "../data/types";
 import { runModels } from "../model/engine";
 import { fitMarket, type Observation } from "../model/market";
-import { DEFAULT_SETTINGS, type MarketSettings } from "../model/settings";
+import { DEFAULT_SETTINGS, type RatingSettings } from "../model/settings";
 import { buildTenures } from "../model/tenure";
 
-const flat: MarketSettings = {
+const flat: RatingSettings = {
   halfLifeWeeks: 1e9,
   seasonCarryover: 1,
   resultWeight: 0,
+  efficiencyWeight: 0,
+  efficiency: "all",
   coachCarryover: 0,
   ridgeGames: 1e-6,
+  qbScale: 0,
 };
 
 const ob = (home: string, away: string, line: number, weekIndex: number): Observation => ({
   home, away, line, weekIndex, neutral: false, total: 44, margin: null, points: null, season: 2020,
+  effAll: null, effNeutral: null,
 });
 
 describe("market ratings", () => {
@@ -73,6 +77,6 @@ describe("walk-forward engine", () => {
     const p1 = runModels(base, DEFAULT_SETTINGS).predictions[2];
     const p2 = runModels(blowout, DEFAULT_SETTINGS).predictions[2];
     expect(p2.market.line).toBeCloseTo(p1.market.line, 10);
-    expect(p2.classic!.line).toBeCloseTo(p1.classic!.line, 10);
+    expect(p2.pbp.line).toBeCloseTo(p1.pbp.line, 10);
   });
 });

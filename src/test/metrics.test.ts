@@ -17,7 +17,8 @@ const preds: Prediction[] = Array.from({ length: 800 }, (_, i) => {
       line, total, neutral: false, awayCoach: "a", homeCoach: "h",
     },
     market: { line: line + (rand() * 8 - 4), total: total + (rand() * 8 - 4) },
-    classic: { line: line + (rand() * 8 - 4), total: total + (rand() * 8 - 4) },
+    pbp: { line: line + (rand() * 8 - 4), total: total + (rand() * 8 - 4) },
+    qbAdj: 0,
     reliability: hr + ar,
     totalReliability: 2 + Math.floor(rand() * 63),
     coverRanks: [hr, ar],
@@ -28,7 +29,7 @@ const preds: Prediction[] = Array.from({ length: 800 }, (_, i) => {
 });
 
 const base: Strategy = {
-  pick: "model", model: "classic", market: "spread", minEdge: 0, maxReliability: null,
+  pick: "model", model: "pbp", market: "spread", minEdge: 0, maxReliability: null,
   minGames: 8, fromSeason: 2011, toSeason: 2017,
 };
 
@@ -55,7 +56,7 @@ describe("bets", () => {
   it("grades a home-side spread bet", () => {
     const p = preds[0];
     const g = { ...p.game, line: 3, homeScore: 24, awayScore: 20 };
-    const bet = betFor({ ...p, game: g, classic: { line: 5, total: 40 }, minGames: 20 }, { ...base, fromSeason: 0, toSeason: 9999 });
+    const bet = betFor({ ...p, game: g, pbp: { line: 5, total: 40 }, minGames: 20 }, { ...base, fromSeason: 0, toSeason: 9999 });
     expect(bet?.side).toBe("home");
     expect(bet?.result).toBe(1); // won by 4, laid 3
   });

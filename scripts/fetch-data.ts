@@ -1,16 +1,16 @@
 // Downloads nflverse games.csv and writes the slim JSON the site loads.
 // Run: npm run data
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { applyOverrides, reconcileCurrentCoaches, type CoachOverride } from "../src/data/coaches";
 import { parseCsv } from "../src/data/csv";
+import type { PbpSeasonFile } from "../src/data/pbp";
+import { RELOCATED } from "../src/data/teams";
 import { currentWeek } from "../src/data/week";
 import type { Game, GamesFile, GameType, Qb } from "../src/data/types";
 
 const SOURCE = "https://github.com/nflverse/nfldata/raw/master/data/games.csv";
 const OUT = new URL("../public/data/games.json", import.meta.url);
 
-// Relocated franchises use their current abbreviation throughout.
-const RELOCATED: Record<string, string> = { OAK: "LV", SD: "LAC", STL: "LA" };
 
 const OVERRIDES = new URL("../data/coach-overrides.json", import.meta.url);
 const ESPN_TEAMS = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams";
@@ -95,6 +95,21 @@ async function main() {
     .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
 
   if (games.length < 7000) throw new Error(`Only ${games.length} games parsed; refusing to publish`);
+
+  // Play-by-play efficiency (data/pbp, built by scripts/build-pbp.ts).
+  const pbpDir = new URL("../data/pbp/", import.meta.url);
+  const pbp: PbpSeasonFile["games"] = {};
+  for (const f of (await readdir(pbpDir)).filter((f) => f.endsWith(".json")))
+    Object.assign(pbp, (JSON.parse(await readFile(new URL(f, pbpDir), "utf8")) as PbpSeasonFile).games);
+  let withPbp = 0;
+  for (const g of games) {
+    const p = pbp[g.id];
+    if (p?.[g.home] && p[g.away]) {
+      g.pbp = { home: p[g.home], away: p[g.away] };
+      withPbp++;
+    }
+  }
+  console.log(`Play-by-play attached to ${withPbp} games`);
 
   // Coach corrections: manual overrides first, then the current season vs ESPN.
   const { overrides }: { overrides: CoachOverride[] } = JSON.parse(await readFile(OVERRIDES, "utf8"));

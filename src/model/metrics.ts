@@ -2,7 +2,7 @@ import { noQbChange } from "../data/qb";
 import { isFinal } from "../data/types";
 import type { Prediction } from "./engine";
 
-export type ModelName = "market" | "classic";
+export type ModelName = "market" | "pbp";
 export type BetMarket = "spread" | "total";
 
 export interface Strategy {
@@ -78,7 +78,7 @@ export interface Bet {
 /** The bet a strategy would make on a game, or null if it passes. */
 export function betFor(p: Prediction, s: Strategy): Bet | null {
   const g = p.game;
-  const m = s.model === "market" ? p.market : p.classic;
+  const m = p[s.model];
   if (!m) return null;
   if (g.season < s.fromSeason || g.season > s.toSeason) return null;
   if (p.minGames < s.minGames) return null;
@@ -141,7 +141,7 @@ export function accuracy(preds: Prediction[], model: ModelName, market: BetMarke
   for (const p of preds) {
     const g = p.game;
     if (!isFinal(g) || g.season < from || g.season > to) continue;
-    const m = model === "market" ? p.market : p.classic;
+    const m = p[model];
     const offered = market === "spread" ? g.line : g.total;
     if (!m || offered === null) continue;
     const actual = market === "spread" ? g.homeScore - g.awayScore : g.homeScore + g.awayScore;

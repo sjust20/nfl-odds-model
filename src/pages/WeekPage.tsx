@@ -48,7 +48,7 @@ function PickCell({ p, strategy }: { p: Prediction; strategy: Strategy }) {
 }
 
 export function WeekPage() {
-  const { run, odds, strategies, data } = useApp();
+  const { run, odds, strategies, data, settings } = useApp();
   const sides = strategies.spread;
   const totals = strategies.total;
   const showTotals = totals.enabled !== false;
@@ -118,9 +118,9 @@ export function WeekPage() {
                 </th>
                 <th>Book line</th>
                 <th>Market model</th>
-                <th>Classic</th>
-                <th className="num">Edge (M / C)</th>
-                <th>Total: book / M / C</th>
+                <th>Play-by-play</th>
+                <th className="num">Edge (M / P)</th>
+                <th>Total: book / M / P</th>
                 <th className="num" title="Sum of both teams' consistency ranks (cover for sides, over/under for totals); lower = steadier">
                   Reliability (S / T)
                 </th>
@@ -149,6 +149,11 @@ export function WeekPage() {
                     <td>
                       <QbLine team={g.away} q={qbs.get(g.id)?.away} />
                       <QbLine team={g.home} q={qbs.get(g.id)?.home} />
+                      {Math.abs(p.qbAdj * settings.market.qbScale) >= 0.5 && (
+                        <div className="muted small" title="Points the QB adjustment moves the model lines toward the home team">
+                          QB adjustment: {g.home} {signed(p.qbAdj * settings.market.qbScale)}
+                        </div>
+                      )}
                     </td>
                     <td>
                       {line === null ? (
@@ -165,9 +170,9 @@ export function WeekPage() {
                       )}
                     </td>
                     <td>{lineLabel(g.home, g.away, p.market.line)}</td>
-                    <td>{p.classic ? lineLabel(g.home, g.away, p.classic.line) : <span className="muted">–</span>}</td>
+                    <td>{lineLabel(g.home, g.away, p.pbp.line)}</td>
                     <td className="num">
-                      {line === null ? "–" : `${signed(p.market.line - line)} / ${p.classic ? signed(p.classic.line - line) : "–"}`}
+                      {line === null ? "–" : `${signed(p.market.line - line)} / ${signed(p.pbp.line - line)}`}
                       {line !== null && bigEdgeNoQb(atBookLine(p, line, total)) && (
                         <div>
                           <Link to="/lab" className="tag" title="Tracked, not bet: Market edge over 6 with no QB change">
@@ -177,7 +182,7 @@ export function WeekPage() {
                       )}
                     </td>
                     <td>
-                      {total ?? "–"} / {num(p.market.total)} / {p.classic ? num(p.classic.total) : "–"}
+                      {total ?? "–"} / {num(p.market.total)} / {num(p.pbp.total)}
                     </td>
                     <td className="num">
                       {p.reliability ?? "–"} / {p.totalReliability ?? "–"}
@@ -217,7 +222,7 @@ export function WeekPage() {
                   <th>Closing line</th>
                   <th className="num">Home cover</th>
                   <th>Market model</th>
-                  <th>Classic</th>
+                  <th>Play-by-play</th>
                   <th>Final total</th>
                   <th>Side pick</th>
                   {showTotals && <th>Total pick</th>}
@@ -239,7 +244,7 @@ export function WeekPage() {
                       <td>{g.line === null ? "–" : lineLabel(g.home, g.away, g.line)}</td>
                       <td className="num">{cover === null ? "–" : signed(cover)}</td>
                       <td>{lineLabel(g.home, g.away, p.market.line)}</td>
-                      <td>{p.classic ? lineLabel(g.home, g.away, p.classic.line) : "–"}</td>
+                      <td>{lineLabel(g.home, g.away, p.pbp.line)}</td>
                       <td>
                         {g.homeScore + g.awayScore}
                         {g.total !== null && <span className="muted small"> (line {g.total})</span>}

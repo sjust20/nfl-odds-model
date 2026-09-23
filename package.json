@@ -11,7 +11,8 @@
     "test": "vitest run",
     "tune": "tsx scripts/tune.ts",
     "log-picks": "tsx scripts/log-picks.ts",
-    "odds": "tsx scripts/fetch-odds.ts"
+    "odds": "tsx scripts/fetch-odds.ts",
+    "pbp": "tsx scripts/build-pbp.ts"
   },
   "dependencies": {
     "react": "^19.3.0",

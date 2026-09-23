@@ -37,8 +37,9 @@ export type BetKind = Strategy["market"];
  * than tuned: both teams need 8+ games under their coach (fixes the thin-sample reliability flaw),
  * reliability <= 24 (the one signal that pointed the same way in every test), and no QB changes
  * (the models can't see them). No edge cutoff: for the Market model, a bigger gap from the line
- * is mostly news the model hasn't seen, and cutoffs from 1.5 to 3 didn't help. Backtest 2002-2026:
- * 51.9% over 883 bets (50.7% before 2015, 53.2% since). Totals are off: the same filters went
+ * is mostly news the model hasn't seen, and cutoffs from 1.5 to 3 didn't help. Backtest 2002-2026
+ * with the QB-adjusted Market model: 50.7% over 883 bets (48.2% before 2015, 53.7% since); the
+ * play-by-play model under the same rule: 52.0% (51.1%, 53.0%). Totals are off: the same filters went
  * 45.8% since 2015 (52.4% before).
  */
 export const DEFAULT_STRATEGIES: Record<BetKind, Strategy> = {
@@ -68,13 +69,16 @@ export const DEFAULT_STRATEGIES: Record<BetKind, Strategy> = {
   },
 };
 
-// Bumped when the defaults change, so earlier saved rules don't mask the new ones.
+// Bumped when the shape or defaults change, so earlier saved values don't mask the new ones.
 const STRATEGIES_KEY = "strategies.v2";
+const SETTINGS_KEY = "settings.v2";
 
 function loadStrategies(): Record<BetKind, Strategy> {
   const saved = load<Partial<Record<BetKind, Strategy>>>(STRATEGIES_KEY, {});
   const spread = { ...DEFAULT_STRATEGIES.spread, ...saved.spread };
   const total = { ...DEFAULT_STRATEGIES.total, ...saved.total };
+  // The Classic model was retired; fall back to Market for any rule that used it.
+  for (const s of [spread, total]) if (s.model !== "market" && s.model !== "pbp") s.model = "market";
   return { spread: { ...spread, market: "spread" }, total: { ...total, market: "total", pick: "model" } };
 }
 
@@ -101,8 +105,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [running, setRunning] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [settings, setSettingsState] = useState<Settings>(() => {
-    const s = load("settings", DEFAULT_SETTINGS);
-    return { ...s, classic: { ...DEFAULT_SETTINGS.classic, ...s.classic }, market: { ...DEFAULT_SETTINGS.market, ...s.market } };
+    const s = load<Partial<Settings>>(SETTINGS_KEY, {});
+    return {
+      resetOnCoachChange: s.resetOnCoachChange ?? DEFAULT_SETTINGS.resetOnCoachChange,
+      market: { ...DEFAULT_SETTINGS.market, ...s.market },
+      pbp: { ...DEFAULT_SETTINGS.pbp, ...s.pbp },
+    };
   });
   const [strategies, setStrategies] = useState<Record<BetKind, Strategy>>(loadStrategies);
   const worker = useRef<Worker | null>(null);
@@ -161,7 +169,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     settings,
     setSettings: (s) => {
       setSettingsState(s);
-      save("settings", s);
+      save(SETTINGS_KEY, s);
     },
     strategies,
     setStrategy: (kind, s) => {

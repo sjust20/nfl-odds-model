@@ -4,7 +4,8 @@ import { DivergingColumns, StatTile } from "../components/charts";
 import { teamName } from "../data/teams";
 import { isFinal, type Game } from "../data/types";
 import { lineLabel, num, pct, shortDate } from "../format";
-import type { Prediction } from "../model/engine";
+import type { LoggedPick } from "../data/pickLog";
+import type { Prediction, SidePrediction } from "../model/engine";
 import {
   accuracy,
   betFor,
@@ -12,6 +13,7 @@ import {
   evaluate,
   record,
   strategyGrid,
+  type Bet,
   type BetRecord,
   type GridCell,
   type Strategy,
@@ -28,7 +30,7 @@ const MIN_N_OPTIONS = [50, 100, 200, 400];
 export function strategySummary(s: Strategy): string {
   const parts: string[] = [];
   if (s.pick === "model") {
-    parts.push(`${s.model === "market" ? "Market" : "Classic"} ${s.market === "spread" ? "sides" : "totals"}`);
+    parts.push(`${s.model === "market" ? "Market" : "Play-by-play"} ${s.market === "spread" ? "sides" : "totals"}`);
     parts.push(s.minEdge > 0 ? `edge > ${s.minEdge}` : "any edge");
   } else {
     parts.push(`${s.pick === "highVariance" ? "high" : "low"}-variance side, rank gap ≥ ${Math.max(1, s.minEdge)}`);
@@ -108,34 +110,58 @@ function Grid({ cells, gapMode, title, minN }: { cells: GridCell[]; gapMode: boo
   );
 }
 
+/**
+ * A logged pick as a prediction, graded at the number available when it was logged (the
+ * sportsbook median when the odds feed was on). Picks logged before the play-by-play model
+ * existed have no `pbp` entry, so rules using that model skip them.
+ */
+function fromLog(lp: LoggedPick, g: Game): Prediction {
+  return {
+    game: { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total },
+    market: lp.market,
+    pbp: lp.pbp as SidePrediction,
+    qbAdj: lp.qbAdj ?? 0,
+    reliability: lp.reliability,
+    totalReliability: lp.totalReliability,
+    coverRanks: lp.coverRanks,
+    minGames: lp.minGames,
+    qb: lp.qb ?? null,
+  };
+}
+
+/**
+ * Closing line value in points: how far the closing number moved toward the side we took.
+ * Positive means we got a better number than the market closed at.
+ */
+function clv(bet: Bet, closing: Game): number | null {
+  const taken = bet.prediction.game;
+  if (bet.side === "home" || bet.side === "away") {
+    if (closing.line === null || taken.line === null) return null;
+    return bet.side === "home" ? closing.line - taken.line : taken.line - closing.line;
+  }
+  if (closing.total === null || taken.total === null) return null;
+  return bet.side === "over" ? closing.total - taken.total : taken.total - closing.total;
+}
+
 /** Grades logged (pre-kickoff) picks using the line available when they were logged. */
 function useLiveRecord(strategy: Strategy) {
   const { pickLog, data } = useApp();
   return useMemo(() => {
     if (!pickLog || !data) return null;
     const games = new Map(data.games.map((g) => [g.id, g]));
-    const bets: { p: Prediction; result: 1 | 0 | 0.5 | null; label: string }[] = [];
+    const bets: { p: Prediction; result: 1 | 0 | 0.5 | null; label: string; clv: number | null }[] = [];
     for (const lp of pickLog.picks) {
       const g = games.get(lp.id);
       if (!g) continue;
-      const game: Game = { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total };
-      const p: Prediction = {
-        game,
-        market: lp.market,
-        classic: lp.classic,
-        reliability: lp.reliability,
-        totalReliability: lp.totalReliability,
-        coverRanks: lp.coverRanks,
-        minGames: lp.minGames,
-        qb: lp.qb ?? null,
-      };
+      const p = fromLog(lp, g);
       const bet = betFor(p, { ...strategy, fromSeason: 0, toSeason: 9999 });
       if (!bet) continue;
       const label =
         bet.side === "home" || bet.side === "away"
-          ? `${bet.side === "home" ? g.home : g.away} (${lineLabel(g.home, g.away, game.line!)})`
-          : `${bet.side === "over" ? "Over" : "Under"} ${game.total}`;
-      bets.push({ p, result: bet.result, label });
+          ? `${bet.side === "home" ? g.home : g.away} (${lineLabel(g.home, g.away, p.game.line!)})`
+          : `${bet.side === "over" ? "Over" : "Under"} ${p.game.total}`;
+      // nflverse's line becomes the closing line once the game has been played.
+      bets.push({ p, result: bet.result, label, clv: isFinal(g) ? clv(bet, g) : null });
     }
     const graded = bets.filter((b) => b.result !== null);
     const rec = record(
@@ -143,7 +169,16 @@ function useLiveRecord(strategy: Strategy) {
       graded.filter((b) => b.result === 0).length,
       graded.filter((b) => b.result === 0.5).length,
     );
-    return { bets, rec, since: pickLog.picks[0]?.date ?? null };
+    const clvs = bets.flatMap((b) => (b.clv === null ? [] : [b.clv]));
+    const clvSummary = clvs.length
+      ? {
+          n: clvs.length,
+          avg: clvs.reduce((s, v) => s + v, 0) / clvs.length,
+          beat: clvs.filter((v) => v > 0).length / clvs.length,
+          same: clvs.filter((v) => v === 0).length / clvs.length,
+        }
+      : null;
+    return { bets, rec, clv: clvSummary, since: pickLog.picks[0]?.date ?? null };
   }, [pickLog, data, strategy]);
 }
 
@@ -165,13 +200,7 @@ function TrackedIdea({ preds }: { preds: Prediction[] }) {
     const live = (pickLog?.picks ?? []).flatMap((lp) => {
       const g = games.get(lp.id);
       if (!g) return [];
-      const p: Prediction = {
-        game: { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total },
-        market: lp.market, classic: lp.classic, reliability: lp.reliability,
-        totalReliability: lp.totalReliability, coverRanks: lp.coverRanks, minGames: lp.minGames,
-        qb: lp.qb ?? null,
-      };
-      const bet = bigEdgeNoQb(p);
+      const bet = bigEdgeNoQb(fromLog(lp, g));
       return bet ? [{ lp, bet }] : [];
     });
     return {
@@ -299,7 +328,7 @@ export function LabPage() {
         <label>
           Model{" "}
           <select value={s.model} disabled={gapMode} onChange={(e) => set({ model: e.target.value as Strategy["model"] })}>
-            <option value="classic">Classic</option>
+            <option value="pbp">Play-by-play</option>
             <option value="market">Market</option>
           </select>
         </label>
@@ -434,6 +463,24 @@ export function LabPage() {
                 </strong>
                 {live.rec.wins + live.rec.losses > 0 && <> · {pct(live.rec.pct)}</>}
               </p>
+              <p className="small">
+                <strong>Closing line value: </strong>
+                {live.clv ? (
+                  <>
+                    {live.clv.avg >= 0 ? "+" : "−"}
+                    {Math.abs(live.clv.avg).toFixed(2)} pts per bet; beat the closing line on {pct(live.clv.beat, 0)} of{" "}
+                    {live.clv.n} bets (same number {pct(live.clv.same, 0)})
+                  </>
+                ) : (
+                  <span className="muted">none yet (needs games that have closed)</span>
+                )}
+              </p>
+              <p className="muted small">
+                Closing line value compares the number you'd have bet with where the market closed. It's a
+                faster check than wins and losses: after a few hundred bets, a real edge shows up as consistently
+                positive CLV. The closing number here is nflverse's, which can differ from the books' median by a
+                half point.
+              </p>
               <table className="data compact">
                 <tbody>
                   {live.bets.slice(-12).reverse().map((b) => (
@@ -465,7 +512,7 @@ export function LabPage() {
             <thead>
               <tr>
                 <th />
-                <th className="num">{s.model === "market" ? "Market" : "Classic"}</th>
+                <th className="num">{s.model === "market" ? "Market" : "Play-by-play"}</th>
                 <th className="num">Closing line</th>
               </tr>
             </thead>
@@ -498,12 +545,20 @@ export function LabPage() {
           </li>
           <li>
             The default sides rule (Market model, both teams ≥ 8 games, reliability ≤ 24, no QB changes, any edge)
-            was chosen for reasons rather than tuned, and is fixed for the 2026 season: 51.9% over 883 bets in
-            2002–2026 (50.7% before 2015, 53.2% since). That's around break-even, so treat it as paper trading
-            until the live record says otherwise.
+            was chosen for reasons rather than tuned, and is fixed for the 2026 season: 50.7% over 883 bets in
+            2002–2026 (48.2% before 2015, 53.7% since). The play-by-play model under the same rule: 52.0% (51.1%,
+            then 53.0%). Both are around break-even, so treat them as paper trading until the live record and
+            closing line value say otherwise.
           </li>
           <li>
-            The Market model's biggest edges are mostly QB changes it can't see (69% of edges over 6 points), so
+            Play-by-play efficiency added almost nothing once closing lines were in: on 2016 onward, margin error
+            was 12.90 for Market and 12.91 for play-by-play, vs 12.71 for the closing line. The real gain from
+            play-by-play data was the QB adjustment, which cut error on QB-change games from 13.85 to 13.44.
+            A model built only from play-by-play, with no lines, did worse (13.22) than one built only from final
+            margins (13.00).
+          </li>
+          <li>
+            Before the QB adjustment, the Market model's biggest edges were mostly QB changes it couldn't see (69% of edges over 6 points), so
             skipping those games removes uninformed picks. It doesn't create an edge by itself. Edge cutoffs
             between 1.5 and 3 points didn't help this model either.
           </li>

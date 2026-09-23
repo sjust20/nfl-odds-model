@@ -20,7 +20,10 @@ export interface LoggedPick {
   bookLine?: number | null;
   bookTotal?: number | null;
   market: SidePrediction;
-  classic: SidePrediction | null;
+  /** Play-by-play model (entries logged before it existed have `classic` instead). */
+  pbp?: SidePrediction;
+  classic?: SidePrediction | null;
+  qbAdj?: number;
   reliability: number | null;
   totalReliability: number | null;
   coverRanks: [number, number] | null;

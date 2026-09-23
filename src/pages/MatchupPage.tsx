@@ -1,27 +1,19 @@
 import { useState } from "react";
 import { TEAMS, teamName } from "../data/teams";
 import { lineLabel, num, signed } from "../format";
-import { classicLine, classicTotal } from "../model/classic";
 import { useApp } from "../state";
 
 const ABBRS = Object.keys(TEAMS).sort((a, b) => teamName(a).localeCompare(teamName(b)));
 
 export function MatchupPage() {
-  const { run, settings } = useApp();
+  const { run } = useApp();
   const [away, setAway] = useState("BUF");
   const [home, setHome] = useState("BAL");
   const [neutral, setNeutral] = useState(false);
   const r = run!;
   const H = r.current.find((t) => t.team === home)!;
   const A = r.current.find((t) => t.team === away)!;
-
-  const marketLine = H.market - A.market + (neutral ? 0 : r.hfa);
-  const marketTotal = H.marketTotal + A.marketTotal;
-  const cLine =
-    H.classicBlended !== null && A.classicBlended !== null
-      ? classicLine(H.classicBlended, A.classicBlended, neutral, settings.classic)
-      : null;
-  const cTotal = H.classic && A.classic ? classicTotal(H.classic.projTotal, A.classic.projTotal) : null;
+  const line = (k: "market" | "pbp") => H[k] - A[k] + (neutral ? 0 : r.hfa[k]);
   const reliability = H.coverRank !== null && A.coverRank !== null ? H.coverRank + A.coverRank : null;
 
   const select = (value: string, set: (v: string) => void, label: string) => (
@@ -41,7 +33,10 @@ export function MatchupPage() {
     <>
       <div className="page-head">
         <h1>Matchup predictor</h1>
-        <p className="muted">Any two teams, using current ratings.</p>
+        <p className="muted">
+          Any two teams, using current ratings. These assume each team's recent QB mix. For a game with a
+          different starter, see the This week page, which applies the QB adjustment.
+        </p>
       </div>
       <div className="controls">
         {select(away, setAway, "Away")}
@@ -57,13 +52,13 @@ export function MatchupPage() {
           <div className="tiles">
             <div className="tile">
               <div className="tile-label">Market model</div>
-              <div className="tile-value">{lineLabel(home, away, marketLine)}</div>
-              <div className="tile-note">Total {num(marketTotal)}</div>
+              <div className="tile-value">{lineLabel(home, away, line("market"))}</div>
+              <div className="tile-note">Total {num(H.marketTotal + A.marketTotal)}</div>
             </div>
             <div className="tile">
-              <div className="tile-label">Classic</div>
-              <div className="tile-value">{cLine === null ? "–" : lineLabel(home, away, cLine)}</div>
-              <div className="tile-note">Total {cTotal === null ? "–" : num(cTotal)}</div>
+              <div className="tile-label">Play-by-play model</div>
+              <div className="tile-value">{lineLabel(home, away, line("pbp"))}</div>
+              <div className="tile-note">Total {num(H.pbpTotal + A.pbpTotal)}</div>
             </div>
             <div className="tile">
               <div className="tile-label">Reliability (rank sum)</div>
@@ -86,10 +81,10 @@ export function MatchupPage() {
                     ["Head coach", (t: typeof H) => t.coach],
                     ["Games under coach", (t: typeof H) => String(t.games)],
                     ["Market rating", (t: typeof H) => signed(t.market)],
-                    ["Classic rating", (t: typeof H) => (t.classicBlended === null ? "–" : signed(-t.classicBlended))],
-                    ["Avg cover", (t: typeof H) => (t.classic ? signed(t.classic.cover) : "–")],
-                    ["Cover SD (rank)", (t: typeof H) => (t.classic ? `${num(t.classic.sdCover)} (${t.coverRank})` : "–")],
-                    ["Avg O/U", (t: typeof H) => (t.classic ? signed(t.classic.ou) : "–")],
+                    ["Play-by-play rating", (t: typeof H) => signed(t.pbp)],
+                    ["Avg cover", (t: typeof H) => (t.ats ? signed(t.ats.cover) : "–")],
+                    ["Cover SD (rank)", (t: typeof H) => (t.ats ? `${num(t.ats.sdCover)} (${t.coverRank})` : "–")],
+                    ["Avg O/U", (t: typeof H) => (t.ats ? signed(t.ats.ou) : "–")],
                   ] as const
                 ).map(([label, f]) => (
                   <tr key={label}>
@@ -102,9 +97,8 @@ export function MatchupPage() {
             </table>
           </div>
           <p className="muted small">
-            Market: home rating − away rating + {neutral ? "0 (neutral)" : `${num(r.hfa)} home field`}. Classic: the
-            spreadsheet's Sheet3 formula (half the rating gap, or {settings.classic.mixedSignFactor}× when the teams
-            sit on opposite sides of average, with {settings.classic.hfa} points of home field split between them).
+            Line = home rating − away rating + home-field advantage ({num(r.hfa.market)} Market,{" "}
+            {num(r.hfa.pbp)} play-by-play; 0 at a neutral site).
           </p>
         </>
       )}

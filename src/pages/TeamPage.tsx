@@ -20,6 +20,7 @@ export function TeamPage() {
   const team = TEAMS[abbr] ? abbr : "KC";
   const t = r.current.find((x) => x.team === team)!;
   const rank = [...r.current].sort((a, b) => b.market - a.market).findIndex((x) => x.team === team) + 1;
+  const pbpRank = [...r.current].sort((a, b) => b.pbp - a.pbp).findIndex((x) => x.team === team) + 1;
 
   // This coach's completed games, from the team's perspective.
   const tenureGames = data!.games.filter((g): g is Game & { homeScore: number; awayScore: number; line: number } => {
@@ -89,16 +90,12 @@ export function TeamPage() {
       </div>
       <div className="tiles">
         <StatTile label="Market rating" value={signed(t.market)} note={`#${rank} of 32`} />
-        <StatTile
-          label="Classic rating"
-          value={t.classicBlended === null ? "–" : signed(-t.classicBlended)}
-          note={t.classic ? `spreadsheet value ${signed(-t.classic.rating)}` : "no games yet"}
-        />
+        <StatTile label="Play-by-play rating" value={signed(t.pbp)} note={`#${pbpRank} of 32`} />
         <StatTile label="Head coach" value={t.coach} note={`since ${shortDate(t.since)} · ${t.games} games`} />
         <StatTile
           label="Cover margin"
-          value={t.classic ? signed(t.classic.cover) : "–"}
-          note={t.classic ? `SD ${num(t.classic.sdCover)} · consistency rank ${t.coverRank}` : undefined}
+          value={t.ats ? signed(t.ats.cover) : "–"}
+          note={t.ats ? `SD ${num(t.ats.sdCover)} · consistency rank ${t.coverRank}` : undefined}
         />
       </div>
 

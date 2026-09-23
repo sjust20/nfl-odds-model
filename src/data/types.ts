@@ -1,4 +1,5 @@
 import type { CoachCorrection } from "./coaches";
+import type { TeamPbp } from "./pbp";
 
 /** A starting quarterback (nflverse lists projected starters for the current week). */
 export interface Qb {
@@ -27,6 +28,8 @@ export interface Game {
   /** Starting QB; null when not yet listed. Absent in files written before QB tracking. */
   awayQb?: Qb | null;
   homeQb?: Qb | null;
+  /** Play-by-play efficiency for each offense, once the game has been played. */
+  pbp?: { home: TeamPbp; away: TeamPbp };
 }
 
 export interface GamesFile {
