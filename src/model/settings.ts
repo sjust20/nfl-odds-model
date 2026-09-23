@@ -65,8 +65,8 @@ export const DEFAULT_SETTINGS: Settings = {
     halfLifeWeeks: 10,
     seasonCarryover: 0.5,
     ridgePlays: 100,
-    intercept: -0.2,
-    marketWeight: 1.07,
-    weights: { passOff: 0.06, passDef: -0.18, rushOff: 0.23, rushDef: 0.12 },
+    intercept: -0.16,
+    marketWeight: 1.05,
+    weights: { passOff: 0.08, passDef: -0.16, rushOff: 0.23, rushDef: 0.14 },
   },
 };

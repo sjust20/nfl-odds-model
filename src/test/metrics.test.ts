@@ -25,7 +25,10 @@ const preds: Prediction[] = Array.from({ length: 800 }, (_, i) => {
     coverRanks: [hr, ar],
     minGames: Math.floor(rand() * 30),
     // Every fifth game has a QB change on one side.
-    qb: { home: { name: "H", prev: "H0", changed: i % 5 === 0 }, away: { name: "A", prev: "A", changed: false } },
+    qb: {
+      home: { id: "h", name: "H", source: "first snap", prev: "H0", changed: i % 5 === 0 },
+      away: { id: "a", name: "A", source: "first snap", prev: "A", changed: false },
+    },
   };
 });
 

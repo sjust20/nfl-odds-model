@@ -13,7 +13,8 @@ import { DEFAULT_SETTINGS } from "../src/model/settings";
 const GAMES = new URL("../public/data/games.json", import.meta.url);
 const LOG = new URL("../public/data/pick-log.json", import.meta.url);
 
-const { games }: GamesFile = JSON.parse(await readFile(GAMES, "utf8"));
+const file: GamesFile = JSON.parse(await readFile(GAMES, "utf8"));
+const { games } = file;
 let log: PickLogFile = { settingsNote: JSON.stringify(DEFAULT_SETTINGS), picks: [] };
 try {
   log = JSON.parse(await readFile(LOG, "utf8"));
@@ -65,6 +66,7 @@ for (const p of runModels(games, DEFAULT_SETTINGS).predictions) {
     coverRanks: p.coverRanks,
     minGames: p.minGames,
     qb: p.qb,
+    qbCheck: { home: file.qbCheck?.teams[g.home], away: file.qbCheck?.teams[g.away] },
   };
   // Freeze the first snapshot; entries logged before it existed use their current values.
   const prev = byId.get(g.id);

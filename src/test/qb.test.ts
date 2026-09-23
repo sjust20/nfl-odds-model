@@ -18,8 +18,8 @@ describe("QB status", () => {
       g("2", "DET", "CHI", null, williams),
       g("3", "CHI", "PHI", keenum, hurts),
     ]);
-    expect(s.get("3")!.home).toEqual({ name: "Case Keenum", prev: "Caleb Williams", changed: true });
-    expect(s.get("3")!.away).toEqual({ name: "Jalen Hurts", prev: null, changed: false });
+    expect(s.get("3")!.home).toMatchObject({ name: "Case Keenum", prev: "Caleb Williams", changed: true, source: "listed" });
+    expect(s.get("3")!.away).toMatchObject({ name: "Jalen Hurts", prev: null, changed: false });
     expect(s.get("2")!.away!.changed).toBe(false);
   });
 
@@ -27,6 +27,28 @@ describe("QB status", () => {
     const s = qbStatus([g("1", "CHI", "MIN", williams, null), g("2", "CHI", "MIN", null, null), g("3", "CHI", "MIN", williams, null)]);
     expect(s.has("2")).toBe(false);
     expect(s.get("3")!.home!.changed).toBe(false);
+  });
+
+  it("uses the first-snap starter for played games, correcting a wrong listing", () => {
+    const played = (id: string, listed: Qb, starter: [string, string], week: number): Game => ({
+      ...g(id, "ATL", "CAR", listed, null),
+      week, homeScore: 20, awayScore: 17,
+      pbp: {
+        home: { pl: 60, ep: 0, sr: 0, db: 35, dbEp: 0, plN: 60, epN: 0, qbs: [[starter[0], starter[1], 35, 0]], st: starter },
+        away: { pl: 60, ep: 0, sr: 0, db: 35, dbEp: 0, plN: 60, epN: 0, qbs: [] },
+      },
+    });
+    const tua = { id: "t", name: "Tua Tagovailoa" };
+    const rush = { id: "r", name: "Cooper Rush" };
+    const penix = { id: "p", name: "Michael Penix Jr." };
+    const s = qbStatus([
+      played("1", tua, ["t", "T.Tagovailoa"], 1),
+      played("2", tua, ["r", "C.Rush"], 2), // listed Tua, but Rush took the first snap
+      g("3", "ATL", "CAR", penix, null),
+      g("4", "ATL", "CAR", rush, null), // unrelated listing so Rush's full name is known
+    ]);
+    expect(s.get("2")!.home).toMatchObject({ name: "Cooper Rush", source: "first snap", prev: "Tua Tagovailoa", changed: true });
+    expect(s.get("3")!.home).toMatchObject({ name: "Michael Penix Jr.", source: "listed", prev: "Cooper Rush", changed: true });
   });
 
   it("counts a game as clean only when both starters are known and unchanged", () => {

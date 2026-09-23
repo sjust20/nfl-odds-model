@@ -159,7 +159,9 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
 
     for (const g of week) {
       const [h, a] = tenures.byGame.get(g.id)!;
-      const qbAdj = qbTracker.adjustment(g.home, g.homeQb?.id) - qbTracker.adjustment(g.away, g.awayQb?.id);
+      // Starter: first-snap QB for played games, nflverse's projection for upcoming ones.
+      const starters = qbs.get(g.id);
+      const qbAdj = qbTracker.adjustment(g.home, starters?.home?.id) - qbTracker.adjustment(g.away, starters?.away?.id);
       const market: SidePrediction = {
         line: marketLine(fits.market, h, a, g.neutral) + settings.market.qbScale * qbAdj,
         total: marketTotal(fits.market, h, a),

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { qbStatus, type QbStatus } from "../data/qb";
 import { teamName } from "../data/teams";
-import { isFinal } from "../data/types";
+import { isFinal, type QbCheck } from "../data/types";
 import { currentWeek } from "../data/week";
 import { lineLabel, num, shortDate, signed } from "../format";
 import type { Prediction } from "../model/engine";
@@ -20,13 +20,20 @@ function atBookLine(p: Prediction, bookLine: number | null, bookTotal: number | 
 }
 
 /** "Keenum (was Williams)" for a change, otherwise just the starter's name. */
-function QbLine({ team, q }: { team: string; q: QbStatus | null | undefined }) {
+function QbLine({ team, q, check }: { team: string; q: QbStatus | null | undefined; check?: QbCheck }) {
   if (!q) return <div className="muted small">{team}: not listed</div>;
   return (
-    <div className={`small ${q.changed ? "qb-changed" : ""}`}>
-      {team}: {q.name}
-      {q.changed && q.prev && <span> (was {q.prev})</span>}
-    </div>
+    <>
+      <div className={`small ${q.changed ? "qb-changed" : ""}`}>
+        {team}: {q.name}
+        {q.changed && q.prev && <span> (was {q.prev})</span>}
+      </div>
+      {check && !check.agree && (
+        <div className="small qb-conflict" title="nflverse's projected starter and ESPN's depth chart disagree; the starter is uncertain">
+          ESPN depth chart: {check.espn ?? "none"}
+        </div>
+      )}
+    </>
   );
 }
 
@@ -147,8 +154,8 @@ export function WeekPage() {
                       <div className="muted small">{shortDate(g.date)}</div>
                     </td>
                     <td>
-                      <QbLine team={g.away} q={qbs.get(g.id)?.away} />
-                      <QbLine team={g.home} q={qbs.get(g.id)?.home} />
+                      <QbLine team={g.away} q={qbs.get(g.id)?.away} check={data!.qbCheck?.teams[g.away]} />
+                      <QbLine team={g.home} q={qbs.get(g.id)?.home} check={data!.qbCheck?.teams[g.home]} />
                       {Math.abs(p.qbAdj * settings.market.qbScale) >= 0.5 && (
                         <div className="muted small" title="Points the QB adjustment moves the model lines toward the home team">
                           QB adjustment: {g.home} {signed(p.qbAdj * settings.market.qbScale)}

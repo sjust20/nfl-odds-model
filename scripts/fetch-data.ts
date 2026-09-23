@@ -1,12 +1,12 @@
 // Downloads nflverse games.csv and writes the slim JSON the site loads.
 // Run: npm run data
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { applyOverrides, reconcileCurrentCoaches, type CoachOverride } from "../src/data/coaches";
+import { applyOverrides, reconcileCurrentCoaches, sameCoach, type CoachOverride } from "../src/data/coaches";
 import { parseCsv } from "../src/data/csv";
 import type { PbpSeasonFile } from "../src/data/pbp";
 import { RELOCATED } from "../src/data/teams";
 import { currentWeek } from "../src/data/week";
-import type { Game, GamesFile, GameType, Qb } from "../src/data/types";
+import type { Game, GamesFile, GameType, Qb, QbCheck } from "../src/data/types";
 
 const SOURCE = "https://github.com/nflverse/nfldata/raw/master/data/games.csv";
 const OUT = new URL("../public/data/games.json", import.meta.url);
@@ -47,6 +47,22 @@ async function currentCoachesFromEspn(season: number): Promise<{ coaches: Record
     }),
   );
   return { coaches, skipped };
+}
+
+/** Each team's QB1 on ESPN's depth chart (offense). */
+async function espnQb1(): Promise<Record<string, string>> {
+  type Teams = { sports: { leagues: { teams: { team: { id: string; abbreviation: string } }[] }[] }[] };
+  type Depth = { depthchart?: { name: string; positions: Record<string, { athletes: { displayName: string }[] }> }[] };
+  const teams = (await getJson<Teams>(ESPN_TEAMS)).sports[0].leagues[0].teams.map((t) => t.team);
+  const out: Record<string, string> = {};
+  await Promise.all(
+    teams.map(async (t) => {
+      const d = await getJson<Depth>(`${ESPN_TEAMS}/${t.id}/depthcharts`);
+      const qb = d.depthchart?.map((c) => c.positions.qb).find(Boolean)?.athletes?.[0]?.displayName;
+      if (qb) out[ESPN_ABBR[t.abbreviation] ?? t.abbreviation] = qb;
+    }),
+  );
+  return out;
 }
 
 const num = (s: string): number | null => (s === "" || s === "NA" ? null : Number(s));
@@ -135,12 +151,36 @@ async function main() {
   }
   console.log(coachCheck);
 
+  // This week's projected starters vs ESPN's depth-chart QB1 (a flag only; both sources can lag).
+  let qbCheck: GamesFile["qbCheck"];
+  const week = currentWeek(games);
+  try {
+    if (week) {
+      const espn = await espnQb1();
+      const teams: Record<string, QbCheck> = {};
+      for (const g of week.games) {
+        if (g.homeScore !== null) continue;
+        for (const [team, q] of [[g.home, g.homeQb], [g.away, g.awayQb]] as const) {
+          const listed = q?.name ?? null;
+          const e = espn[team] ?? null;
+          teams[team] = { listed, espn: e, agree: !!listed && !!e && sameCoach(listed, e) };
+        }
+      }
+      qbCheck = { checkedAt: new Date().toISOString(), teams };
+      const off = Object.entries(teams).filter(([, c]) => !c.agree);
+      console.log(`QB check: ${Object.keys(teams).length} teams, ${off.length} disagree${off.length ? `: ${off.map(([t, c]) => `${t} listed ${c.listed ?? "none"} vs ESPN ${c.espn ?? "none"}`).join("; ")}` : ""}`);
+    }
+  } catch (e) {
+    console.log(`::warning::ESPN QB check skipped: ${e instanceof Error ? e.message : e}`);
+  }
+
   const file: GamesFile = {
     updatedAt: new Date().toISOString(),
     source: SOURCE,
     games,
     coachCorrections: corrections,
     coachCheck,
+    qbCheck,
   };
   await mkdir(new URL(".", OUT), { recursive: true });
   await writeFile(OUT, JSON.stringify(file));

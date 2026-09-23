@@ -55,6 +55,8 @@ async function buildSeason(season: number): Promise<PbpSeasonFile | null> {
       t.dbEp += epa;
       const id = r[c.id] && r[c.id] !== "NA" ? r[c.id] : r[c.passer_player_id];
       const name = r[c.name] && r[c.name] !== "NA" ? r[c.name] : r[c.passer_player_name];
+      // Rows arrive in play order, so the first dropback QB seen is the starter.
+      if (id && id !== "NA" && !t.st) t.st = [id, name];
       if (id && id !== "NA") {
         const key = `${gameId}|${team}`;
         const m = qbTotals.get(key) ?? new Map();

@@ -42,6 +42,17 @@ export interface GamesFile {
   coachCorrections?: CoachCorrection[];
   /** Outcome of the current-coach check, e.g. "ESPN: 32 teams checked" or why it was skipped. */
   coachCheck?: string;
+  /**
+   * This week's projected starters (nflverse) against ESPN's depth-chart QB1, per team. Both can be
+   * stale, so a disagreement is a flag to check, not a correction.
+   */
+  qbCheck?: { checkedAt: string; teams: Record<string, QbCheck> };
+}
+
+export interface QbCheck {
+  listed: string | null;
+  espn: string | null;
+  agree: boolean;
 }
 
 export const isFinal = (g: Game): g is Game & { awayScore: number; homeScore: number } =>

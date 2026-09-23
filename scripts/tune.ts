@@ -43,6 +43,12 @@ function ols(X: number[][], y: number[]): number[] {
 const asWeights = (b: number[]): ComponentDiffs =>
   Object.fromEntries(COMPONENT_KEYS.map((k, i) => [k, +b[i].toFixed(2)])) as unknown as ComponentDiffs;
 
+// 0. Market's QB adjustment scale (additive, so it can be rescored without rerunning).
+const qbRmse = (ps: Prediction[], scale: number) =>
+  Math.sqrt(ps.reduce((s, p) => s + (p.market.line + (scale - DEFAULT_SETTINGS.market.qbScale) * p.qbAdj - margin(p)) ** 2, 0) / ps.length);
+console.log(`\nMarket QB scale, margin RMSE on 2003-2015 (in use: ${DEFAULT_SETTINGS.market.qbScale}):`);
+console.log("  " + [0, 0.5, 0.75, 1, 1.25].map((k) => `${k}: ${qbRmse(train, k).toFixed(3)}`).join(" | "));
+
 // 1. Play-by-play stacking: margin ~ intercept + a × Market line + Σ w × component edges.
 const pb = ols(train.map((p) => [1, p.market.line, ...comps(p)]), train.map(margin));
 console.log("\nPlay-by-play weights learned on 2003-2015 (put these in DEFAULT_SETTINGS.pbp):");

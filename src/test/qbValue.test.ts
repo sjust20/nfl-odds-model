@@ -19,6 +19,16 @@ describe("QB values", () => {
     expect(backup).toBeGreaterThan(-12);
   });
 
+  it("baselines on who started, not who finished, after an in-game injury", () => {
+    const t = new QbTracker();
+    const injured = (): TeamPbp => ({ ...game([["backup", "Backup", 30, -3], ["starter", "Starter", 5, 1]]), st: ["starter", "Starter"] });
+    for (let i = 0; i < 10; i++) t.addGame("CIN", game([["starter", "Starter", 35, 7]]));
+    t.addGame("CIN", injured()); // starter hurt early; backup took most dropbacks
+    // The line priced the starter, so the backup starting next week is still a full downgrade.
+    expect(t.baseline("CIN")).toBeCloseTo(t.value("starter"), 6);
+    expect(t.adjustment("CIN", "backup")).toBeLessThan(-2);
+  });
+
   it("an unknown QB is valued at replacement level, below league average", () => {
     const t = new QbTracker();
     t.addGame("PHI", game([["avg", "Average", 35, 0]]));

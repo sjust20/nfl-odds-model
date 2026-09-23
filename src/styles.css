@@ -617,3 +617,10 @@ table.heat td.blank {
   text-decoration: none;
   margin-top: 0.2rem;
 }
+.qb-conflict {
+  color: var(--bad);
+  font-weight: 600;
+}
+.qb-conflict::before {
+  content: "⚠ ";
+}

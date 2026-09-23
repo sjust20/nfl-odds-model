@@ -1,6 +1,7 @@
 import type { ComponentDiffs } from "../model/components";
 import type { SidePrediction } from "../model/engine";
 import type { GameQbs } from "./qb";
+import type { QbCheck } from "./types";
 
 /**
  * A prediction recorded by the nightly job before kickoff, with the line available at that
@@ -35,6 +36,8 @@ export interface LoggedPick {
   minGames: number;
   /** Starting QBs as listed when logged, with whether each changed from the team's last game. */
   qb?: GameQbs | null;
+  /** nflverse's projected starter vs ESPN's depth-chart QB1 when logged (disagreement = uncertain starter). */
+  qbCheck?: { home?: QbCheck; away?: QbCheck };
   /**
    * Everything above as of the first time this game was logged, never updated afterwards.
    * Entries from before Sep 24, 2026 have their first snapshot from when this was added.

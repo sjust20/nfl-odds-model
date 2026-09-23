@@ -14,6 +14,11 @@ export interface TeamPbp {
   epN: number;
   /** QBs who dropped back: [gsis id, name, dropbacks, EPA on those dropbacks], most dropbacks first. */
   qbs: [string, string, number, number][];
+  /**
+   * The starter: the QB on the team's first dropback of the game, [gsis id, name]. This is who the
+   * market priced; `qbs` is who actually played (they differ after an in-game injury).
+   */
+  st?: [string, string];
 }
 
 export type GamePbp = Record<string, TeamPbp>; // keyed by team

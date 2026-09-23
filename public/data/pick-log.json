@@ -8,20 +8,20 @@
    "date": "2026-09-24",
    "home": "GB",
    "away": "ATL",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": 5.5,
    "total": 42.5,
-   "bookLine": 5,
-   "bookTotal": 43,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 7.789212083441354,
+    "line": 7.967431330520318,
     "total": 44.34652445719979
    },
    "pbp": {
-    "line": 8.901362086051783,
+    "line": 9.099328318125165,
     "total": 44.34652445719979
    },
-   "qbAdj": -2.1917162967160095,
+   "qbAdj": -1.9540906339440578,
    "components": {
     "passOff": 8.033590583350536,
     "passDef": -2.468524120226431,
@@ -37,14 +37,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0036264",
      "name": "Jordan Love",
+     "source": "listed",
      "prev": "Jordan Love",
      "changed": false
     },
     "away": {
+     "id": "00-0039917",
      "name": "Michael Penix Jr.",
-     "prev": "Tua Tagovailoa",
+     "source": "listed",
+     "prev": "Cooper Rush",
      "changed": true
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jordan Love",
+     "espn": "Jordan Love",
+     "agree": true
+    },
+    "away": {
+     "listed": "Michael Penix Jr.",
+     "espn": "Michael Penix Jr.",
+     "agree": true
     }
    },
    "first": {
@@ -102,20 +118,20 @@
    "date": "2026-09-27",
    "home": "SF",
    "away": "ARI",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": 8.5,
    "total": 47.5,
-   "bookLine": 8.5,
-   "bookTotal": 48,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 9.857892028548243,
+    "line": 9.758698819972965,
     "total": 44.9665511235317
    },
    "pbp": {
-    "line": 10.30604504384132,
+    "line": 10.186126998751737,
     "total": 44.9665511235317
    },
-   "qbAdj": 0.15206308842282046,
+   "qbAdj": 0.019805476989118182,
    "components": {
     "passOff": 4.8230453848153525,
     "passDef": 2.5972933685326502,
@@ -131,14 +147,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0037834",
      "name": "Brock Purdy",
+     "source": "listed",
      "prev": "Brock Purdy",
      "changed": false
     },
     "away": {
+     "id": "00-0033119",
      "name": "Jacoby Brissett",
+     "source": "listed",
      "prev": "Jacoby Brissett",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Brock Purdy",
+     "espn": "Brock Purdy",
+     "agree": true
+    },
+    "away": {
+     "listed": "Jacoby Brissett",
+     "espn": "Jacoby Brissett",
+     "agree": true
     }
    },
    "first": {
@@ -196,20 +228,20 @@
    "date": "2026-09-27",
    "home": "DAL",
    "away": "BAL",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -3.5,
    "total": 52.5,
-   "bookLine": -3.5,
-   "bookTotal": 52.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.6961211390814985,
+    "line": -2.9398511496983386,
     "total": 51.29443669251142
    },
    "pbp": {
-    "line": -2.9079661891471806,
+    "line": -3.2002929765310313,
     "total": 51.29443669251142
    },
-   "qbAdj": -0.15255020879900438,
+   "qbAdj": -0.47752355628812465,
    "components": {
     "passOff": 0.7596459978785004,
     "passDef": -5.405632880609328,
@@ -225,14 +257,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0033077",
      "name": "Dak Prescott",
+     "source": "listed",
      "prev": "Dak Prescott",
      "changed": false
     },
     "away": {
+     "id": "00-0034796",
      "name": "Lamar Jackson",
+     "source": "listed",
      "prev": "Lamar Jackson",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Dak Prescott",
+     "espn": "Dak Prescott",
+     "agree": true
+    },
+    "away": {
+     "listed": "Lamar Jackson",
+     "espn": "Lamar Jackson",
+     "agree": true
     }
    },
    "first": {
@@ -290,20 +338,20 @@
    "date": "2026-09-27",
    "home": "CLE",
    "away": "CAR",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -2.5,
    "total": 42.5,
-   "bookLine": -3,
-   "bookTotal": 42,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -1.4104245803235003,
+    "line": -1.3693193378469561,
     "total": 45.13070425121729
    },
    "pbp": {
-    "line": -2.5310161722543545,
+    "line": -2.482206004135274,
     "total": 45.13070425121729
    },
-   "qbAdj": 1.7236979356644653,
+   "qbAdj": 1.7785049256331908,
    "components": {
     "passOff": -6.0390100923493275,
     "passDef": 1.8645267883378702,
@@ -319,14 +367,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0033537",
      "name": "Deshaun Watson",
+     "source": "listed",
      "prev": "Deshaun Watson",
      "changed": false
     },
     "away": {
+     "id": "00-0039150",
      "name": "Bryce Young",
+     "source": "listed",
      "prev": "Bryce Young",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Deshaun Watson",
+     "espn": "Deshaun Watson",
+     "agree": true
+    },
+    "away": {
+     "listed": "Bryce Young",
+     "espn": "Bryce Young",
+     "agree": true
     }
    },
    "first": {
@@ -384,20 +448,20 @@
    "date": "2026-09-27",
    "home": "PIT",
    "away": "CIN",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -3.5,
    "total": 42.5,
-   "bookLine": -3.5,
-   "bookTotal": 42.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.8259445775936984,
+    "line": -2.7702833179399446,
     "total": 44.080027905000954
    },
    "pbp": {
-    "line": -3.9868566642156247,
+    "line": -3.8899668095374786,
     "total": 44.080027905000954
    },
-   "qbAdj": -0.1576722864512412,
+   "qbAdj": -0.0834572735795697,
    "components": {
     "passOff": -3.8516221240517448,
     "passDef": 1.5860951074327942,
@@ -413,14 +477,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0023459",
      "name": "Aaron Rodgers",
+     "source": "listed",
      "prev": "Aaron Rodgers",
      "changed": false
     },
     "away": {
+     "id": "00-0036442",
      "name": "Joe Burrow",
+     "source": "listed",
      "prev": "Joe Burrow",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Aaron Rodgers",
+     "espn": "Aaron Rodgers",
+     "agree": true
+    },
+    "away": {
+     "listed": "Joe Burrow",
+     "espn": "Joe Burrow",
+     "agree": true
     }
    },
    "first": {
@@ -478,20 +558,20 @@
    "date": "2026-09-27",
    "home": "IND",
    "away": "HOU",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -2.5,
    "total": 42.5,
-   "bookLine": -2.5,
-   "bookTotal": 42.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -2.044487100933641,
+    "line": -2.0832229633117865,
     "total": 46.599325311142366
    },
    "pbp": {
-    "line": -0.8952979597930166,
+    "line": -1.0310761562308353,
     "total": 46.599325311142366
    },
-   "qbAdj": -0.10952335906890263,
+   "qbAdj": -0.16117117557309635,
    "components": {
     "passOff": -0.030802965289938034,
     "passDef": -5.824357516917203,
@@ -507,14 +587,30 @@
    "minGames": 53,
    "qb": {
     "home": {
+     "id": "00-0035710",
      "name": "Daniel Jones",
+     "source": "listed",
      "prev": "Daniel Jones",
      "changed": false
     },
     "away": {
+     "id": "00-0039163",
      "name": "C.J. Stroud",
+     "source": "listed",
      "prev": "C.J. Stroud",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Daniel Jones",
+     "espn": "Daniel Jones",
+     "agree": true
+    },
+    "away": {
+     "listed": "C.J. Stroud",
+     "espn": "C.J. Stroud",
+     "agree": true
     }
    },
    "first": {
@@ -572,20 +668,20 @@
    "date": "2026-09-27",
    "home": "MIA",
    "away": "KC",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -11.5,
    "total": 46.5,
-   "bookLine": -11.5,
-   "bookTotal": 46,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -8.81718204461045,
+    "line": -9.172880358549,
     "total": 43.832376581134845
    },
    "pbp": {
-    "line": -9.162691638109944,
+    "line": -9.466872992732107,
     "total": 43.832376581134845
    },
-   "qbAdj": -1.4772050158111802,
+   "qbAdj": -1.9514694343959134,
    "components": {
     "passOff": -1.531277768933549,
     "passDef": -5.741265755068321,
@@ -601,14 +697,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0038128",
      "name": "Malik Willis",
+     "source": "listed",
      "prev": "Malik Willis",
      "changed": false
     },
     "away": {
+     "id": "00-0033873",
      "name": "Patrick Mahomes",
+     "source": "listed",
      "prev": "Patrick Mahomes",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Malik Willis",
+     "espn": "Malik Willis",
+     "agree": true
+    },
+    "away": {
+     "listed": "Patrick Mahomes",
+     "espn": "Patrick Mahomes",
+     "agree": true
     }
    },
    "first": {
@@ -666,20 +778,20 @@
    "date": "2026-09-27",
    "home": "DEN",
    "away": "LA",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -2.5,
    "total": 44.5,
-   "bookLine": -2.5,
-   "bookTotal": 45,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -1.5679149789665343,
+    "line": -1.4637784895908452,
     "total": 42.99796554827246
    },
    "pbp": {
-    "line": -2.546419379482056,
+    "line": -2.4686949326231282,
     "total": 42.99796554827246
    },
-   "qbAdj": 0.6501539637035749,
+   "qbAdj": 0.7890026162044937,
    "components": {
     "passOff": -3.9638628988247744,
     "passDef": 0.14831774672763626,
@@ -695,14 +807,30 @@
    "minGames": 56,
    "qb": {
     "home": {
+     "id": "00-0039732",
      "name": "Bo Nix",
+     "source": "listed",
      "prev": "Bo Nix",
      "changed": false
     },
     "away": {
+     "id": "00-0026498",
      "name": "Matthew Stafford",
+     "source": "listed",
      "prev": "Matthew Stafford",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Bo Nix",
+     "espn": "Bo Nix",
+     "agree": true
+    },
+    "away": {
+     "listed": "Matthew Stafford",
+     "espn": "Matthew Stafford",
+     "agree": true
     }
    },
    "first": {
@@ -760,20 +888,20 @@
    "date": "2026-09-27",
    "home": "BUF",
    "away": "LAC",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": 7,
    "total": 50.5,
-   "bookLine": 7.5,
-   "bookTotal": 50,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 7.132568834631426,
+    "line": 7.302070052291299,
     "total": 51.31991967956507
    },
    "pbp": {
-    "line": 8.696757790097712,
+    "line": 8.909952581829467,
     "total": 51.31991967956507
    },
-   "qbAdj": -0.42768017734353886,
+   "qbAdj": -0.20167855379704247,
    "components": {
     "passOff": 9.44343514378941,
     "passDef": -0.1986415146958889,
@@ -789,14 +917,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0034857",
      "name": "Josh Allen",
+     "source": "listed",
      "prev": "Josh Allen",
      "changed": false
     },
     "away": {
+     "id": "00-0036355",
      "name": "Justin Herbert",
+     "source": "listed",
      "prev": "Justin Herbert",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Josh Allen",
+     "espn": "Josh Allen",
+     "agree": true
+    },
+    "away": {
+     "listed": "Justin Herbert",
+     "espn": "Justin Herbert",
+     "agree": true
     }
    },
    "first": {
@@ -854,20 +998,20 @@
    "date": "2026-09-27",
    "home": "NO",
    "away": "LV",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
-   "line": 3,
+   "loggedAt": "2026-09-23T23:35:06.633Z",
+   "line": 3.5,
    "total": 43.5,
-   "bookLine": 3,
-   "bookTotal": 43.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 0.954480695316256,
+    "line": 0.8321309271709993,
     "total": 41.258802672513596
    },
    "pbp": {
-    "line": 1.0229130781709652,
+    "line": 0.9690904062949304,
     "total": 41.258802672513596
    },
-   "qbAdj": -0.8054761684595783,
+   "qbAdj": -0.9686091926532538,
    "components": {
     "passOff": 2.5539761129439347,
     "passDef": 1.5373428321299578,
@@ -883,14 +1027,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0040743",
      "name": "Tyler Shough",
+     "source": "listed",
      "prev": "Tyler Shough",
      "changed": false
     },
     "away": {
+     "id": "00-0029604",
      "name": "Kirk Cousins",
+     "source": "listed",
      "prev": "Kirk Cousins",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Tyler Shough",
+     "espn": "Tyler Shough",
+     "agree": true
+    },
+    "away": {
+     "listed": "Kirk Cousins",
+     "espn": "Kirk Cousins",
+     "agree": true
     }
    },
    "first": {
@@ -948,20 +1108,20 @@
    "date": "2026-09-27",
    "home": "TB",
    "away": "MIN",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -1.5,
    "total": 42.5,
-   "bookLine": -1.5,
-   "bookTotal": 42.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -5.426951695343115,
+    "line": -4.859158379814397,
     "total": 41.544200180583914
    },
    "pbp": {
-    "line": -4.663055571653932,
+    "line": -4.034981111741634,
     "total": 41.544200180583914
    },
-   "qbAdj": -3.8053954352623025,
+   "qbAdj": -3.048337681224011,
    "components": {
     "passOff": 1.532956849642222,
     "passDef": -6.72967159840949,
@@ -977,14 +1137,30 @@
    "minGames": 72,
    "qb": {
     "home": {
+     "id": "00-0034855",
      "name": "Baker Mayfield",
+     "source": "listed",
      "prev": "Baker Mayfield",
      "changed": false
     },
     "away": {
+     "id": "00-0035228",
      "name": "Kyler Murray",
+     "source": "listed",
      "prev": "Carson Wentz",
      "changed": true
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Baker Mayfield",
+     "espn": "Baker Mayfield",
+     "agree": true
+    },
+    "away": {
+     "listed": "Kyler Murray",
+     "espn": "Kyler Murray",
+     "agree": true
     }
    },
    "first": {
@@ -1042,20 +1218,20 @@
    "date": "2026-09-27",
    "home": "JAX",
    "away": "NE",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": 3,
    "total": 45.5,
-   "bookLine": 3,
-   "bookTotal": 45.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -0.5267821591033987,
+    "line": -0.5070613662122843,
     "total": 42.66728261870147
    },
    "pbp": {
-    "line": -0.11430801843619709,
+    "line": -0.09631494020904319,
     "total": 42.66728261870147
    },
-   "qbAdj": -0.02623387813288778,
+   "qbAdj": 0.00006051238859803437,
    "components": {
     "passOff": 0.6982092668485318,
     "passDef": -2.8038633395668824,
@@ -1071,14 +1247,30 @@
    "minGames": 20,
    "qb": {
     "home": {
+     "id": "00-0036971",
      "name": "Trevor Lawrence",
+     "source": "listed",
      "prev": "Trevor Lawrence",
      "changed": false
     },
     "away": {
+     "id": "00-0039851",
      "name": "Drake Maye",
+     "source": "listed",
      "prev": "Drake Maye",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Trevor Lawrence",
+     "espn": "Trevor Lawrence",
+     "agree": true
+    },
+    "away": {
+     "listed": "Drake Maye",
+     "espn": "Drake Maye",
+     "agree": true
     }
    },
    "first": {
@@ -1136,20 +1328,20 @@
    "date": "2026-09-27",
    "home": "DET",
    "away": "NYJ",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": 6.5,
    "total": 47.5,
-   "bookLine": 6.5,
-   "bookTotal": 47.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 6.007287395046035,
+    "line": 5.870600153804744,
     "total": 47.26268846584876
    },
    "pbp": {
-    "line": 6.264002616352498,
+    "line": 6.176809573250833,
     "total": 47.26268846584876
    },
-   "qbAdj": -1.6693700285443849,
+   "qbAdj": -1.8516196835327732,
    "components": {
     "passOff": 6.364706529765487,
     "passDef": 2.169443121914276,
@@ -1165,14 +1357,30 @@
    "minGames": 19,
    "qb": {
     "home": {
+     "id": "00-0033106",
      "name": "Jared Goff",
+     "source": "listed",
      "prev": "Jared Goff",
      "changed": false
     },
     "away": {
+     "id": "00-0030565",
      "name": "Geno Smith",
+     "source": "listed",
      "prev": "Geno Smith",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jared Goff",
+     "espn": "Jared Goff",
+     "agree": true
+    },
+    "away": {
+     "listed": "Geno Smith",
+     "espn": "Geno Smith",
+     "agree": true
     }
    },
    "first": {
@@ -1230,20 +1438,20 @@
    "date": "2026-09-27",
    "home": "WAS",
    "away": "SEA",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -7,
    "total": 40.5,
-   "bookLine": -7,
-   "bookTotal": 40,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": -8.478246838393249,
+    "line": -8.453993551222343,
     "total": 44.27155569915653
    },
    "pbp": {
-    "line": -8.253401031304366,
+    "line": -8.343772695293998,
     "total": 44.27155569915653
    },
-   "qbAdj": 2.172344992363022,
+   "qbAdj": 2.204682708590897,
    "components": {
     "passOff": -3.6529544514052303,
     "passDef": -8.944919856305415,
@@ -1259,14 +1467,30 @@
    "minGames": 39,
    "qb": {
     "home": {
+     "id": "00-0039910",
      "name": "Jayden Daniels",
+     "source": "listed",
      "prev": "Jayden Daniels",
      "changed": false
     },
     "away": {
+     "id": "00-0035704",
      "name": "Drew Lock",
+     "source": "listed",
      "prev": "Drew Lock",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jayden Daniels",
+     "espn": "Jayden Daniels",
+     "agree": true
+    },
+    "away": {
+     "listed": "Drew Lock",
+     "espn": "Sam Darnold",
+     "agree": false
     }
    },
    "first": {
@@ -1324,20 +1548,20 @@
    "date": "2026-09-27",
    "home": "NYG",
    "away": "TEN",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": 2.5,
    "total": 39.5,
-   "bookLine": 3,
-   "bookTotal": 39.5,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 4.491368036358563,
+    "line": 4.386244078929533,
     "total": 41.58623027551416
    },
    "pbp": {
-    "line": 4.300638974151663,
+    "line": 4.217913788251804,
     "total": 41.58623027551416
    },
-   "qbAdj": -1.1675347759187238,
+   "qbAdj": -1.3077000524907634,
    "components": {
     "passOff": 3.1902087192864785,
     "passDef": 1.7214397503504328,
@@ -1353,14 +1577,30 @@
    "minGames": 2,
    "qb": {
     "home": {
+     "id": "00-0031503",
      "name": "Jameis Winston",
+     "source": "listed",
      "prev": "Jaxson Dart",
      "changed": true
     },
     "away": {
+     "id": "00-0040676",
      "name": "Cam Ward",
+     "source": "listed",
      "prev": "Cam Ward",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jameis Winston",
+     "espn": "Jameis Winston",
+     "agree": true
+    },
+    "away": {
+     "listed": "Cam Ward",
+     "espn": "Cam Ward",
+     "agree": true
     }
    },
    "first": {
@@ -1418,20 +1658,20 @@
    "date": "2026-09-28",
    "home": "CHI",
    "away": "PHI",
-   "loggedAt": "2026-09-23T23:08:54.069Z",
+   "loggedAt": "2026-09-23T23:35:06.633Z",
    "line": -4.5,
    "total": 41.5,
-   "bookLine": -4.5,
-   "bookTotal": 41,
+   "bookLine": null,
+   "bookTotal": null,
    "market": {
-    "line": 0.7456156705821133,
+    "line": 0.4559107666112996,
     "total": 44.637122240307576
    },
    "pbp": {
-    "line": 1.6318006479355311,
+    "line": 1.3437379627897867,
     "total": 44.637122240307576
    },
-   "qbAdj": -3.942342385659929,
+   "qbAdj": -4.328615590954347,
    "components": {
     "passOff": 3.35831999995915,
     "passDef": -3.4014362371017572,
@@ -1447,14 +1687,30 @@
    "minGames": 21,
    "qb": {
     "home": {
+     "id": "00-0028986",
      "name": "Case Keenum",
+     "source": "listed",
      "prev": "Caleb Williams",
      "changed": true
     },
     "away": {
+     "id": "00-0036389",
      "name": "Jalen Hurts",
+     "source": "listed",
      "prev": "Jalen Hurts",
      "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Case Keenum",
+     "espn": "Caleb Williams",
+     "agree": false
+    },
+    "away": {
+     "listed": "Jalen Hurts",
+     "espn": "Jalen Hurts",
+     "agree": true
     }
    },
    "first": {
