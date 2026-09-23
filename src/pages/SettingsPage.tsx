@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
-import type { ModelKey } from "../model/engine";
-import { DEFAULT_SETTINGS, type RatingSettings, type Settings } from "../model/settings";
+import { COMPONENT_KEYS, type ComponentDiffs } from "../model/components";
+import { DEFAULT_SETTINGS, type PbpSettings, type RatingSettings, type Settings } from "../model/settings";
 import { useApp } from "../state";
 
 function Field({ label, help, children }: { label: string; help: ReactNode; children: ReactNode }) {
@@ -31,9 +31,9 @@ function NumberInput({ value, onChange, step = 1, min = 0, max }: { value: numbe
   );
 }
 
-/** The fields shared by both rating models. */
-function RatingFields({ model, s, set }: { model: ModelKey; s: RatingSettings; set: (patch: Partial<RatingSettings>) => void }) {
-  const d = DEFAULT_SETTINGS[model];
+/** Market model fields. */
+function MarketFields({ s, set }: { s: RatingSettings; set: (patch: Partial<RatingSettings>) => void }) {
+  const d = DEFAULT_SETTINGS.market;
   return (
     <>
       <Field label="Recency half-life (weeks)" help={`A game's weight halves every this many weeks. Default: ${d.halfLifeWeeks}.`}>
@@ -47,18 +47,6 @@ function RatingFields({ model, s, set }: { model: ModelKey; s: RatingSettings; s
         help={`Share of each game's target taken from the final margin; the rest comes from the closing line. Default: ${d.resultWeight}.`}
       >
         <NumberInput value={s.resultWeight} step={0.05} max={1} onChange={(v) => set({ resultWeight: Math.min(1, v) })} />
-      </Field>
-      <Field
-        label="Efficiency weight"
-        help={`Share taken from play-by-play efficiency (net expected points added). Default: ${d.efficiencyWeight}. Results weight + efficiency weight should stay at or below 1.`}
-      >
-        <NumberInput value={s.efficiencyWeight} step={0.05} max={1} onChange={(v) => set({ efficiencyWeight: Math.min(1, v) })} />
-      </Field>
-      <Field label="Efficiency plays" help="Every play, or only while the game was competitive (win probability 10–90%). Every play tested better.">
-        <select value={s.efficiency} onChange={(e) => set({ efficiency: e.target.value as RatingSettings["efficiency"] })}>
-          <option value="all">Every play</option>
-          <option value="neutral">Competitive plays only</option>
-        </select>
       </Field>
       <Field
         label="QB adjustment scale"
@@ -79,12 +67,49 @@ function RatingFields({ model, s, set }: { model: ModelKey; s: RatingSettings; s
   );
 }
 
+const WEIGHT_LABELS: Record<keyof ComponentDiffs, string> = {
+  passOff: "Pass offense",
+  passDef: "Pass defense",
+  rushOff: "Rush offense",
+  rushDef: "Rush defense",
+};
+
+/** Play-by-play model fields: how the components are fitted, and how they're stacked on Market. */
+function PbpFields({ s, set }: { s: PbpSettings; set: (patch: Partial<PbpSettings>) => void }) {
+  const d = DEFAULT_SETTINGS.pbp;
+  return (
+    <>
+      <Field label="Component half-life (weeks)" help={`Weight on a game's efficiency halves every this many weeks. Default: ${d.halfLifeWeeks}.`}>
+        <NumberInput value={s.halfLifeWeeks} min={1} onChange={(v) => set({ halfLifeWeeks: Math.max(1, v) })} />
+      </Field>
+      <Field label="Component offseason carryover" help={`Default: ${d.seasonCarryover}.`}>
+        <NumberInput value={s.seasonCarryover} step={0.05} max={1} onChange={(v) => set({ seasonCarryover: Math.min(1, v) })} />
+      </Field>
+      <Field label="Component pull toward average (plays)" help={`Default: ${d.ridgePlays}.`}>
+        <NumberInput value={s.ridgePlays} step={25} onChange={(v) => set({ ridgePlays: Math.max(1, v) })} />
+      </Field>
+      <Field label="Weight on the Market line" help={`Default: ${d.marketWeight}.`}>
+        <NumberInput value={s.marketWeight} step={0.01} onChange={(v) => set({ marketWeight: v })} />
+      </Field>
+      <Field label="Intercept (points)" help={`Default: ${d.intercept}.`}>
+        <NumberInput value={s.intercept} step={0.05} min={-10} onChange={(v) => set({ intercept: v })} />
+      </Field>
+      {COMPONENT_KEYS.map((k) => (
+        <Field key={k} label={`${WEIGHT_LABELS[k]} weight`} help={`Default: ${d.weights[k]}.`}>
+          <NumberInput value={s.weights[k]} step={0.01} min={-5} onChange={(v) => set({ weights: { ...s.weights, [k]: v } })} />
+        </Field>
+      ))}
+    </>
+  );
+}
+
 export function SettingsPage() {
   const { settings, setSettings, running } = useApp();
   const [draft, setDraft] = useState<Settings>(settings);
   useEffect(() => setDraft(settings), [settings]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(settings);
-  const setModel = (k: ModelKey) => (patch: Partial<RatingSettings>) => setDraft({ ...draft, [k]: { ...draft[k], ...patch } });
+  const setMarket = (patch: Partial<RatingSettings>) => setDraft({ ...draft, market: { ...draft.market, ...patch } });
+  const setPbp = (patch: Partial<PbpSettings>) => setDraft({ ...draft, pbp: { ...draft.pbp, ...patch } });
 
   return (
     <>
@@ -124,17 +149,19 @@ export function SettingsPage() {
       <section className="card">
         <h2>Market model</h2>
         <p className="muted small">Closing lines, pulled 30% toward final margins, plus the QB adjustment.</p>
-        <RatingFields model="market" s={draft.market} set={setModel("market")} />
+        <MarketFields s={draft.market} set={setMarket} />
       </section>
 
       <section className="card">
         <h2>Play-by-play model</h2>
         <p className="muted small">
-          Closing lines, pulled toward efficiency (net expected points added) and final margins, plus the QB
-          adjustment. In testing, efficiency added little once the lines were in; the QB adjustment is where
-          play-by-play data helped most.
+          The Market line plus four efficiency components: each team's opponent-adjusted expected points added
+          per play on pass offense, pass defense, rush offense and rush defense. The weights were learned by
+          regression on 2003–2015 and belong with the default component settings; if you change how the
+          components are fitted, the weights no longer match. On 2016 onward: margin RMSE 12.86 vs 12.90 for
+          Market and 12.71 for the closing line. Totals use Market's.
         </p>
-        <RatingFields model="pbp" s={draft.pbp} set={setModel("pbp")} />
+        <PbpFields s={draft.pbp} set={setPbp} />
       </section>
     </>
   );

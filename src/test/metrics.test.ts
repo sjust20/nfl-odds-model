@@ -19,6 +19,7 @@ const preds: Prediction[] = Array.from({ length: 800 }, (_, i) => {
     market: { line: line + (rand() * 8 - 4), total: total + (rand() * 8 - 4) },
     pbp: { line: line + (rand() * 8 - 4), total: total + (rand() * 8 - 4) },
     qbAdj: 0,
+    components: { passOff: 0, passDef: 0, rushOff: 0, rushDef: 0 },
     reliability: hr + ar,
     totalReliability: 2 + Math.floor(rand() * 63),
     coverRanks: [hr, ar],

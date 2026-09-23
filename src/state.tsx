@@ -71,7 +71,7 @@ export const DEFAULT_STRATEGIES: Record<BetKind, Strategy> = {
 
 // Bumped when the shape or defaults change, so earlier saved values don't mask the new ones.
 const STRATEGIES_KEY = "strategies.v2";
-const SETTINGS_KEY = "settings.v2";
+const SETTINGS_KEY = "settings.v3";
 
 function loadStrategies(): Record<BetKind, Strategy> {
   const saved = load<Partial<Record<BetKind, Strategy>>>(STRATEGIES_KEY, {});
@@ -109,7 +109,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return {
       resetOnCoachChange: s.resetOnCoachChange ?? DEFAULT_SETTINGS.resetOnCoachChange,
       market: { ...DEFAULT_SETTINGS.market, ...s.market },
-      pbp: { ...DEFAULT_SETTINGS.pbp, ...s.pbp },
+      pbp: { ...DEFAULT_SETTINGS.pbp, ...s.pbp, weights: { ...DEFAULT_SETTINGS.pbp.weights, ...s.pbp?.weights } },
     };
   });
   const [strategies, setStrategies] = useState<Record<BetKind, Strategy>>(loadStrategies);

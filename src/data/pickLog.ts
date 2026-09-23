@@ -1,3 +1,4 @@
+import type { ComponentDiffs } from "../model/components";
 import type { SidePrediction } from "../model/engine";
 import type { GameQbs } from "./qb";
 
@@ -24,6 +25,8 @@ export interface LoggedPick {
   pbp?: SidePrediction;
   classic?: SidePrediction | null;
   qbAdj?: number;
+  /** Efficiency component edges when logged (absent on entries logged before they existed). */
+  components?: ComponentDiffs;
   reliability: number | null;
   totalReliability: number | null;
   coverRanks: [number, number] | null;

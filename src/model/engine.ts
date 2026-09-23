@@ -4,9 +4,10 @@
 import { qbStatus, type GameQbs } from "../data/qb";
 import { isFinal, type Game } from "../data/types";
 import { AtsTeam, type AtsStats } from "./ats";
+import { ComponentRatings, componentDiffs, componentTerms, weighted, type ComponentDiffs, type ComponentFit } from "./components";
 import { fitMarket, marketLine, marketTotal, type MarketFit, type Observation } from "./market";
 import { QbTracker } from "./qbValue";
-import type { RatingSettings, Settings } from "./settings";
+import type { Settings } from "./settings";
 import { buildTenures, type TenureIndex } from "./tenure";
 
 export type ModelKey = "market" | "pbp";
@@ -22,6 +23,8 @@ export interface Prediction {
   game: Game;
   market: SidePrediction;
   pbp: SidePrediction;
+  /** Home-minus-away efficiency component edges (pass/rush offense/defense), in points. */
+  components: ComponentDiffs;
   /**
    * Starting-QB adjustment at full scale, in points for the home team (home starter's value vs
    * its recent QB mix, minus the same for the away team). Each model adds qbScale times this.
@@ -98,7 +101,13 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
     return c;
   };
   const qbTracker = new QbTracker();
-  const cfg: Record<ModelKey, RatingSettings> = { market: settings.market, pbp: settings.pbp };
+  const comps = new ComponentRatings();
+  const pb = settings.pbp;
+  /** Play-by-play model: the Market line plus weighted efficiency component edges. */
+  const pbpLine = (marketLine: number, d: ComponentDiffs) => pb.intercept + pb.marketWeight * marketLine + weighted(d, pb.weights);
+  /** A team's play-by-play rating on the same scale as Market (neutral field, vs average). */
+  const pbpRating = (marketRating: number, f: ComponentFit, team: string) =>
+    pb.marketWeight * marketRating + weighted(componentTerms(f, team), pb.weights);
 
   // Group games into weeks, in order.
   const weeks: Game[][] = [];
@@ -132,13 +141,10 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
     return { cover: rankAscending(sd), ou: rankAscending(sdOu) };
   };
 
-  const fitBoth = (weekIndex: number, season: number, required: Iterable<string>) => {
-    const req = [...required];
-    return {
-      market: fitMarket(obs, weekIndex, season, cfg.market, prevOf, req),
-      pbp: fitMarket(obs, weekIndex, season, cfg.pbp, prevOf, req),
-    };
-  };
+  const fitBoth = (weekIndex: number, season: number, required: Iterable<string>) => ({
+    market: fitMarket(obs, weekIndex, season, settings.market, prevOf, [...required]),
+    comps: comps.fit(weekIndex, season, pb),
+  });
 
   for (let wi = 0; wi < weeks.length; wi++) {
     const week = weeks[wi];
@@ -154,14 +160,16 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
     for (const g of week) {
       const [h, a] = tenures.byGame.get(g.id)!;
       const qbAdj = qbTracker.adjustment(g.home, g.homeQb?.id) - qbTracker.adjustment(g.away, g.awayQb?.id);
-      const side = (k: ModelKey): SidePrediction => ({
-        line: marketLine(fits[k], h, a, g.neutral) + cfg[k].qbScale * qbAdj,
-        total: marketTotal(fits[k], h, a),
-      });
+      const market: SidePrediction = {
+        line: marketLine(fits.market, h, a, g.neutral) + settings.market.qbScale * qbAdj,
+        total: marketTotal(fits.market, h, a),
+      };
+      const components = componentDiffs(fits.comps, g.home, g.away);
       predictions.push({
         game: g,
-        market: side("market"),
-        pbp: side("pbp"),
+        market,
+        pbp: { line: pbpLine(market.line, components), total: market.total },
+        components,
         qbAdj,
         reliability: r.cover.has(h) && r.cover.has(a) ? r.cover.get(h)! + r.cover.get(a)! : null,
         totalReliability: r.ou.has(h) && r.ou.has(a) ? r.ou.get(h)! + r.ou.get(a)! : null,
@@ -201,6 +209,7 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
       if (final && g.pbp) {
         qbTracker.addGame(g.home, g.pbp.home);
         qbTracker.addGame(g.away, g.pbp.away);
+        comps.addGame(g, wi);
       }
     }
     if (anyFinal) {
@@ -209,7 +218,8 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
       const after = fitBoth(wi + 1, season, active.values());
       const ratings = new Map<string, { market: number; pbp: number }>();
       for (const [team, t] of active) {
-        ratings.set(team, { market: after.market.rating.get(t) ?? 0, pbp: after.pbp.rating.get(t) ?? 0 });
+        const m = after.market.rating.get(t) ?? 0;
+        ratings.set(team, { market: m, pbp: pbpRating(m, after.comps, team) });
       }
       history.push({ season, week: week[0].week, ratings });
     }
@@ -224,16 +234,18 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
   const teamTotal = (f: MarketFit, t: string) => f.baseTotal / 2 + (f.totalRating.get(t) ?? 0);
   const current: TeamRating[] = [...tenures.current].map(([team, t]) => {
     const info = tenures.tenures.get(t)!;
+    const m = finalFits.market.rating.get(t) ?? 0;
     return {
       team,
       tenure: t,
       coach: info.coach,
       since: info.firstDate,
       games: atsOf(t).games,
-      market: finalFits.market.rating.get(t) ?? 0,
-      pbp: finalFits.pbp.rating.get(t) ?? 0,
+      market: m,
+      pbp: pbpRating(m, finalFits.comps, team),
       marketTotal: teamTotal(finalFits.market, t),
-      pbpTotal: teamTotal(finalFits.pbp, t),
+      // Totals aren't modeled from efficiency yet; play-by-play uses Market's.
+      pbpTotal: teamTotal(finalFits.market, t),
       ats: atsOf(t).stats(),
       coverRank: r.cover.get(t) ?? null,
       ouRank: r.ou.get(t) ?? null,
@@ -245,6 +257,6 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
     current,
     history,
     tenures,
-    hfa: { market: finalFits.market.hfa, pbp: finalFits.pbp.hfa },
+    hfa: { market: finalFits.market.hfa, pbp: pb.marketWeight * finalFits.market.hfa + pb.intercept },
   };
 }

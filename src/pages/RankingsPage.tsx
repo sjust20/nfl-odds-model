@@ -24,9 +24,9 @@ export function RankingsPage() {
           Ratings are points better than a league-average team on a neutral field, with the team's recent QB mix.
           Both models fit recent closing lines across all teams at once, so they adjust for opponents and home
           games. <strong>Market</strong> also learns {Math.round(settings.market.resultWeight * 100)}% from final
-          margins. <strong>Play-by-play</strong> learns from final margins (
-          {Math.round(settings.pbp.resultWeight * 100)}%) and efficiency, net expected points added per play (
-          {Math.round(settings.pbp.efficiencyWeight * 100)}%). History
+          margins. <strong>Play-by-play</strong> takes Market and adds each team's opponent-adjusted efficiency
+          (expected points added per play) in four parts: pass offense, pass defense, rush offense and rush
+          defense. History
           {settings.resetOnCoachChange ? " resets when the head coach changes." : " spans coaching changes."} Home-field
           advantage is currently {num(r.hfa.market)} points.
         </p>

@@ -19,26 +19,27 @@ A team's history resets whenever its head coach changes, interim coaches include
   reliability, minimum games, or, for sides, betting the high- or low-variance team), with results by
   season, an edge × reliability grid split into two eras, and the live out-of-sample record. The
   live record includes closing line value (how far the closing line moved toward each pick). The
-  Sides tab also tracks one fixed idea without betting it: Market edge over 6 with no QB change on
-  either side (`src/model/tracked.ts`).
+  Sides tab also tracks two fixed ideas without betting them (`src/model/tracked.ts`): Market edge
+  over 6 with no QB change, and "closing line + efficiency components" (rush offense weighted up,
+  pass defense down), scored by its live record and by whether lines move toward it.
 - **Model settings**: every parameter of both models. Changes
   recompute in the browser.
 
 ## Models
 
-Both models are the same weighted least-squares fit over recent closing lines (`src/model/market.ts`),
-one rating per coaching tenure, adjusted for opponents and home field. They differ in what each
-game's target blends in besides the line:
+- **Market** (`src/model/market.ts`): weighted least squares over recent closing lines, pulled 30%
+  toward final margins, one rating per coaching tenure, adjusted for opponents and home field.
+- **Play-by-play**: the Market line plus four opponent-adjusted efficiency components
+  (`src/model/components.ts`): each team's pass offense, pass defense, rush offense and rush defense
+  in expected points added per play. Stacking weights were learned on 2003–2015.
+- Both include a **starting-QB adjustment** (`src/model/qbValue.ts`): each QB's recent EPA per
+  dropback, shrunk toward replacement level, compared with the team's recent QB mix.
 
-- **Market**: 30% toward the final margin.
-- **Play-by-play**: 15% toward the efficiency margin (net expected points added, from nflverse
-  play-by-play) and 10% toward the final margin.
-
-Both add a **starting-QB adjustment** (`src/model/qbValue.ts`): each QB's recent EPA per dropback,
-shrunk toward replacement level, compared with the team's recent QB mix. Defaults were tuned on
-2003–2015 and checked on 2016 onward (`npm run tune`). Held-out margin RMSE: closing line 12.71,
-Market 12.90, play-by-play 12.91 (13.01 each without the QB adjustment; 13.85 → 13.44 on games with a
-QB change). Efficiency added little once lines were in; the QB adjustment is the main gain.
+Held-out margin RMSE, 2016 onward (`npm run tune`): closing line 12.71, play-by-play 12.86, Market
+12.90 (13.01 before the QB adjustment). On games with a QB change: line 13.13, Market 13.44 (13.85
+before). Efficiency split into pass/rush and offense/defense beat one combined efficiency number;
+pass offense is the most stable component week to week (0.55 half-season correlation vs 0.27–0.33
+for the rest). Research scripts: `scripts/research-components.ts`, `scripts/research-coach-reset.ts`.
 
 The **engine** (`src/model/engine.ts`) steps week by week, predicting each week using only earlier
 data, so the same pass produces the backtest and the live predictions.

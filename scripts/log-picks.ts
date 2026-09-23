@@ -57,6 +57,7 @@ for (const p of runModels(games, DEFAULT_SETTINGS).predictions) {
     market: p.market,
     pbp: p.pbp,
     qbAdj: p.qbAdj,
+    components: p.components,
     reliability: p.reliability,
     totalReliability: p.totalReliability,
     coverRanks: p.coverRanks,

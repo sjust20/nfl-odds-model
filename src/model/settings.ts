@@ -1,3 +1,5 @@
+import type { ComponentDiffs, ComponentFitSettings } from "./components";
+
 /**
  * Settings for one rating model. Market and play-by-play are the same weighted least-squares fit
  * (src/model/market.ts); they differ in what each game's target blends in besides the line.
@@ -25,16 +27,28 @@ export interface RatingSettings {
   qbScale: number;
 }
 
+/**
+ * The play-by-play model stacks efficiency components on top of the Market model:
+ *   line = intercept + marketWeight × Market line + Σ weights × component edges
+ * where each component edge (pass/rush offense/defense) is a home-minus-away difference in
+ * opponent-adjusted EPA per play, times typical volume (src/model/components.ts).
+ */
+export interface PbpSettings extends ComponentFitSettings {
+  intercept: number;
+  marketWeight: number;
+  weights: ComponentDiffs;
+}
+
 export interface Settings {
   /** Start a new history whenever a team's head coach changes (including interims). */
   resetOnCoachChange: boolean;
   market: RatingSettings;
-  pbp: RatingSettings;
+  pbp: PbpSettings;
 }
 
-// Picked by `npm run tune` on 2003-2015 (lowest margin RMSE) and checked on 2016 onward, where
-// margin RMSE was: closing line 12.71, Market 12.90, play-by-play 12.91 (13.01 for both without
-// the QB adjustment). On games with a QB change: line 13.13, Market 13.44, without QB adj 13.85.
+// Market: picked by `npm run tune` on 2003-2015 (lowest margin RMSE), checked on 2016 onward.
+// Play-by-play: component fit settings chosen on 2003-2015 (scripts/research-components.ts), and
+// stacking weights learned by regression on 2003-2015 (`npm run tune` prints them).
 export const DEFAULT_SETTINGS: Settings = {
   resetOnCoachChange: true,
   market: {
@@ -48,13 +62,11 @@ export const DEFAULT_SETTINGS: Settings = {
     qbScale: 0.75,
   },
   pbp: {
-    halfLifeWeeks: 3,
-    seasonCarryover: 0.3,
-    resultWeight: 0.1,
-    efficiencyWeight: 0.15,
-    efficiency: "all",
-    coachCarryover: 1,
-    ridgeGames: 0.25,
-    qbScale: 0.75,
+    halfLifeWeeks: 10,
+    seasonCarryover: 0.5,
+    ridgePlays: 100,
+    intercept: -0.2,
+    marketWeight: 1.07,
+    weights: { passOff: 0.06, passDef: -0.18, rushOff: 0.23, rushDef: 0.12 },
   },
 };

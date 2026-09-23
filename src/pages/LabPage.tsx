@@ -5,6 +5,7 @@ import { teamName } from "../data/teams";
 import { isFinal, type Game } from "../data/types";
 import { lineLabel, num, pct, shortDate } from "../format";
 import type { LoggedPick } from "../data/pickLog";
+import type { ComponentDiffs } from "../model/components";
 import type { Prediction, SidePrediction } from "../model/engine";
 import {
   accuracy,
@@ -18,7 +19,7 @@ import {
   type GridCell,
   type Strategy,
 } from "../model/metrics";
-import { bigEdgeNoQb } from "../model/tracked";
+import { bigEdgeNoQb, LINE_PLUS_COMPONENTS, LINE_PLUS_COMPONENTS_MIN, lineAdjustment, linePlusComponentsBet } from "../model/tracked";
 import { DEFAULT_STRATEGIES, useApp, type BetKind } from "../state";
 
 const RELIABILITY_OPTIONS = [8, 12, 16, 20, 24, 32, 40, 48];
@@ -121,6 +122,7 @@ function fromLog(lp: LoggedPick, g: Game): Prediction {
     market: lp.market,
     pbp: lp.pbp as SidePrediction,
     qbAdj: lp.qbAdj ?? 0,
+    components: lp.components as ComponentDiffs,
     reliability: lp.reliability,
     totalReliability: lp.totalReliability,
     coverRanks: lp.coverRanks,
@@ -183,6 +185,122 @@ function useLiveRecord(strategy: Strategy) {
 }
 
 /** Backtest and live record for the tracked "big edge, no QB change" idea. */
+/** Backtest, live record, and line-movement check for the tracked "line + components" idea. */
+function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
+  const { data, pickLog } = useApp();
+  const result = useMemo(() => {
+    const tally = (rs: (1 | 0 | 0.5 | null)[]) =>
+      record(rs.filter((r) => r === 1).length, rs.filter((r) => r === 0).length, rs.filter((r) => r === 0.5).length);
+    const hist = (from: number, to: number) =>
+      tally(
+        preds
+          .filter((p) => isFinal(p.game) && p.game.season >= from && p.game.season <= to)
+          .map((p) => linePlusComponentsBet(p)?.result ?? null)
+          .filter((r) => r !== null),
+      );
+    const games = new Map(data!.games.map((g) => [g.id, g]));
+    const live: { lp: LoggedPick; bet: NonNullable<ReturnType<typeof linePlusComponentsBet>> }[] = [];
+    // Line movement: did the line move from when we logged it to the close in the direction the
+    // components pointed? Every logged game counts here, not just the bets.
+    let agree = 0;
+    let moved = 0;
+    let closed = 0;
+    let towardSum = 0;
+    for (const lp of pickLog?.picks ?? []) {
+      const g = games.get(lp.id);
+      if (!g || !lp.components) continue;
+      const p = fromLog(lp, g);
+      const bet = linePlusComponentsBet(p);
+      if (bet) live.push({ lp, bet });
+      if (isFinal(g) && g.line !== null && p.game.line !== null) {
+        closed++;
+        const move = g.line - p.game.line;
+        const adj = lineAdjustment(lp.components);
+        if (move !== 0 && adj !== 0) {
+          moved++;
+          if (Math.sign(move) === Math.sign(adj)) agree++;
+        }
+        towardSum += Math.sign(adj) * move;
+      }
+    }
+    return {
+      early: hist(2003, 2015),
+      late: hist(2016, 9999),
+      live,
+      liveRecord: tally(live.map((x) => x.bet.result).filter((r) => r !== null)),
+      movement: { closed, moved, agree, avgToward: closed ? towardSum / closed : 0 },
+    };
+  }, [preds, data, pickLog]);
+  const line = (r: BetRecord) =>
+    r.wins + r.losses ? `${r.wins}–${r.losses}–${r.pushes} · ${pct(r.pct)} (95% range ${pct(r.lo)}–${pct(r.hi)})` : "no bets";
+  const w = LINE_PLUS_COMPONENTS.weights;
+  const m = result.movement;
+  return (
+    <section className="card">
+      <h2>Tracked, not bet: closing line + efficiency components</h2>
+      <p className="muted small">
+        How far pass/rush offense/defense efficiency says the line is off, with weights learned on 2003–2015: rush
+        offense {w.rushOff}, rush defense {w.rushDef}, pass offense {w.passOff}, pass defense {w.passDef}. Rush
+        offense got positive weight and pass defense negative weight in every period tested. That suggests the
+        market underweights rushing efficiency and overreacts to pass defense. Across 2016 onward it improved on
+        the closing line only slightly (margin RMSE 12.709 → 12.694), and not significantly. The bet backs the
+        favored side when the adjustment exceeds {LINE_PLUS_COMPONENTS_MIN} point. That threshold was picked after
+        seeing 2016+ results, so only the live record below is a clean test.
+      </p>
+      <table className="data compact">
+        <tbody>
+          <tr><td>Backtest 2003–2015 (weights fitted here)</td><td>{line(result.early)}</td></tr>
+          <tr><td>Backtest 2016–now (threshold chosen here)</td><td>{line(result.late)}</td></tr>
+          <tr><td><strong>Live (logged before kickoff)</strong></td><td><strong>{line(result.liveRecord)}</strong></td></tr>
+          <tr>
+            <td><strong>Line movement toward the adjustment</strong></td>
+            <td>
+              {m.moved ? (
+                <>
+                  {pct(m.agree / m.moved)} of {m.moved} logged games whose line moved went in the components&apos;
+                  direction; average move {m.avgToward >= 0 ? "+" : "−"}
+                  {Math.abs(m.avgToward).toFixed(2)} pts toward them ({m.closed} games closed)
+                </>
+              ) : (
+                <span className="muted">none yet (needs logged games that have closed)</span>
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p className="muted small">
+        The line-movement row is the fastest honest test: it covers every logged game, not just bets. If the market
+        really underprices rushing efficiency, lines should drift toward the adjustment well over half the time.
+      </p>
+      {result.live.length > 0 && (
+        <table className="data compact">
+          <tbody>
+            {result.live.slice(-10).reverse().map(({ lp, bet }) => (
+              <tr key={lp.id}>
+                <td>{teamName(lp.away)} at {teamName(lp.home)}</td>
+                <td>
+                  {bet.side === "home" ? lp.home : lp.away} ({lineLabel(lp.home, lp.away, lp.bookLine ?? lp.line)}), adjustment{" "}
+                  {bet.adj >= 0 ? "+" : "−"}
+                  {Math.abs(bet.adj).toFixed(1)}
+                </td>
+                <td>
+                  {bet.result === null ? (
+                    <span className="muted">Pending</span>
+                  ) : (
+                    <span className={`result ${bet.result === 1 ? "won" : bet.result === 0 ? "lost" : "push"}`}>
+                      {bet.result === 1 ? "Won" : bet.result === 0 ? "Lost" : "Push"}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  );
+}
+
 function TrackedIdea({ preds }: { preds: Prediction[] }) {
   const { data, pickLog } = useApp();
   const result = useMemo(() => {
@@ -442,6 +560,7 @@ export function LabPage() {
       </section>
 
       {kind === "spread" && <TrackedIdea preds={preds} />}
+      {kind === "spread" && <LinePlusComponentsIdea preds={preds} />}
 
       <div className="two-col">
         <section className="card">

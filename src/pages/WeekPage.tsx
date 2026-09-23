@@ -7,7 +7,7 @@ import { currentWeek } from "../data/week";
 import { lineLabel, num, shortDate, signed } from "../format";
 import type { Prediction } from "../model/engine";
 import { betFor, type Strategy } from "../model/metrics";
-import { bigEdgeNoQb } from "../model/tracked";
+import { bigEdgeNoQb, lineAdjustment, linePlusComponentsBet } from "../model/tracked";
 import { useApp } from "../state";
 import { strategySummary } from "./LabPage";
 
@@ -176,7 +176,17 @@ export function WeekPage() {
                       {line !== null && bigEdgeNoQb(atBookLine(p, line, total)) && (
                         <div>
                           <Link to="/lab" className="tag" title="Tracked, not bet: Market edge over 6 with no QB change">
-                            tracked
+                            tracked: big edge
+                          </Link>
+                        </div>
+                      )}
+                      <div className="muted small" title="How far efficiency components say the line is off, in points for the home team (tracked idea)">
+                        components {signed(lineAdjustment(p.components))}
+                      </div>
+                      {line !== null && linePlusComponentsBet(atBookLine(p, line, total)) && (
+                        <div>
+                          <Link to="/lab" className="tag" title="Tracked, not bet: closing line + efficiency components, adjustment over 1 point">
+                            tracked: {linePlusComponentsBet(atBookLine(p, line, total))!.side === "home" ? g.home : g.away}
                           </Link>
                         </div>
                       )}
