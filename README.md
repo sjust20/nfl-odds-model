@@ -23,7 +23,9 @@ A team's history resets whenever its head coach changes, interim coaches include
 
 - **Classic** (`src/model/classic.ts`): a port of the spreadsheet, verified to 10 decimal places
   against its cached values (`src/test/classic.test.ts`). Rating = average (or EMA) line faced minus
-  average cover. The matchup formula is Sheet3's (half the gap, or 0.55× when the teams sit on
+  average cover. Algebraically the line cancels, so this equals minus the team's average scoring
+  margin under its coach (exactly for the plain average; approximately for the EMA, whose two
+  averages warm up differently). The matchup formula is Sheet3's (half the gap, or 0.55× when the teams sit on
   opposite sides of average, with 3 points of home field split between them). One optional change:
   thin samples are blended toward the Market view (`shrinkGames`; 0 = exact spreadsheet).
 - **Market** (`src/model/market.ts`): weighted least squares over recent closing lines, blended 30%
@@ -41,8 +43,13 @@ A team's history resets whenever its head coach changes, interim coaches include
   books. Each pull costs 2 credits (2 markets × 1 region). The workflow pulls at most once a day and
   otherwise reuses the copy on the live site if it's under 20 hours old, so about 60 credits a month.
   Check The Odds API's terms before publishing their data on a public site.
-- Pick log (`public/data/pick-log.json`, committed): each day, predictions for the next 8 days are
-  written with the line available at the time. An entry freezes on game day, so it's a true
+- Head-coach corrections: nflverse sometimes carries last season's coach into a new season (2026:
+  ARI, ATL, BUF). Each nightly run checks every team's current coach against ESPN's (unofficial) API
+  and corrects the current season; near-identical names are only respelled, so they can't cause a
+  false reset. ESPN only knows today's coach, so past seasons rely on nflverse. Manual date-ranged
+  fixes go in `data/coach-overrides.json` and always win. Corrections are listed on the site.
+- Pick log (`public/data/pick-log.json`, committed): each day, predictions for the current NFL week
+  are written with the line available at the time. An entry freezes on game day, so it's a true
   out-of-sample record.
 
 ## Develop
