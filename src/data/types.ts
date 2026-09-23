@@ -1,5 +1,11 @@
 import type { CoachCorrection } from "./coaches";
 
+/** A starting quarterback (nflverse lists projected starters for the current week). */
+export interface Qb {
+  id: string;
+  name: string;
+}
+
 export type GameType = "REG" | "WC" | "DIV" | "CON" | "SB";
 
 /** One NFL game. `line` is points the home team is favored by (nflverse `spread_line`). */
@@ -18,6 +24,9 @@ export interface Game {
   neutral: boolean;
   awayCoach: string;
   homeCoach: string;
+  /** Starting QB; null when not yet listed. Absent in files written before QB tracking. */
+  awayQb?: Qb | null;
+  homeQb?: Qb | null;
 }
 
 export interface GamesFile {

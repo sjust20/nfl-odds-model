@@ -1,10 +1,13 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { qbStatus, type QbStatus } from "../data/qb";
 import { teamName } from "../data/teams";
 import { isFinal } from "../data/types";
 import { currentWeek } from "../data/week";
 import { lineLabel, num, shortDate, signed } from "../format";
 import type { Prediction } from "../model/engine";
 import { betFor, type Strategy } from "../model/metrics";
+import { bigEdgeNoQb } from "../model/tracked";
 import { useApp } from "../state";
 import { strategySummary } from "./LabPage";
 
@@ -14,6 +17,17 @@ function atBookLine(p: Prediction, bookLine: number | null, bookTotal: number | 
     ...p,
     game: { ...p.game, line: bookLine ?? p.game.line, total: bookTotal ?? p.game.total },
   };
+}
+
+/** "Keenum (was Williams)" for a change, otherwise just the starter's name. */
+function QbLine({ team, q }: { team: string; q: QbStatus | null | undefined }) {
+  if (!q) return <div className="muted small">{team}: not listed</div>;
+  return (
+    <div className={`small ${q.changed ? "qb-changed" : ""}`}>
+      {team}: {q.name}
+      {q.changed && q.prev && <span> (was {q.prev})</span>}
+    </div>
+  );
 }
 
 function PickCell({ p, strategy }: { p: Prediction; strategy: Strategy }) {
@@ -40,6 +54,7 @@ export function WeekPage() {
   const preds = run!.predictions;
   const week = currentWeek(data!.games);
   const next = week ? preds.find((p) => p.game.season === week.season && p.game.week === week.week) : undefined;
+  const qbs = useMemo(() => qbStatus(data!.games), [data]);
   const bookFor = new Map(odds?.games.map((o) => [o.gameId, o]) ?? []);
 
   const upcoming = next ? preds.filter((p) => p.game.season === next.game.season && p.game.week === next.game.week) : [];
@@ -97,6 +112,9 @@ export function WeekPage() {
             <thead>
               <tr>
                 <th>Game</th>
+                <th title="Starting QBs as listed by nflverse; highlighted when different from the team's last game">
+                  Starting QBs
+                </th>
                 <th>Book line</th>
                 <th>Market model</th>
                 <th>Classic</th>
@@ -128,6 +146,10 @@ export function WeekPage() {
                       <div className="muted small">{shortDate(g.date)}</div>
                     </td>
                     <td>
+                      <QbLine team={g.away} q={qbs.get(g.id)?.away} />
+                      <QbLine team={g.home} q={qbs.get(g.id)?.home} />
+                    </td>
+                    <td>
                       {line === null ? (
                         <span className="muted">Not posted</span>
                       ) : (
@@ -145,6 +167,13 @@ export function WeekPage() {
                     <td>{p.classic ? lineLabel(g.home, g.away, p.classic.line) : <span className="muted">–</span>}</td>
                     <td className="num">
                       {line === null ? "–" : `${signed(p.market.line - line)} / ${p.classic ? signed(p.classic.line - line) : "–"}`}
+                      {line !== null && bigEdgeNoQb(atBookLine(p, line, total), qbs.get(g.id)) && (
+                        <div>
+                          <Link to="/lab" className="tag" title="Tracked, not bet: Market edge over 6 with no QB change">
+                            tracked
+                          </Link>
+                        </div>
+                      )}
                     </td>
                     <td>
                       {total ?? "–"} / {num(p.market.total)} / {p.classic ? num(p.classic.total) : "–"}

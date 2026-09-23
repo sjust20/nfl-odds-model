@@ -1,4 +1,5 @@
 import type { SidePrediction } from "../model/engine";
+import type { GameQbs } from "./qb";
 
 /**
  * A prediction recorded by the nightly job before kickoff, with the line available at that
@@ -24,6 +25,8 @@ export interface LoggedPick {
   totalReliability: number | null;
   coverRanks: [number, number] | null;
   minGames: number;
+  /** Starting QBs as listed when logged, with whether each changed from the team's last game. */
+  qb?: GameQbs | null;
 }
 
 export interface PickLogFile {

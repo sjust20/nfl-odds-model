@@ -9,13 +9,17 @@ A team's history resets whenever its head coach changes, interim coaches include
 
 - **This week**: the current NFL week's games with the sportsbook line (when the odds feed is on),
   both models' lines and totals, edges, reliability, and two picks: one from your sides strategy and
-  one from your totals strategy. Also shows last week's results, graded both ways.
+  one from your totals strategy. Each game lists the starting QBs (nflverse's projected starters),
+  flagging any change from the team's previous game, since most of the biggest model edges are QB
+  changes the model can't see. Also shows last week's results, graded both ways.
 - **Power rankings**: Market and Classic ratings, coach tenure, cover stats, and this season's trend.
 - **Matchup**: any two teams, home or neutral site.
 - **Teams**: cover margin by game under the current coach, rating history, game log, and coaching history.
 - **Strategy lab**: separate Sides and Totals tabs, one rule each. Backtest any rule (model edge,
   reliability, minimum games, or, for sides, betting the high- or low-variance team), with results by
-  season, an edge × reliability grid split into two eras, and the live out-of-sample record.
+  season, an edge × reliability grid split into two eras, and the live out-of-sample record. The
+  Sides tab also tracks one fixed idea without betting it: Market edge over 6 with no QB change on
+  either side (`src/model/tracked.ts`).
 - **Model settings**: every model parameter, including the "spreadsheet exactly" preset. Changes
   recompute in the browser.
 

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DivergingColumns, StatTile } from "../components/charts";
+import { qbStatus } from "../data/qb";
 import { teamName } from "../data/teams";
 import { isFinal, type Game } from "../data/types";
 import { lineLabel, num, pct, shortDate } from "../format";
@@ -16,6 +17,7 @@ import {
   type GridCell,
   type Strategy,
 } from "../model/metrics";
+import { bigEdgeNoQb } from "../model/tracked";
 import { DEFAULT_STRATEGIES, useApp, type BetKind } from "../state";
 
 const RELIABILITY_OPTIONS = [8, 12, 16, 20, 24, 32, 40, 48];
@@ -142,6 +144,77 @@ function useLiveRecord(strategy: Strategy) {
     );
     return { bets, rec, since: pickLog.picks[0]?.date ?? null };
   }, [pickLog, data, strategy]);
+}
+
+/** Backtest and live record for the tracked "big edge, no QB change" idea. */
+function TrackedIdea({ preds }: { preds: Prediction[] }) {
+  const { data, pickLog } = useApp();
+  const result = useMemo(() => {
+    const qbs = qbStatus(data!.games);
+    const tally = (bets: (1 | 0 | 0.5 | null)[]) =>
+      record(bets.filter((b) => b === 1).length, bets.filter((b) => b === 0).length, bets.filter((b) => b === 0.5).length);
+    const hist = preds.filter((p) => isFinal(p.game) && p.game.season >= 2002);
+    const results = (from: number, to: number) =>
+      tally(
+        hist
+          .filter((p) => p.game.season >= from && p.game.season <= to)
+          .map((p) => bigEdgeNoQb(p, qbs.get(p.game.id))?.result ?? null)
+          .filter((r) => r !== null),
+      );
+    const games = new Map(data!.games.map((g) => [g.id, g]));
+    const live = (pickLog?.picks ?? []).flatMap((lp) => {
+      const g = games.get(lp.id);
+      if (!g) return [];
+      const p: Prediction = {
+        game: { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total },
+        market: lp.market, classic: lp.classic, reliability: lp.reliability,
+        totalReliability: lp.totalReliability, coverRanks: lp.coverRanks, minGames: lp.minGames,
+      };
+      const bet = bigEdgeNoQb(p, lp.qb);
+      return bet ? [{ lp, bet }] : [];
+    });
+    return {
+      all: results(2002, 9999),
+      early: results(2002, 2014),
+      late: results(2015, 9999),
+      live,
+      liveRecord: tally(live.map((x) => x.bet.result).filter((r) => r !== null)),
+    };
+  }, [preds, data, pickLog]);
+  const line = (r: BetRecord) =>
+    r.wins + r.losses ? `${r.wins}–${r.losses}–${r.pushes} · ${pct(r.pct)} (95% range ${pct(r.lo)}–${pct(r.hi)})` : "no bets";
+  return (
+    <section className="card">
+      <h2>Tracked, not bet: big edge with no QB change</h2>
+      <p className="muted small">
+        Market model sides where the model and the line disagree by more than 6 points and neither team changed
+        starting QB from its previous game. Most big edges come from QB changes the model can't see; this is what's
+        left. It was found by slicing the data, so it's fixed here (no settings) and watched until the live record
+        says whether it's real. Uses the default model settings.
+      </p>
+      <table className="data compact">
+        <tbody>
+          <tr><td>Backtest 2002–2014</td><td>{line(result.early)}</td></tr>
+          <tr><td>Backtest 2015–now</td><td>{line(result.late)}</td></tr>
+          <tr><td>Backtest, all</td><td>{line(result.all)}</td></tr>
+          <tr><td><strong>Live (logged before kickoff)</strong></td><td><strong>{line(result.liveRecord)}</strong></td></tr>
+        </tbody>
+      </table>
+      {result.live.length > 0 && (
+        <table className="data compact">
+          <tbody>
+            {result.live.slice(-10).reverse().map(({ lp, bet }) => (
+              <tr key={lp.id}>
+                <td>{teamName(lp.away)} at {teamName(lp.home)}</td>
+                <td>{bet.side === "home" ? lp.home : lp.away} ({lineLabel(lp.home, lp.away, lp.bookLine ?? lp.line)}), edge {num(Math.abs(bet.edge))}</td>
+                <td>{bet.result === null ? <span className="muted">Pending</span> : <span className={`result ${bet.result === 1 ? "won" : bet.result === 0 ? "lost" : "push"}`}>{bet.result === 1 ? "Won" : bet.result === 0 ? "Lost" : "Push"}</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  );
 }
 
 export function LabPage() {
@@ -318,6 +391,8 @@ export function LabPage() {
           ))}
         </div>
       </section>
+
+      {kind === "spread" && <TrackedIdea preds={preds} />}
 
       <div className="two-col">
         <section className="card">

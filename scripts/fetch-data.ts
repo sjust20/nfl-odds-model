@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { applyOverrides, reconcileCurrentCoaches, type CoachOverride } from "../src/data/coaches";
 import { parseCsv } from "../src/data/csv";
 import { currentWeek } from "../src/data/week";
-import type { Game, GamesFile, GameType } from "../src/data/types";
+import type { Game, GamesFile, GameType, Qb } from "../src/data/types";
 
 const SOURCE = "https://github.com/nflverse/nfldata/raw/master/data/games.csv";
 const OUT = new URL("../public/data/games.json", import.meta.url);
@@ -66,7 +66,11 @@ async function main() {
     home: col("home_team"), homeScore: col("home_score"), location: col("location"),
     line: col("spread_line"), total: col("total_line"),
     awayCoach: col("away_coach"), homeCoach: col("home_coach"),
+    awayQbId: col("away_qb_id"), awayQbName: col("away_qb_name"),
+    homeQbId: col("home_qb_id"), homeQbName: col("home_qb_name"),
   };
+  const qb = (id: string, name: string): Qb | null =>
+    name === "" || name === "NA" ? null : { id: id && id !== "NA" ? id : name, name };
 
   const games: Game[] = rows
     .filter((r) => r.length === header.length)
@@ -85,6 +89,8 @@ async function main() {
       neutral: r[c.location] === "Neutral",
       awayCoach: r[c.awayCoach],
       homeCoach: r[c.homeCoach],
+      awayQb: qb(r[c.awayQbId], r[c.awayQbName]),
+      homeQb: qb(r[c.homeQbId], r[c.homeQbName]),
     }))
     .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
 

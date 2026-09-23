@@ -595,3 +595,25 @@ table.heat td.blank {
   outline-offset: -1px;
   color: var(--muted);
 }
+.qb-changed {
+  font-weight: 600;
+}
+.qb-changed span {
+  font-weight: 400;
+  color: var(--muted);
+}
+.qb-changed::before {
+  content: "▲ ";
+  font-size: 0.7em;
+  color: var(--accent);
+}
+.tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  text-decoration: none;
+  margin-top: 0.2rem;
+}
