@@ -51,6 +51,7 @@ export function WeekPage() {
   const { run, odds, strategies, data } = useApp();
   const sides = strategies.spread;
   const totals = strategies.total;
+  const showTotals = totals.enabled !== false;
   const preds = run!.predictions;
   const week = currentWeek(data!.games);
   const next = week ? preds.find((p) => p.game.season === week.season && p.game.week === week.week) : undefined;
@@ -95,7 +96,7 @@ export function WeekPage() {
           Sides: {strategySummary(sides)} · <Link to="/lab">change</Link>
         </span>
         <span className="chip">
-          Totals: {strategySummary(totals)} · <Link to="/lab?bet=total">change</Link>
+          Totals: {totals.enabled === false ? "off" : strategySummary(totals)} · <Link to="/lab?bet=total">change</Link>
         </span>
       </div>
 
@@ -124,7 +125,7 @@ export function WeekPage() {
                   Reliability (S / T)
                 </th>
                 <th>Side pick</th>
-                <th>Total pick</th>
+                {showTotals && <th>Total pick</th>}
               </tr>
             </thead>
             <tbody>
@@ -167,7 +168,7 @@ export function WeekPage() {
                     <td>{p.classic ? lineLabel(g.home, g.away, p.classic.line) : <span className="muted">–</span>}</td>
                     <td className="num">
                       {line === null ? "–" : `${signed(p.market.line - line)} / ${p.classic ? signed(p.classic.line - line) : "–"}`}
-                      {line !== null && bigEdgeNoQb(atBookLine(p, line, total), qbs.get(g.id)) && (
+                      {line !== null && bigEdgeNoQb(atBookLine(p, line, total)) && (
                         <div>
                           <Link to="/lab" className="tag" title="Tracked, not bet: Market edge over 6 with no QB change">
                             tracked
@@ -189,9 +190,11 @@ export function WeekPage() {
                     <td>
                       {line === null ? <span className="muted">–</span> : <PickCell p={atBookLine(p, line, total)} strategy={sides} />}
                     </td>
-                    <td>
-                      {total === null ? <span className="muted">–</span> : <PickCell p={atBookLine(p, line, total)} strategy={totals} />}
-                    </td>
+                    {showTotals && (
+                      <td>
+                        {total === null ? <span className="muted">–</span> : <PickCell p={atBookLine(p, line, total)} strategy={totals} />}
+                      </td>
+                    )}
                   </tr>
                 );
               })}
@@ -217,7 +220,7 @@ export function WeekPage() {
                   <th>Classic</th>
                   <th>Final total</th>
                   <th>Side pick</th>
-                  <th>Total pick</th>
+                  {showTotals && <th>Total pick</th>}
                 </tr>
               </thead>
               <tbody>
@@ -242,7 +245,7 @@ export function WeekPage() {
                         {g.total !== null && <span className="muted small"> (line {g.total})</span>}
                       </td>
                       <td>{g.line === null ? "–" : <PickCell p={p} strategy={sides} />}</td>
-                      <td>{g.total === null ? "–" : <PickCell p={p} strategy={totals} />}</td>
+                      {showTotals && <td>{g.total === null ? "–" : <PickCell p={p} strategy={totals} />}</td>}
                     </tr>
                   );
                 })}

@@ -1,3 +1,4 @@
+import { noQbChange } from "../data/qb";
 import { isFinal } from "../data/types";
 import type { Prediction } from "./engine";
 
@@ -19,6 +20,13 @@ export interface Strategy {
   maxReliability: number | null;
   /** Both teams need at least this many games in their current tenure. */
   minGames: number;
+  /**
+   * Skip games where either team's starting QB differs from its previous game (or isn't listed).
+   * The models can't see QB changes, so their opinion on those games is uninformed.
+   */
+  skipQbChange?: boolean;
+  /** Whether this rule makes picks on the This week page (its backtest is shown either way). */
+  enabled?: boolean;
   fromSeason: number;
   toSeason: number;
 }
@@ -74,6 +82,7 @@ export function betFor(p: Prediction, s: Strategy): Bet | null {
   if (!m) return null;
   if (g.season < s.fromSeason || g.season > s.toSeason) return null;
   if (p.minGames < s.minGames) return null;
+  if (s.skipQbChange && !noQbChange(p.qb)) return null;
   const rel = s.market === "spread" ? p.reliability : p.totalReliability;
   if (s.maxReliability !== null && (rel === null || rel > s.maxReliability)) return null;
 

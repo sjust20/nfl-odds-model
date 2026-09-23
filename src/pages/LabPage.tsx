@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DivergingColumns, StatTile } from "../components/charts";
-import { qbStatus } from "../data/qb";
 import { teamName } from "../data/teams";
 import { isFinal, type Game } from "../data/types";
 import { lineLabel, num, pct, shortDate } from "../format";
@@ -36,6 +35,7 @@ export function strategySummary(s: Strategy): string {
   }
   if (s.maxReliability !== null) parts.push(`reliability ≤ ${s.maxReliability}`);
   if (s.minGames > 0) parts.push(`≥ ${s.minGames} games`);
+  if (s.skipQbChange) parts.push("no QB changes");
   return parts.join(", ");
 }
 
@@ -127,6 +127,7 @@ function useLiveRecord(strategy: Strategy) {
         totalReliability: lp.totalReliability,
         coverRanks: lp.coverRanks,
         minGames: lp.minGames,
+        qb: lp.qb ?? null,
       };
       const bet = betFor(p, { ...strategy, fromSeason: 0, toSeason: 9999 });
       if (!bet) continue;
@@ -150,7 +151,6 @@ function useLiveRecord(strategy: Strategy) {
 function TrackedIdea({ preds }: { preds: Prediction[] }) {
   const { data, pickLog } = useApp();
   const result = useMemo(() => {
-    const qbs = qbStatus(data!.games);
     const tally = (bets: (1 | 0 | 0.5 | null)[]) =>
       record(bets.filter((b) => b === 1).length, bets.filter((b) => b === 0).length, bets.filter((b) => b === 0.5).length);
     const hist = preds.filter((p) => isFinal(p.game) && p.game.season >= 2002);
@@ -158,7 +158,7 @@ function TrackedIdea({ preds }: { preds: Prediction[] }) {
       tally(
         hist
           .filter((p) => p.game.season >= from && p.game.season <= to)
-          .map((p) => bigEdgeNoQb(p, qbs.get(p.game.id))?.result ?? null)
+          .map((p) => bigEdgeNoQb(p)?.result ?? null)
           .filter((r) => r !== null),
       );
     const games = new Map(data!.games.map((g) => [g.id, g]));
@@ -169,8 +169,9 @@ function TrackedIdea({ preds }: { preds: Prediction[] }) {
         game: { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total },
         market: lp.market, classic: lp.classic, reliability: lp.reliability,
         totalReliability: lp.totalReliability, coverRanks: lp.coverRanks, minGames: lp.minGames,
+        qb: lp.qb ?? null,
       };
-      const bet = bigEdgeNoQb(p, lp.qb);
+      const bet = bigEdgeNoQb(p);
       return bet ? [{ lp, bet }] : [];
     });
     return {
@@ -248,6 +249,8 @@ export function LabPage() {
     [preds, s.model, from, to],
   );
   const live = useLiveRecord(s);
+  const recent = useMemo(() => evaluate(preds, { ...s, fromSeason: 2015 }).overall, [preds, s]);
+  const earlier = useMemo(() => evaluate(preds, { ...s, toSeason: 2014 }).overall, [preds, s]);
   const v = verdict(result.overall);
   const o = result.overall;
 
@@ -328,6 +331,9 @@ export function LabPage() {
           Min games{" "}
           <input type="number" min={0} value={s.minGames} onChange={(e) => set({ minGames: Math.max(0, Number(e.target.value)) })} />
         </label>
+        <label className="check" title="Skip games where either team's starter differs from its previous game (or isn't listed yet)">
+          <input type="checkbox" checked={!!s.skipQbChange} onChange={(e) => set({ skipQbChange: e.target.checked })} /> Skip QB changes
+        </label>
         <label>
           Seasons{" "}
           <input type="number" min={2002} max={lastSeason} value={from} onChange={(e) => set({ fromSeason: Number(e.target.value) })} />
@@ -338,6 +344,20 @@ export function LabPage() {
           Reset
         </button>
       </div>
+
+      {kind === "total" && (
+        <div className={`callout ${s.enabled === false ? "" : "bad"}`}>
+          <label className="check">
+            <input type="checkbox" checked={s.enabled !== false} onChange={(e) => set({ enabled: e.target.checked })} />{" "}
+            <strong>Show totals picks on This week</strong>
+          </label>
+          <div className="small">
+            Off by default: totals rules have done worse since 2015 than before. This rule since 2015:{" "}
+            {recent.wins}–{recent.losses} ({pct(recent.pct)}); before: {earlier.wins}–{earlier.losses} (
+            {pct(earlier.pct)}). The backtest below and the live record still work while it's off.
+          </div>
+        </div>
+      )}
 
       <div className="tiles">
         <StatTile label="Record" value={`${o.wins}–${o.losses}–${o.pushes}`} note={strategySummary(s)} />
@@ -475,6 +495,17 @@ export function LabPage() {
           <li>
             The spreadsheet rule (bet when the model disagrees with the line) wins about 50.5–51% on its own, whatever
             the edge threshold.
+          </li>
+          <li>
+            The default sides rule (Market model, both teams ≥ 8 games, reliability ≤ 24, no QB changes, any edge)
+            was chosen for reasons rather than tuned, and is fixed for the 2026 season: 51.9% over 883 bets in
+            2002–2026 (50.7% before 2015, 53.2% since). That's around break-even, so treat it as paper trading
+            until the live record says otherwise.
+          </li>
+          <li>
+            The Market model's biggest edges are mostly QB changes it can't see (69% of edges over 6 points), so
+            skipping those games removes uninformed picks. It doesn't create an edge by itself. Edge cutoffs
+            between 1.5 and 3 points didn't help this model either.
           </li>
           <li>
             Reliability only means something once both teams have played at least ~8 games under their coach.

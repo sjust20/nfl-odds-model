@@ -31,37 +31,50 @@ const optional = <T,>(url: string): Promise<T | null> =>
 
 export type BetKind = Strategy["market"];
 
-/** One strategy for sides and one for totals; each drives its own pick column. */
+/**
+ * One strategy for sides and one for totals; each drives its own pick column.
+ * Defaults (set Sep 2026, before the live record began), each filter chosen for a reason rather
+ * than tuned: both teams need 8+ games under their coach (fixes the thin-sample reliability flaw),
+ * reliability <= 24 (the one signal that pointed the same way in every test), and no QB changes
+ * (the models can't see them). No edge cutoff: for the Market model, a bigger gap from the line
+ * is mostly news the model hasn't seen, and cutoffs from 1.5 to 3 didn't help. Backtest 2002-2026:
+ * 51.9% over 883 bets (50.7% before 2015, 53.2% since). Totals are off: the same filters went
+ * 45.8% since 2015 (52.4% before).
+ */
 export const DEFAULT_STRATEGIES: Record<BetKind, Strategy> = {
   spread: {
     pick: "model",
-    model: "classic",
+    model: "market",
     market: "spread",
     minEdge: 0,
     maxReliability: 24,
     minGames: 8,
+    skipQbChange: true,
+    enabled: true,
     fromSeason: 2002,
     toSeason: 2100,
   },
-  // Mirrors the sides default, using the totals reliability (Sheet3 "Reliability - Total").
   total: {
     pick: "model",
-    model: "classic",
+    model: "market",
     market: "total",
     minEdge: 0,
     maxReliability: 24,
     minGames: 8,
+    skipQbChange: true,
+    enabled: false,
     fromSeason: 2002,
     toSeason: 2100,
   },
 };
 
+// Bumped when the defaults change, so earlier saved rules don't mask the new ones.
+const STRATEGIES_KEY = "strategies.v2";
+
 function loadStrategies(): Record<BetKind, Strategy> {
-  const saved = load<Partial<Record<BetKind, Strategy>>>("strategies", {});
-  // Earlier versions saved a single (sides) strategy under "strategy".
-  const legacy = load<Partial<Strategy>>("strategy", {});
-  const spread = { ...DEFAULT_STRATEGIES.spread, ...(saved.spread ?? (legacy.market === "spread" ? legacy : {})) };
-  const total = { ...DEFAULT_STRATEGIES.total, ...(saved.total ?? (legacy.market === "total" ? legacy : {})) };
+  const saved = load<Partial<Record<BetKind, Strategy>>>(STRATEGIES_KEY, {});
+  const spread = { ...DEFAULT_STRATEGIES.spread, ...saved.spread };
+  const total = { ...DEFAULT_STRATEGIES.total, ...saved.total };
   return { spread: { ...spread, market: "spread" }, total: { ...total, market: "total", pick: "model" } };
 }
 
@@ -154,7 +167,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setStrategy: (kind, s) => {
       const next = { ...strategies, [kind]: { ...s, market: kind } };
       setStrategies(next);
-      save("strategies", next);
+      save(STRATEGIES_KEY, next);
     },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

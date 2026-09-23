@@ -1,6 +1,7 @@
 // Walk-forward engine: steps through every week in order, predicts that week's games
 // using only earlier data, then folds the week's results in. The same pass produces the
 // backtest (completed games) and the live predictions (upcoming games).
+import { qbStatus, type GameQbs } from "../data/qb";
 import { isFinal, type Game } from "../data/types";
 import { ClassicTeam, classicLine, classicTotal, type ClassicStats } from "./classic";
 import { fitMarket, marketLine, marketTotal, type MarketFit, type Observation } from "./market";
@@ -23,6 +24,8 @@ export interface Prediction {
   coverRanks: [number, number] | null;
   /** Fewest games either team has in its current tenure. */
   minGames: number;
+  /** Starting QBs as listed, with whether each changed from the team's previous game. */
+  qb: GameQbs | null;
 }
 
 export interface TeamRating {
@@ -66,6 +69,7 @@ function rankAscending(values: Map<string, number>): Map<string, number> {
 
 export function runModels(games: Game[], settings: Settings): ModelRun {
   const tenures = buildTenures(games, settings.resetOnCoachChange);
+  const qbs = qbStatus(games);
   const prevOf = (t: string) => tenures.tenures.get(t)?.prev ?? null;
   const classic = new Map<string, ClassicTeam>();
   const classicOf = (t: string) => {
@@ -149,6 +153,7 @@ export function runModels(games: Game[], settings: Settings): ModelRun {
           ranks.ou.has(h) && ranks.ou.has(a) ? ranks.ou.get(h)! + ranks.ou.get(a)! : null,
         coverRanks: ranks.cover.has(h) && ranks.cover.has(a) ? [ranks.cover.get(h)!, ranks.cover.get(a)!] : null,
         minGames: Math.min(classicOf(h).games, classicOf(a).games),
+        qb: qbs.get(g.id) ?? null,
       });
     }
 

@@ -22,6 +22,8 @@ const preds: Prediction[] = Array.from({ length: 800 }, (_, i) => {
     totalReliability: 2 + Math.floor(rand() * 63),
     coverRanks: [hr, ar],
     minGames: Math.floor(rand() * 30),
+    // Every fifth game has a QB change on one side.
+    qb: { home: { name: "H", prev: "H0", changed: i % 5 === 0 }, away: { name: "A", prev: "A", changed: false } },
   };
 });
 
@@ -36,8 +38,9 @@ describe("strategy grid", () => {
     { ...base, model: "market", market: "total" },
     { ...base, pick: "highVariance" },
     { ...base, pick: "lowVariance" },
+    { ...base, model: "market", skipQbChange: true },
   ] as Strategy[]) {
-    it(`matches evaluate() cell by cell (${variant.pick} ${variant.model} ${variant.market})`, () => {
+    it(`matches evaluate() cell by cell (${variant.pick} ${variant.model} ${variant.market}${variant.skipQbChange ? " skip-QB" : ""})`, () => {
       const steps = variant.pick === "model" ? [0, 1, 2.5, 4] : [1, 4, 8, 16];
       const cells = strategyGrid(preds, variant, steps, [8, 24, 40, null]);
       for (const c of cells) {
@@ -55,6 +58,15 @@ describe("bets", () => {
     const bet = betFor({ ...p, game: g, classic: { line: 5, total: 40 }, minGames: 20 }, { ...base, fromSeason: 0, toSeason: 9999 });
     expect(bet?.side).toBe("home");
     expect(bet?.result).toBe(1); // won by 4, laid 3
+  });
+
+  it("skipping QB changes drops exactly those games, and unknown starters too", () => {
+    const s = { ...base, fromSeason: 0, toSeason: 9999, minGames: 0 };
+    const all = preds.filter((p) => betFor(p, s));
+    const kept = preds.filter((p) => betFor(p, { ...s, skipQbChange: true }));
+    expect(kept.length).toBe(all.filter((p) => !p.qb!.home!.changed).length);
+    expect(kept.every((p) => !p.qb!.home!.changed)).toBe(true);
+    expect(betFor({ ...all[0], qb: null }, { ...s, skipQbChange: true })).toBeNull();
   });
 
   it("high- and low-variance picks take opposite sides", () => {

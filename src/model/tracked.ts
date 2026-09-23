@@ -1,5 +1,4 @@
 // Ideas we track but don't bet: fixed rules (no knobs to tune) so their live record stays honest.
-import { noQbChange, type GameQbs } from "../data/qb";
 import type { Prediction } from "./engine";
 import { betFor, type Bet, type Strategy } from "./metrics";
 
@@ -15,11 +14,9 @@ export const BIG_EDGE_NO_QB: Strategy = {
   minEdge: 6,
   maxReliability: null,
   minGames: 0,
+  skipQbChange: true,
   fromSeason: 0,
   toSeason: 9999,
 };
 
-export function bigEdgeNoQb(p: Prediction, qbs: GameQbs | undefined | null): Bet | null {
-  if (!noQbChange(qbs)) return null;
-  return betFor(p, BIG_EDGE_NO_QB);
-}
+export const bigEdgeNoQb = (p: Prediction): Bet | null => betFor(p, BIG_EDGE_NO_QB);

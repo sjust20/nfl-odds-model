@@ -5,7 +5,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import type { OddsFile } from "../src/data/odds";
 import type { PickLogFile } from "../src/data/pickLog";
-import { qbStatus } from "../src/data/qb";
 import { isFinal, type GamesFile } from "../src/data/types";
 import { currentWeek } from "../src/data/week";
 import { runModels } from "../src/model/engine";
@@ -28,7 +27,6 @@ try {
 } catch {
   // No sportsbook odds this run.
 }
-const qbs = qbStatus(games);
 const bookFor = new Map(odds?.games.map((o) => [o.gameId, o]) ?? []);
 
 const now = new Date();
@@ -62,7 +60,7 @@ for (const p of runModels(games, DEFAULT_SETTINGS).predictions) {
     totalReliability: p.totalReliability,
     coverRanks: p.coverRanks,
     minGames: p.minGames,
-    qb: qbs.get(g.id) ?? null,
+    qb: p.qb,
   });
   changed++;
 }
