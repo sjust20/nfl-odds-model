@@ -103,11 +103,20 @@ export interface LineRow {
   under_price: number | null;
 }
 
+/**
+ * Line rows are kept only for games kicking off within this many days of the snapshot. Books post
+ * lines for the whole season in advance (a Tuesday snapshot in September can hold 270+ games);
+ * those far-off lines stay in the raw snapshot and can be re-parsed later if needed.
+ */
+export const LINE_HORIZON_DAYS = 10;
+
 /** Flattens a snapshot's events into one row per game, book and market. */
 export function parseSnapshot(snapshotTs: string, events: ApiEvent[], games: Game[]): { rows: LineRow[]; unmatched: string[] } {
   const rows: LineRow[] = [];
   const unmatched: string[] = [];
+  const horizon = Date.parse(snapshotTs) + LINE_HORIZON_DAYS * 86400e3;
   for (const ev of events) {
+    if (Date.parse(ev.commence_time) > horizon) continue;
     const game = matchGame(games, ev.home_team, ev.away_team, ev.commence_time);
     if (!game) unmatched.push(`${ev.away_team} at ${ev.home_team} (${ev.commence_time})`);
     const base = {

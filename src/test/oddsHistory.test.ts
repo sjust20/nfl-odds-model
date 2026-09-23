@@ -69,6 +69,13 @@ describe("snapshot parsing", () => {
     { id: "e2", commence_time: "2024-09-08T17:00:00Z", home_team: "Nowhere Nobodies", away_team: "Atlanta Falcons", bookmakers: [] },
   ];
 
+  it("skips games beyond the line horizon (they stay in the raw snapshot)", () => {
+    const far = { ...events[0], id: "far", commence_time: "2024-12-22T21:00:00Z" };
+    const { rows, unmatched } = parseSnapshot("2024-09-08T16:55:00Z", [far], []);
+    expect(rows).toHaveLength(0);
+    expect(unmatched).toHaveLength(0);
+  });
+
   it("stores spreads as points the home team is favored by, and totals as the total", () => {
     const { rows, unmatched } = parseSnapshot("2024-09-08T16:55:00Z", events, [game("2024_01_ATL_GB", "2024-09-08", "13:00")]);
     const spread = rows.find((r) => r.market === "spreads")!;
