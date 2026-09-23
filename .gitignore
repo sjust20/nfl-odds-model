@@ -1,0 +1,7 @@
+node_modules
+dist
+public/data/games.json
+*.xlsx
+*.xlsm
+~$*
+public/data/odds.json

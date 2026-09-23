@@ -1,0 +1,386 @@
+import { useMemo } from "react";
+import { DivergingColumns, StatTile } from "../components/charts";
+import { teamName } from "../data/teams";
+import { isFinal, type Game } from "../data/types";
+import { lineLabel, num, pct, shortDate } from "../format";
+import type { Prediction } from "../model/engine";
+import {
+  accuracy,
+  betFor,
+  BREAK_EVEN,
+  evaluate,
+  record,
+  strategyGrid,
+  type BetRecord,
+  type GridCell,
+  type Strategy,
+} from "../model/metrics";
+import { DEFAULT_STRATEGY, useApp } from "../state";
+
+const RELIABILITY_OPTIONS = [8, 12, 16, 20, 24, 32, 40, 48];
+const EDGE_STEPS = [0, 1, 2, 3, 4, 5, 6];
+const GAP_STEPS = [1, 4, 8, 12, 16, 20, 24];
+const GRID_RELIABILITY: (number | null)[] = [8, 16, 24, 32, 40, null];
+const SMALL_SAMPLE = 100;
+
+export function strategySummary(s: Strategy): string {
+  const parts: string[] = [];
+  if (s.pick === "model") {
+    parts.push(`${s.model === "market" ? "Market" : "Classic"} ${s.market === "spread" ? "sides" : "totals"}`);
+    parts.push(s.minEdge > 0 ? `edge > ${s.minEdge}` : "any edge");
+  } else {
+    parts.push(`${s.pick === "highVariance" ? "high" : "low"}-variance side, rank gap ≥ ${Math.max(1, s.minEdge)}`);
+  }
+  if (s.maxReliability !== null) parts.push(`reliability ≤ ${s.maxReliability}`);
+  if (s.minGames > 0) parts.push(`≥ ${s.minGames} games`);
+  return parts.join(", ");
+}
+
+function verdict(r: BetRecord) {
+  const n = r.wins + r.losses;
+  if (n < 30) return { text: "Too few bets to judge", tone: "" };
+  if (r.lo > BREAK_EVEN) return { text: "Above break-even, even at the low end of the 95% range", tone: "good" };
+  if (r.hi < BREAK_EVEN) return { text: "Below break-even, even at the high end of the 95% range", tone: "bad" };
+  return { text: "Can't tell apart from break-even: the 95% range includes 52.4%", tone: "" };
+}
+
+/** Diverging fill around break-even: blue arm above, red arm below, gray at the midpoint. */
+function cellStyle(c: GridCell) {
+  const n = c.record.wins + c.record.losses;
+  if (!n) return {};
+  const d = Math.max(-1, Math.min(1, (c.record.pct - BREAK_EVEN) / 0.06));
+  const pole = d >= 0 ? "var(--pos)" : "var(--neg)";
+  const mix = Math.round(Math.abs(d) * 85);
+  return {
+    background: `color-mix(in oklab, ${pole} ${mix}%, var(--mid))`,
+    color: mix > 55 ? "#fff" : "var(--ink)",
+    opacity: n < SMALL_SAMPLE ? 0.45 : 1,
+  };
+}
+
+function Grid({ cells, gapMode, title }: { cells: GridCell[]; gapMode: boolean; title: string }) {
+  const rows = [...new Set(cells.map((c) => c.minEdge))];
+  return (
+    <div className="grid-panel">
+      <h3>{title}</h3>
+      <div className="table-wrap">
+        <table className="heat">
+          <thead>
+            <tr>
+              <th>{gapMode ? "Rank gap ≥" : "Edge >"}</th>
+              {GRID_RELIABILITY.map((r) => (
+                <th key={String(r)}>{r === null ? "Any" : `≤ ${r}`}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((e) => (
+              <tr key={e}>
+                <th>{e}</th>
+                {cells
+                  .filter((c) => c.minEdge === e)
+                  .map((c) => {
+                    const n = c.record.wins + c.record.losses;
+                    return (
+                      <td
+                        key={String(c.maxReliability)}
+                        style={cellStyle(c)}
+                        title={`${c.record.wins}-${c.record.losses}-${c.record.pushes}, 95% range ${pct(c.record.lo)}–${pct(c.record.hi)}`}
+                      >
+                        <div className="heat-pct">{n ? pct(c.record.pct) : "–"}</div>
+                        <div className="heat-n">n {n}</div>
+                      </td>
+                    );
+                  })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/** Grades logged (pre-kickoff) picks using the line available when they were logged. */
+function useLiveRecord(strategy: Strategy) {
+  const { pickLog, data } = useApp();
+  return useMemo(() => {
+    if (!pickLog || !data) return null;
+    const games = new Map(data.games.map((g) => [g.id, g]));
+    const bets: { p: Prediction; result: 1 | 0 | 0.5 | null; label: string }[] = [];
+    for (const lp of pickLog.picks) {
+      const g = games.get(lp.id);
+      if (!g) continue;
+      const game: Game = { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total };
+      const p: Prediction = {
+        game,
+        market: lp.market,
+        classic: lp.classic,
+        reliability: lp.reliability,
+        totalReliability: lp.totalReliability,
+        coverRanks: lp.coverRanks,
+        minGames: lp.minGames,
+      };
+      const bet = betFor(p, { ...strategy, fromSeason: 0, toSeason: 9999 });
+      if (!bet) continue;
+      const label =
+        bet.side === "home" || bet.side === "away"
+          ? `${bet.side === "home" ? g.home : g.away} (${lineLabel(g.home, g.away, game.line!)})`
+          : `${bet.side === "over" ? "Over" : "Under"} ${game.total}`;
+      bets.push({ p, result: bet.result, label });
+    }
+    const graded = bets.filter((b) => b.result !== null);
+    const rec = record(
+      graded.filter((b) => b.result === 1).length,
+      graded.filter((b) => b.result === 0).length,
+      graded.filter((b) => b.result === 0.5).length,
+    );
+    return { bets, rec, since: pickLog.picks[0]?.date ?? null };
+  }, [pickLog, data, strategy]);
+}
+
+export function LabPage() {
+  const { run, strategy, setStrategy } = useApp();
+  const preds = run!.predictions;
+  const s = strategy;
+  const gapMode = s.pick !== "model";
+  const set = (patch: Partial<Strategy>) => setStrategy({ ...s, ...patch });
+
+  const lastSeason = preds.filter((p) => isFinal(p.game)).at(-1)?.game.season ?? 2026;
+  const from = Math.max(2002, s.fromSeason);
+  const to = Math.min(lastSeason, s.toSeason);
+  const mid = Math.floor((from + to) / 2);
+
+  const result = useMemo(() => evaluate(preds, s), [preds, s]);
+  const grids = useMemo(() => {
+    const steps = gapMode ? GAP_STEPS : EDGE_STEPS;
+    return [
+      { title: `${from}–${mid}`, cells: strategyGrid(preds, { ...s, fromSeason: from, toSeason: mid }, steps, GRID_RELIABILITY) },
+      { title: `${mid + 1}–${to}`, cells: strategyGrid(preds, { ...s, fromSeason: mid + 1, toSeason: to }, steps, GRID_RELIABILITY) },
+    ];
+  }, [preds, s, gapMode, from, mid, to]);
+  const acc = useMemo(
+    () => ({
+      spread: accuracy(preds, s.model, "spread", from, to),
+      total: accuracy(preds, s.model, "total", from, to),
+    }),
+    [preds, s.model, from, to],
+  );
+  const live = useLiveRecord(s);
+  const v = verdict(result.overall);
+  const o = result.overall;
+
+  return (
+    <>
+      <div className="page-head">
+        <h1>Strategy lab</h1>
+        <p className="muted">
+          Every game from {from} on is predicted using only information from before it was played, then graded
+          against the closing line. Break-even at standard −110 odds is <strong>{pct(BREAK_EVEN)}</strong>. The rule
+          you set here also drives the picks on the This week page.
+        </p>
+      </div>
+
+      <div className="controls wrap">
+        <label>
+          Pick{" "}
+          <select value={s.pick} onChange={(e) => set({ pick: e.target.value as Strategy["pick"], ...(e.target.value !== "model" ? { market: "spread", minEdge: Math.max(1, s.minEdge) } : {}) })}>
+            <option value="model">Model vs line</option>
+            <option value="highVariance">High-variance team</option>
+            <option value="lowVariance">Low-variance team</option>
+          </select>
+        </label>
+        <label>
+          Model{" "}
+          <select value={s.model} disabled={gapMode} onChange={(e) => set({ model: e.target.value as Strategy["model"] })}>
+            <option value="classic">Classic</option>
+            <option value="market">Market</option>
+          </select>
+        </label>
+        <label>
+          Bet{" "}
+          <select value={s.market} disabled={gapMode} onChange={(e) => set({ market: e.target.value as Strategy["market"] })}>
+            <option value="spread">Sides (spread)</option>
+            <option value="total">Totals</option>
+          </select>
+        </label>
+        <label>
+          {gapMode ? "Min rank gap" : "Min edge (pts)"}{" "}
+          <input
+            type="number"
+            min={0}
+            step={gapMode ? 1 : 0.5}
+            value={s.minEdge}
+            onChange={(e) => set({ minEdge: Math.max(0, Number(e.target.value)) })}
+          />
+        </label>
+        <label>
+          Max reliability{" "}
+          <select
+            value={s.maxReliability ?? ""}
+            onChange={(e) => set({ maxReliability: e.target.value === "" ? null : Number(e.target.value) })}
+          >
+            <option value="">Any</option>
+            {RELIABILITY_OPTIONS.map((r) => (
+              <option key={r} value={r}>
+                ≤ {r}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Min games{" "}
+          <input type="number" min={0} value={s.minGames} onChange={(e) => set({ minGames: Math.max(0, Number(e.target.value)) })} />
+        </label>
+        <label>
+          Seasons{" "}
+          <input type="number" min={2002} max={lastSeason} value={from} onChange={(e) => set({ fromSeason: Number(e.target.value) })} />
+          –
+          <input type="number" min={2002} max={lastSeason} value={to} onChange={(e) => set({ toSeason: Number(e.target.value) })} />
+        </label>
+        <button type="button" className="link" onClick={() => setStrategy(DEFAULT_STRATEGY)}>
+          Reset
+        </button>
+      </div>
+
+      <div className="tiles">
+        <StatTile label="Record" value={`${o.wins}–${o.losses}–${o.pushes}`} note={strategySummary(s)} />
+        <StatTile label="Win rate" value={pct(o.pct)} note={`95% range ${pct(o.lo)} to ${pct(o.hi)}`} />
+        <StatTile label="Units at −110" value={`${o.units >= 0 ? "+" : "−"}${Math.abs(o.units).toFixed(1)}`} note="risking 1.1 to win 1 per bet" />
+        <StatTile label="Verdict" value={<span className={`verdict ${v.tone}`}>{v.text}</span>} />
+      </div>
+
+      <section className="card">
+        <h2>Win rate by season</h2>
+        <DivergingColumns
+          data={result.bySeason.map((r) => ({
+            key: String(r.season).slice(2),
+            value: r.pct,
+            title: String(r.season),
+            rows: [
+              { label: "win rate", value: pct(r.pct) },
+              { label: "record", value: `${r.wins}–${r.losses}–${r.pushes}` },
+            ],
+          }))}
+          baseline={BREAK_EVEN}
+          domain={[0.3, 0.7]}
+          format={(v) => pct(v, 0)}
+          refLabel="break-even 52.4%"
+          height={200}
+        />
+      </section>
+
+      <section className="card">
+        <h2>{gapMode ? "Rank gap" : "Edge"} × reliability, split into two eras</h2>
+        <p className="muted small">
+          Holding your other filters fixed. Blue beats break-even and red loses to it, with full color at ±6 points.
+          Faded cells have under {SMALL_SAMPLE} bets. A real effect should look similar in both eras; a lone bright
+          cell is usually luck.
+        </p>
+        <div className="grids">
+          {grids.map((g) => (
+            <Grid key={g.title} cells={g.cells} gapMode={gapMode} title={g.title} />
+          ))}
+        </div>
+      </section>
+
+      <div className="two-col">
+        <section className="card">
+          <h2>Live record</h2>
+          {!live || live.bets.length === 0 ? (
+            <p className="muted">
+              No logged picks match this rule yet. The nightly job logs each upcoming game's prediction before
+              kickoff. Those entries are never recomputed, so this becomes a true out-of-sample record.
+            </p>
+          ) : (
+            <>
+              <p className="muted small">
+                Picks logged since {live.since ? shortDate(live.since) : "–"} with default model settings, graded at
+                the line available when logged (sportsbook median when the odds feed is on).
+              </p>
+              <p>
+                <strong>
+                  {live.rec.wins}–{live.rec.losses}–{live.rec.pushes}
+                </strong>
+                {live.rec.wins + live.rec.losses > 0 && <> · {pct(live.rec.pct)}</>}
+              </p>
+              <table className="data compact">
+                <tbody>
+                  {live.bets.slice(-12).reverse().map((b) => (
+                    <tr key={b.p.game.id}>
+                      <td>
+                        {teamName(b.p.game.away)} at {teamName(b.p.game.home)}
+                      </td>
+                      <td>{b.label}</td>
+                      <td>
+                        {b.result === null ? (
+                          <span className="muted">Pending</span>
+                        ) : (
+                          <span className={`result ${b.result === 1 ? "won" : b.result === 0 ? "lost" : "push"}`}>
+                            {b.result === 1 ? "Won" : b.result === 0 ? "Lost" : "Push"}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </section>
+        <section className="card">
+          <h2>Prediction accuracy, {from}–{to}</h2>
+          <p className="muted small">Average miss vs the actual result (RMSE, points). Lower is better.</p>
+          <table className="data compact">
+            <thead>
+              <tr>
+                <th />
+                <th className="num">{s.model === "market" ? "Market" : "Classic"}</th>
+                <th className="num">Closing line</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Margin</td>
+                <td className="num">{num(acc.spread.rmseModel, 2)}</td>
+                <td className="num">{num(acc.spread.rmseLine, 2)}</td>
+              </tr>
+              <tr>
+                <td>Total points</td>
+                <td className="num">{num(acc.total.rmseModel, 2)}</td>
+                <td className="num">{num(acc.total.rmseLine, 2)}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="muted small">
+            If the closing line misses by less than the model, the market already knows more than the model on
+            average. Any edge has to come from specific situations.
+          </p>
+        </section>
+      </div>
+
+      <section className="card">
+        <h2>What the backtests have shown so far</h2>
+        <ul className="findings">
+          <li>
+            The spreadsheet rule (bet when the model disagrees with the line) wins about 50.5–51% on its own, whatever
+            the edge threshold.
+          </li>
+          <li>
+            Reliability only means something once both teams have played at least ~8 games under their coach.
+            Before that, a near-zero SD makes thin samples look like the steadiest teams. With that filter,
+            reliability ≤ ~24 has been the most promising lead: about 52% overall, and 53–54% since 2015 but only
+            about 51% before. The 95% range still includes break-even, and the rule came out of a search over
+            many combinations, so the live record is the real test.
+          </li>
+          <li>Betting the high- or low-variance team (sides only) shows no consistent edge at any rank gap.</li>
+          <li>Totals did well before 2014 and badly since. Large model edges on totals have lost recently.</li>
+          <li>
+            Coach resets: for the Market model, carrying some prior-regime evidence forward predicts better than a
+            hard reset. Keeping all history predicted best of all. Compare them yourself in Model settings.
+          </li>
+        </ul>
+      </section>
+    </>
+  );
+}

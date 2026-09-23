@@ -1,0 +1,447 @@
+{
+ "settingsNote": "{\"resetOnCoachChange\":true,\"classic\":{\"variant\":\"ema\",\"hfa\":3,\"sameSignFactor\":0.5,\"mixedSignFactor\":0.55,\"coverMinGames\":16,\"otherMinGames\":7,\"emaCap\":32,\"shrinkGames\":4},\"market\":{\"halfLifeWeeks\":4,\"seasonCarryover\":0.3,\"resultWeight\":0.3,\"coachCarryover\":1,\"ridgeGames\":0.25}}",
+ "picks": [
+  {
+   "id": "2026_03_ATL_GB",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-24",
+   "home": "GB",
+   "away": "ATL",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 4.5,
+   "total": 42.5,
+   "market": {
+    "line": 8.730909844266865,
+    "total": 44.93299190190872
+   },
+   "classic": {
+    "line": 4.535854715663464,
+    "total": 45.20000096013362
+   },
+   "reliability": 37,
+   "totalReliability": 34,
+   "coverRanks": [
+    10,
+    27
+   ],
+   "minGames": 36
+  },
+  {
+   "id": "2026_03_ARI_SF",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "SF",
+   "away": "ARI",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 8.5,
+   "total": 47.5,
+   "market": {
+    "line": 10.57352340659864,
+    "total": 45.76477585604922
+   },
+   "classic": {
+    "line": 6.945678476575068,
+    "total": 47.808962029911356
+   },
+   "reliability": 40,
+   "totalReliability": 37,
+   "coverRanks": [
+    21,
+    19
+   ],
+   "minGames": 53
+  },
+  {
+   "id": "2026_03_BAL_DAL",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "DAL",
+   "away": "BAL",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -3.5,
+   "total": 52.5,
+   "market": {
+    "line": -2.5321724005543627,
+    "total": 51.233106144290275
+   },
+   "classic": {
+    "line": -2.588180914798695,
+    "total": 53.98976608187134
+   },
+   "reliability": 49,
+   "totalReliability": 19,
+   "coverRanks": [
+    18,
+    31
+   ],
+   "minGames": 2
+  },
+  {
+   "id": "2026_03_CAR_CLE",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "CLE",
+   "away": "CAR",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -2.5,
+   "total": 42.5,
+   "market": {
+    "line": -2.863039319022588,
+    "total": 44.85397025805378
+   },
+   "classic": {
+    "line": 0.19311381707037167,
+    "total": 45.16753639170687
+   },
+   "reliability": 62,
+   "totalReliability": 29,
+   "coverRanks": [
+    30,
+    32
+   ],
+   "minGames": 2
+  },
+  {
+   "id": "2026_03_CIN_PIT",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "PIT",
+   "away": "CIN",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -3.5,
+   "total": 42.5,
+   "market": {
+    "line": -2.5082854162366615,
+    "total": 43.77960716831779
+   },
+   "classic": {
+    "line": -0.07983123988825996,
+    "total": 39.46829258804666
+   },
+   "reliability": 20,
+   "totalReliability": 27,
+   "coverRanks": [
+    3,
+    17
+   ],
+   "minGames": 2
+  },
+  {
+   "id": "2026_03_HOU_IND",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "IND",
+   "away": "HOU",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -2.5,
+   "total": 42.5,
+   "market": {
+    "line": -2.114942188225483,
+    "total": 46.66547602371049
+   },
+   "classic": {
+    "line": -1.0547579331006562,
+    "total": 47.48699100720502
+   },
+   "reliability": 28,
+   "totalReliability": 39,
+   "coverRanks": [
+    6,
+    22
+   ],
+   "minGames": 53
+  },
+  {
+   "id": "2026_03_KC_MIA",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "MIA",
+   "away": "KC",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -11.5,
+   "total": 46.5,
+   "market": {
+    "line": -7.769513184818425,
+    "total": 43.74305944498381
+   },
+   "classic": {
+    "line": -5.040197971043042,
+    "total": 43.04310203813084
+   },
+   "reliability": 12,
+   "totalReliability": 21,
+   "coverRanks": [
+    1,
+    11
+   ],
+   "minGames": 2
+  },
+  {
+   "id": "2026_03_LA_DEN",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "DEN",
+   "away": "LA",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -2.5,
+   "total": 45.5,
+   "market": {
+    "line": -1.8267612311256878,
+    "total": 43.04760585399237
+   },
+   "classic": {
+    "line": 0.14470136183628757,
+    "total": 45.02297096423768
+   },
+   "reliability": 43,
+   "totalReliability": 53,
+   "coverRanks": [
+    23,
+    20
+   ],
+   "minGames": 56
+  },
+  {
+   "id": "2026_03_LAC_BUF",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "BUF",
+   "away": "LAC",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 7,
+   "total": 50.5,
+   "market": {
+    "line": 8.140430858823025,
+    "total": 50.97510172885517
+   },
+   "classic": {
+    "line": 5.6193188909948155,
+    "total": 46.72758448080998
+   },
+   "reliability": 54,
+   "totalReliability": 30,
+   "coverRanks": [
+    28,
+    26
+   ],
+   "minGames": 38
+  },
+  {
+   "id": "2026_03_LV_NO",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "NO",
+   "away": "LV",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 3,
+   "total": 43.5,
+   "market": {
+    "line": 1.566020713571113,
+    "total": 41.50830161481629
+   },
+   "classic": {
+    "line": -1.2327625517812724,
+    "total": 41.026315789473685
+   },
+   "reliability": 11,
+   "totalReliability": 8,
+   "coverRanks": [
+    9,
+    2
+   ],
+   "minGames": 2
+  },
+  {
+   "id": "2026_03_MIN_TB",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "TB",
+   "away": "MIN",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -1.5,
+   "total": 42.5,
+   "market": {
+    "line": -2.6216412520191463,
+    "total": 41.58069044955727
+   },
+   "classic": {
+    "line": -0.010357266287594369,
+    "total": 43.25892895770167
+   },
+   "reliability": 26,
+   "totalReliability": 38,
+   "coverRanks": [
+    12,
+    14
+   ],
+   "minGames": 72
+  },
+  {
+   "id": "2026_03_NE_JAX",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "JAX",
+   "away": "NE",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 3,
+   "total": 45.5,
+   "market": {
+    "line": -0.3736424851854747,
+    "total": 42.77956975796533
+   },
+   "classic": {
+    "line": 1.5885987390850063,
+    "total": 43.35688579155399
+   },
+   "reliability": 20,
+   "totalReliability": 27,
+   "coverRanks": [
+    16,
+    4
+   ],
+   "minGames": 20
+  },
+  {
+   "id": "2026_03_NYJ_DET",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "DET",
+   "away": "NYJ",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 6.5,
+   "total": 47.5,
+   "market": {
+    "line": 7.366568025626798,
+    "total": 47.136942886724235
+   },
+   "classic": {
+    "line": 8.53875558483632,
+    "total": 49.81662053701386
+   },
+   "reliability": 32,
+   "totalReliability": 60,
+   "coverRanks": [
+    24,
+    8
+   ],
+   "minGames": 19
+  },
+  {
+   "id": "2026_03_SEA_WAS",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "WAS",
+   "away": "SEA",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -7,
+   "total": 40.5,
+   "market": {
+    "line": -9.724027468296184,
+    "total": 44.0357645041451
+   },
+   "classic": {
+    "line": -6.385398859378721,
+    "total": 46.57986301457109
+   },
+   "reliability": 42,
+   "totalReliability": 43,
+   "coverRanks": [
+    29,
+    13
+   ],
+   "minGames": 39
+  },
+  {
+   "id": "2026_03_TEN_NYG",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-27",
+   "home": "NYG",
+   "away": "TEN",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": 2.5,
+   "total": 39.5,
+   "market": {
+    "line": 5.320252233150082,
+    "total": 41.548648910233375
+   },
+   "classic": {
+    "line": 3.0681615812852643,
+    "total": 39.75
+   },
+   "reliability": 30,
+   "totalReliability": 10,
+   "coverRanks": [
+    25,
+    5
+   ],
+   "minGames": 2
+  },
+  {
+   "id": "2026_03_PHI_CHI",
+   "season": 2026,
+   "week": 3,
+   "date": "2026-09-28",
+   "home": "CHI",
+   "away": "PHI",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -4.5,
+   "total": 41.5,
+   "market": {
+    "line": 3.7678616404851204,
+    "total": 44.59521009541295
+   },
+   "classic": {
+    "line": 0.6332008665110043,
+    "total": 46.445471382456574
+   },
+   "reliability": 22,
+   "totalReliability": 51,
+   "coverRanks": [
+    7,
+    15
+   ],
+   "minGames": 21
+  },
+  {
+   "id": "2026_04_PIT_CLE",
+   "season": 2026,
+   "week": 4,
+   "date": "2026-10-01",
+   "home": "CLE",
+   "away": "PIT",
+   "loggedAt": "2026-09-23T19:07:03.650Z",
+   "line": -3,
+   "total": 38.5,
+   "market": {
+    "line": -1.8895002378087953,
+    "total": 35.827893396186184
+   },
+   "classic": {
+    "line": -0.305995861992983,
+    "total": 35.5
+   },
+   "reliability": 33,
+   "totalReliability": 5,
+   "coverRanks": [
+    30,
+    3
+   ],
+   "minGames": 2
+  }
+ ]
+}
