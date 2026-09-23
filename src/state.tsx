@@ -29,16 +29,41 @@ const optional = <T,>(url: string): Promise<T | null> =>
     .then((r) => (r.ok ? (r.json() as Promise<T>) : null))
     .catch(() => null);
 
-export const DEFAULT_STRATEGY: Strategy = {
-  pick: "model",
-  model: "classic",
-  market: "spread",
-  minEdge: 0,
-  maxReliability: 24,
-  minGames: 8,
-  fromSeason: 2002,
-  toSeason: 2100,
+export type BetKind = Strategy["market"];
+
+/** One strategy for sides and one for totals; each drives its own pick column. */
+export const DEFAULT_STRATEGIES: Record<BetKind, Strategy> = {
+  spread: {
+    pick: "model",
+    model: "classic",
+    market: "spread",
+    minEdge: 0,
+    maxReliability: 24,
+    minGames: 8,
+    fromSeason: 2002,
+    toSeason: 2100,
+  },
+  // Mirrors the sides default, using the totals reliability (Sheet3 "Reliability - Total").
+  total: {
+    pick: "model",
+    model: "classic",
+    market: "total",
+    minEdge: 0,
+    maxReliability: 24,
+    minGames: 8,
+    fromSeason: 2002,
+    toSeason: 2100,
+  },
 };
+
+function loadStrategies(): Record<BetKind, Strategy> {
+  const saved = load<Partial<Record<BetKind, Strategy>>>("strategies", {});
+  // Earlier versions saved a single (sides) strategy under "strategy".
+  const legacy = load<Partial<Strategy>>("strategy", {});
+  const spread = { ...DEFAULT_STRATEGIES.spread, ...(saved.spread ?? (legacy.market === "spread" ? legacy : {})) };
+  const total = { ...DEFAULT_STRATEGIES.total, ...(saved.total ?? (legacy.market === "total" ? legacy : {})) };
+  return { spread: { ...spread, market: "spread" }, total: { ...total, market: "total", pick: "model" } };
+}
 
 interface AppState {
   data: GamesFile | null;
@@ -49,8 +74,8 @@ interface AppState {
   error: string | null;
   settings: Settings;
   setSettings: (s: Settings) => void;
-  strategy: Strategy;
-  setStrategy: (s: Strategy) => void;
+  strategies: Record<BetKind, Strategy>;
+  setStrategy: (kind: BetKind, s: Strategy) => void;
 }
 
 const Ctx = createContext<AppState | null>(null);
@@ -66,7 +91,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const s = load("settings", DEFAULT_SETTINGS);
     return { ...s, classic: { ...DEFAULT_SETTINGS.classic, ...s.classic }, market: { ...DEFAULT_SETTINGS.market, ...s.market } };
   });
-  const [strategy, setStrategyState] = useState<Strategy>(() => load("strategy", DEFAULT_STRATEGY));
+  const [strategies, setStrategies] = useState<Record<BetKind, Strategy>>(loadStrategies);
   const worker = useRef<Worker | null>(null);
   const request = useRef(0);
 
@@ -125,10 +150,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setSettingsState(s);
       save("settings", s);
     },
-    strategy,
-    setStrategy: (s) => {
-      setStrategyState(s);
-      save("strategy", s);
+    strategies,
+    setStrategy: (kind, s) => {
+      const next = { ...strategies, [kind]: { ...s, market: kind } };
+      setStrategies(next);
+      save("strategies", next);
     },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

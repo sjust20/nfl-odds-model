@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { DivergingColumns, StatTile } from "../components/charts";
 import { teamName } from "../data/teams";
 import { isFinal, type Game } from "../data/types";
@@ -15,7 +16,7 @@ import {
   type GridCell,
   type Strategy,
 } from "../model/metrics";
-import { DEFAULT_STRATEGY, useApp } from "../state";
+import { DEFAULT_STRATEGIES, useApp, type BetKind } from "../state";
 
 const RELIABILITY_OPTIONS = [8, 12, 16, 20, 24, 32, 40, 48];
 const EDGE_STEPS = [0, 1, 2, 3, 4, 5, 6];
@@ -140,11 +141,13 @@ function useLiveRecord(strategy: Strategy) {
 }
 
 export function LabPage() {
-  const { run, strategy, setStrategy } = useApp();
+  const { run, strategies, setStrategy } = useApp();
+  const [params, setParams] = useSearchParams();
+  const kind: BetKind = params.get("bet") === "total" ? "total" : "spread";
   const preds = run!.predictions;
-  const s = strategy;
+  const s = strategies[kind];
   const gapMode = s.pick !== "model";
-  const set = (patch: Partial<Strategy>) => setStrategy({ ...s, ...patch });
+  const set = (patch: Partial<Strategy>) => setStrategy(kind, { ...s, ...patch });
 
   const lastSeason = preds.filter((p) => isFinal(p.game)).at(-1)?.game.season ?? 2026;
   const from = Math.max(2002, s.fromSeason);
@@ -176,32 +179,47 @@ export function LabPage() {
         <h1>Strategy lab</h1>
         <p className="muted">
           Every game from {from} on is predicted using only information from before it was played, then graded
-          against the closing line. Break-even at standard −110 odds is <strong>{pct(BREAK_EVEN)}</strong>. The rule
-          you set here also drives the picks on the This week page.
+          against the closing line. Break-even at standard −110 odds is <strong>{pct(BREAK_EVEN)}</strong>. There are
+          two rules, one for sides and one for totals. Each drives its own pick column on the This week page.
         </p>
       </div>
 
+      <div className="tabs" role="tablist" aria-label="Bet type">
+        {(["spread", "total"] as const).map((k) => (
+          <button
+            key={k}
+            type="button"
+            role="tab"
+            aria-selected={kind === k}
+            className={kind === k ? "active" : ""}
+            onClick={() => setParams(k === "total" ? { bet: "total" } : {})}
+          >
+            {k === "spread" ? "Sides" : "Totals"}
+          </button>
+        ))}
+      </div>
+
       <div className="controls wrap">
-        <label>
-          Pick{" "}
-          <select value={s.pick} onChange={(e) => set({ pick: e.target.value as Strategy["pick"], ...(e.target.value !== "model" ? { market: "spread", minEdge: Math.max(1, s.minEdge) } : {}) })}>
-            <option value="model">Model vs line</option>
-            <option value="highVariance">High-variance team</option>
-            <option value="lowVariance">Low-variance team</option>
-          </select>
-        </label>
+        {kind === "spread" && (
+          <label>
+            Pick{" "}
+            <select
+              value={s.pick}
+              onChange={(e) =>
+                set({ pick: e.target.value as Strategy["pick"], ...(e.target.value !== "model" ? { minEdge: Math.max(1, s.minEdge) } : {}) })
+              }
+            >
+              <option value="model">Model vs line</option>
+              <option value="highVariance">High-variance team</option>
+              <option value="lowVariance">Low-variance team</option>
+            </select>
+          </label>
+        )}
         <label>
           Model{" "}
           <select value={s.model} disabled={gapMode} onChange={(e) => set({ model: e.target.value as Strategy["model"] })}>
             <option value="classic">Classic</option>
             <option value="market">Market</option>
-          </select>
-        </label>
-        <label>
-          Bet{" "}
-          <select value={s.market} disabled={gapMode} onChange={(e) => set({ market: e.target.value as Strategy["market"] })}>
-            <option value="spread">Sides (spread)</option>
-            <option value="total">Totals</option>
           </select>
         </label>
         <label>
@@ -214,7 +232,7 @@ export function LabPage() {
             onChange={(e) => set({ minEdge: Math.max(0, Number(e.target.value)) })}
           />
         </label>
-        <label>
+        <label title={kind === "total" ? "Sum of both teams' over/under consistency ranks" : "Sum of both teams' cover consistency ranks"}>
           Max reliability{" "}
           <select
             value={s.maxReliability ?? ""}
@@ -238,7 +256,7 @@ export function LabPage() {
           –
           <input type="number" min={2002} max={lastSeason} value={to} onChange={(e) => set({ toSeason: Number(e.target.value) })} />
         </label>
-        <button type="button" className="link" onClick={() => setStrategy(DEFAULT_STRATEGY)}>
+        <button type="button" className="link" onClick={() => setStrategy(kind, DEFAULT_STRATEGIES[kind])}>
           Reset
         </button>
       </div>

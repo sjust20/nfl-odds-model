@@ -34,7 +34,9 @@ function PickCell({ p, strategy }: { p: Prediction; strategy: Strategy }) {
 }
 
 export function WeekPage() {
-  const { run, odds, strategy, data } = useApp();
+  const { run, odds, strategies, data } = useApp();
+  const sides = strategies.spread;
+  const totals = strategies.total;
   const preds = run!.predictions;
   const week = currentWeek(data!.games);
   const next = week ? preds.find((p) => p.game.season === week.season && p.game.week === week.week) : undefined;
@@ -75,7 +77,10 @@ export function WeekPage() {
           )}
         </span>
         <span className="chip">
-          Picks use: {strategySummary(strategy)} · <Link to="/lab">change</Link>
+          Sides: {strategySummary(sides)} · <Link to="/lab">change</Link>
+        </span>
+        <span className="chip">
+          Totals: {strategySummary(totals)} · <Link to="/lab?bet=total">change</Link>
         </span>
       </div>
 
@@ -97,8 +102,11 @@ export function WeekPage() {
                 <th>Classic</th>
                 <th className="num">Edge (M / C)</th>
                 <th>Total: book / M / C</th>
-                <th className="num" title="Sum of both teams' cover-consistency ranks; lower = steadier">Reliability</th>
-                <th>Pick</th>
+                <th className="num" title="Sum of both teams' consistency ranks (cover for sides, over/under for totals); lower = steadier">
+                  Reliability (S / T)
+                </th>
+                <th>Side pick</th>
+                <th>Total pick</th>
               </tr>
             </thead>
             <tbody>
@@ -142,15 +150,18 @@ export function WeekPage() {
                       {total ?? "–"} / {num(p.market.total)} / {p.classic ? num(p.classic.total) : "–"}
                     </td>
                     <td className="num">
-                      {p.reliability ?? "–"}
-                      {p.minGames < strategy.minGames && (
+                      {p.reliability ?? "–"} / {p.totalReliability ?? "–"}
+                      {p.minGames < Math.max(sides.minGames, totals.minGames) && (
                         <div className="muted small" title="A team has few games under its current coach">
                           thin ({p.minGames}g)
                         </div>
                       )}
                     </td>
                     <td>
-                      {line === null ? <span className="muted">–</span> : <PickCell p={atBookLine(p, line, total)} strategy={strategy} />}
+                      {line === null ? <span className="muted">–</span> : <PickCell p={atBookLine(p, line, total)} strategy={sides} />}
+                    </td>
+                    <td>
+                      {total === null ? <span className="muted">–</span> : <PickCell p={atBookLine(p, line, total)} strategy={totals} />}
                     </td>
                   </tr>
                 );
@@ -175,7 +186,9 @@ export function WeekPage() {
                   <th className="num">Home cover</th>
                   <th>Market model</th>
                   <th>Classic</th>
-                  <th>Strategy pick</th>
+                  <th>Final total</th>
+                  <th>Side pick</th>
+                  <th>Total pick</th>
                 </tr>
               </thead>
               <tbody>
@@ -195,7 +208,12 @@ export function WeekPage() {
                       <td className="num">{cover === null ? "–" : signed(cover)}</td>
                       <td>{lineLabel(g.home, g.away, p.market.line)}</td>
                       <td>{p.classic ? lineLabel(g.home, g.away, p.classic.line) : "–"}</td>
-                      <td>{g.line === null ? "–" : <PickCell p={p} strategy={strategy} />}</td>
+                      <td>
+                        {g.homeScore + g.awayScore}
+                        {g.total !== null && <span className="muted small"> (line {g.total})</span>}
+                      </td>
+                      <td>{g.line === null ? "–" : <PickCell p={p} strategy={sides} />}</td>
+                      <td>{g.total === null ? "–" : <PickCell p={p} strategy={totals} />}</td>
                     </tr>
                   );
                 })}
