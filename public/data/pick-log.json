@@ -8,11 +8,11 @@
    "date": "2026-09-24",
    "home": "GB",
    "away": "ATL",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 4.5,
    "total": 42.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 5,
+   "bookTotal": 43,
    "market": {
     "line": 8.730909844266865,
     "total": 44.93299190190872
@@ -36,11 +36,11 @@
    "date": "2026-09-27",
    "home": "SF",
    "away": "ARI",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 8.5,
    "total": 47.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 8.5,
+   "bookTotal": 48,
    "market": {
     "line": 10.57352340659864,
     "total": 45.76477585604922
@@ -64,11 +64,11 @@
    "date": "2026-09-27",
    "home": "DAL",
    "away": "BAL",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -3.5,
    "total": 52.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -3.5,
+   "bookTotal": 52.5,
    "market": {
     "line": -2.5321724005543627,
     "total": 51.233106144290275
@@ -92,11 +92,11 @@
    "date": "2026-09-27",
    "home": "CLE",
    "away": "CAR",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -2.5,
    "total": 42.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -3,
+   "bookTotal": 42,
    "market": {
     "line": -2.863039319022588,
     "total": 44.85397025805378
@@ -120,11 +120,11 @@
    "date": "2026-09-27",
    "home": "PIT",
    "away": "CIN",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -3.5,
    "total": 42.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -3.5,
+   "bookTotal": 42.5,
    "market": {
     "line": -2.5082854162366615,
     "total": 43.77960716831779
@@ -148,11 +148,11 @@
    "date": "2026-09-27",
    "home": "IND",
    "away": "HOU",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -2.5,
    "total": 42.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -2.5,
+   "bookTotal": 42.5,
    "market": {
     "line": -2.114942188225483,
     "total": 46.66547602371049
@@ -176,11 +176,11 @@
    "date": "2026-09-27",
    "home": "MIA",
    "away": "KC",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -11.5,
    "total": 46.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -11.5,
+   "bookTotal": 46,
    "market": {
     "line": -7.769513184818425,
     "total": 43.74305944498381
@@ -204,11 +204,11 @@
    "date": "2026-09-27",
    "home": "DEN",
    "away": "LA",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -2.5,
    "total": 45.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -2.5,
+   "bookTotal": 45,
    "market": {
     "line": -1.8267612311256878,
     "total": 43.04760585399237
@@ -232,11 +232,11 @@
    "date": "2026-09-27",
    "home": "BUF",
    "away": "LAC",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 7,
    "total": 50.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 7.5,
+   "bookTotal": 50,
    "market": {
     "line": 8.140430858823025,
     "total": 50.97510172885517
@@ -260,11 +260,11 @@
    "date": "2026-09-27",
    "home": "NO",
    "away": "LV",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 3,
    "total": 43.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 3,
+   "bookTotal": 43.5,
    "market": {
     "line": 1.566020713571113,
     "total": 41.50830161481629
@@ -288,11 +288,11 @@
    "date": "2026-09-27",
    "home": "TB",
    "away": "MIN",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -1.5,
    "total": 42.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -1.5,
+   "bookTotal": 42.5,
    "market": {
     "line": -2.6216412520191463,
     "total": 41.58069044955727
@@ -316,11 +316,11 @@
    "date": "2026-09-27",
    "home": "JAX",
    "away": "NE",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 3,
    "total": 45.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 3,
+   "bookTotal": 45.5,
    "market": {
     "line": -0.3736424851854747,
     "total": 42.77956975796533
@@ -344,11 +344,11 @@
    "date": "2026-09-27",
    "home": "DET",
    "away": "NYJ",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 6.5,
    "total": 47.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 6.5,
+   "bookTotal": 47.5,
    "market": {
     "line": 7.366568025626798,
     "total": 47.136942886724235
@@ -372,11 +372,11 @@
    "date": "2026-09-27",
    "home": "WAS",
    "away": "SEA",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -7,
    "total": 40.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -7,
+   "bookTotal": 40,
    "market": {
     "line": -9.724027468296184,
     "total": 44.0357645041451
@@ -400,11 +400,11 @@
    "date": "2026-09-27",
    "home": "NYG",
    "away": "TEN",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": 2.5,
    "total": 39.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": 3,
+   "bookTotal": 39.5,
    "market": {
     "line": 5.320252233150082,
     "total": 41.548648910233375
@@ -428,11 +428,11 @@
    "date": "2026-09-28",
    "home": "CHI",
    "away": "PHI",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -4.5,
    "total": 41.5,
-   "bookLine": null,
-   "bookTotal": null,
+   "bookLine": -4.5,
+   "bookTotal": 41,
    "market": {
     "line": 3.7678616404851204,
     "total": 44.59521009541295
@@ -456,7 +456,7 @@
    "date": "2026-10-01",
    "home": "CLE",
    "away": "PIT",
-   "loggedAt": "2026-09-23T19:32:56.774Z",
+   "loggedAt": "2026-09-23T19:36:18.607Z",
    "line": -3,
    "total": 38.5,
    "bookLine": null,
