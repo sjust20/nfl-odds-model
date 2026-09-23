@@ -164,6 +164,14 @@ export function TeamPage() {
         <section className="card">
           <h2>Coaching history</h2>
           <p className="muted small">Each change, including interim coaches, starts a new history when resets are on.</p>
+          {(data!.coachCorrections ?? [])
+            .filter((c) => c.team === team && c.kind !== "spelling")
+            .map((c) => (
+              <p key={`${c.season}${c.now}`} className="small">
+                Corrected: nflverse listed {c.was} for {c.season}; using {c.now}
+                {c.kind === "espn" ? " (ESPN's current head coach)" : " (manual override)"}.
+              </p>
+            ))}
           <table className="data compact">
             <thead>
               <tr>

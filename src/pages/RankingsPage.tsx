@@ -8,7 +8,8 @@ import { useApp } from "../state";
 type SortKey = "market" | "classic";
 
 export function RankingsPage() {
-  const { run, settings } = useApp();
+  const { run, settings, data } = useApp();
+  const fixes = (data!.coachCorrections ?? []).filter((c) => c.kind !== "spelling");
   const [sort, setSort] = useState<SortKey>("market");
   const r = run!;
   const season = r.history.at(-1)?.season;
@@ -35,6 +36,19 @@ export function RankingsPage() {
           advantage is currently {num(r.hfa)} points.
         </p>
       </div>
+      {fixes.length > 0 && (
+        <div className="callout">
+          <strong>Coach data corrected.</strong> nflverse's head-coach column was out of date for{" "}
+          {fixes.map((c, i) => (
+            <span key={`${c.team}${c.season}`}>
+              {i > 0 && (i === fixes.length - 1 ? ", and " : ", ")}
+              {teamName(c.team)} ({c.was} → {c.now}, {c.season})
+            </span>
+          ))}
+          . {fixes.some((c) => c.kind === "espn") && "Current coaches are checked against ESPN nightly. "}
+          Manual fixes go in <code>data/coach-overrides.json</code>.
+        </div>
+      )}
       <div className="controls">
         <label>
           Sort by{" "}

@@ -8,6 +8,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { median, type BookOdds, type GameOdds, type OddsFile } from "../src/data/odds";
 import { TEAMS } from "../src/data/teams";
 import type { GamesFile } from "../src/data/types";
+import { currentWeek } from "../src/data/week";
 
 const OUT = new URL("../public/data/odds.json", import.meta.url);
 const GAMES = new URL("../public/data/games.json", import.meta.url);
@@ -85,8 +86,17 @@ async function main() {
     return;
   }
 
+  // Only the current NFL week: from now through a day after its last game.
+  const { games }: GamesFile = JSON.parse(await readFile(GAMES, "utf8"));
+  const week = currentWeek(games);
+  if (!week) {
+    console.log("No upcoming games; skipping sportsbook odds");
+    return;
+  }
+  const thisWeek = new Set(week.games.map((g) => g.id));
+  const lastDate = week.games.reduce((m, g) => (g.date > m ? g.date : m), week.games[0].date);
   const from = new Date();
-  const to = new Date(from.getTime() + 8 * 86400e3);
+  const to = new Date(Date.parse(`${lastDate}T00:00:00Z`) + 2 * 86400e3);
   const iso = (d: Date) => d.toISOString().replace(/\.\d{3}Z$/, "Z");
   const url = new URL(API);
   url.search = new URLSearchParams({
@@ -102,17 +112,16 @@ async function main() {
   const events: ApiEvent[] = await res.json();
   const remaining = Number(res.headers.get("x-requests-remaining"));
 
-  // Match to nflverse game ids by teams, allowing a day either side (UTC vs US dates).
-  const { games }: GamesFile = JSON.parse(await readFile(GAMES, "utf8"));
+  // Match to this week's nflverse game ids by teams, allowing a day either side (UTC vs US dates).
   const out: GameOdds[] = [];
   for (const ev of events) {
     const home = abbrByName.get(ev.home_team);
     const away = abbrByName.get(ev.away_team);
     const t = Date.parse(ev.commence_time);
-    const game = games.find(
+    const game = week.games.find(
       (g) => g.home === home && g.away === away && Math.abs(Date.parse(`${g.date}T12:00:00Z`) - t) < 1.5 * 86400e3,
     );
-    if (!game) {
+    if (!game || !thisWeek.has(game.id)) {
       console.warn(`No schedule match for ${ev.away_team} at ${ev.home_team} (${ev.commence_time})`);
       continue;
     }
@@ -132,7 +141,7 @@ async function main() {
     games: out,
   };
   await writeFile(OUT, JSON.stringify(file));
-  console.log(`Fetched odds for ${out.length} games; ${file.remaining ?? "?"} credits left`);
+  console.log(`Fetched odds for ${out.length} of ${week.games.length} games in ${week.season} week ${week.week}; ${file.remaining ?? "?"} credits left`);
 }
 
 // Odds are a nice-to-have: warn (GitHub annotation) but never block the nightly data refresh.

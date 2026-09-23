@@ -1,7 +1,9 @@
 // Downloads nflverse games.csv and writes the slim JSON the site loads.
 // Run: npm run data
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { applyOverrides, reconcileCurrentCoaches, type CoachOverride } from "../src/data/coaches";
 import { parseCsv } from "../src/data/csv";
+import { currentWeek } from "../src/data/week";
 import type { Game, GamesFile, GameType } from "../src/data/types";
 
 const SOURCE = "https://github.com/nflverse/nfldata/raw/master/data/games.csv";
@@ -9,6 +11,43 @@ const OUT = new URL("../public/data/games.json", import.meta.url);
 
 // Relocated franchises use their current abbreviation throughout.
 const RELOCATED: Record<string, string> = { OAK: "LV", SD: "LAC", STL: "LA" };
+
+const OVERRIDES = new URL("../data/coach-overrides.json", import.meta.url);
+const ESPN_TEAMS = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams";
+const espnCoaches = (season: number, id: string) =>
+  `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/${season}/teams/${id}/coaches`;
+const ESPN_ABBR: Record<string, string> = { WSH: "WAS", LAR: "LA" };
+
+async function getJson<T>(url: string): Promise<T> {
+  const res = await fetch(url.replace(/^http:/, "https:"));
+  if (!res.ok) throw new Error(`${res.status} ${url}`);
+  return res.json() as Promise<T>;
+}
+
+/**
+ * Each team's current head coach from ESPN's (unofficial) API. ESPN only knows the present
+ * coach, so this can only check the current season. Teams listing several coaches are skipped.
+ */
+async function currentCoachesFromEspn(season: number): Promise<{ coaches: Record<string, string>; skipped: string[] }> {
+  type Teams = { sports: { leagues: { teams: { team: { id: string; abbreviation: string } }[] }[] }[] };
+  const teams = (await getJson<Teams>(ESPN_TEAMS)).sports[0].leagues[0].teams.map((t) => t.team);
+  const coaches: Record<string, string> = {};
+  const skipped: string[] = [];
+  await Promise.all(
+    teams.map(async (t) => {
+      const abbr = ESPN_ABBR[t.abbreviation] ?? t.abbreviation;
+      const list = await getJson<{ items?: { $ref: string }[] }>(espnCoaches(season, t.id));
+      const items = list.items ?? [];
+      if (items.length !== 1) {
+        skipped.push(`${abbr} (${items.length} coaches listed)`);
+        return;
+      }
+      const c = await getJson<{ firstName: string; lastName: string }>(items[0].$ref);
+      coaches[abbr] = `${c.firstName} ${c.lastName}`.trim();
+    }),
+  );
+  return { coaches, skipped };
+}
 
 const num = (s: string): number | null => (s === "" || s === "NA" ? null : Number(s));
 
@@ -51,7 +90,36 @@ async function main() {
 
   if (games.length < 7000) throw new Error(`Only ${games.length} games parsed; refusing to publish`);
 
-  const file: GamesFile = { updatedAt: new Date().toISOString(), source: SOURCE, games };
+  // Coach corrections: manual overrides first, then the current season vs ESPN.
+  const { overrides }: { overrides: CoachOverride[] } = JSON.parse(await readFile(OVERRIDES, "utf8"));
+  const { corrections, locked } = applyOverrides(games, overrides);
+  const season = currentWeek(games)?.season ?? games[games.length - 1].season;
+  let coachCheck: string;
+  try {
+    const { coaches, skipped } = await currentCoachesFromEspn(season);
+    const known = new Set(games.filter((g) => g.season === season).flatMap((g) => [g.home, g.away]));
+    const matched = Object.keys(coaches).filter((t) => known.has(t));
+    if (matched.length < 28) throw new Error(`only ${matched.length} teams matched`);
+    corrections.push(...reconcileCurrentCoaches(games, season, coaches, locked));
+    coachCheck = `ESPN current coaches: ${matched.length} teams checked for ${season}`;
+    if (skipped.length) coachCheck += `; skipped ${skipped.join(", ")}`;
+  } catch (e) {
+    coachCheck = `ESPN coach check skipped: ${e instanceof Error ? e.message : e}`;
+    console.log(`::warning::${coachCheck}`);
+  }
+  for (const c of corrections) {
+    const msg = `Coach correction (${c.kind}) ${c.team} ${c.season}: ${c.was} -> ${c.now} (${c.games} games)`;
+    console.log(c.kind === "spelling" ? msg : `::notice::${msg}`);
+  }
+  console.log(coachCheck);
+
+  const file: GamesFile = {
+    updatedAt: new Date().toISOString(),
+    source: SOURCE,
+    games,
+    coachCorrections: corrections,
+    coachCheck,
+  };
   await mkdir(new URL(".", OUT), { recursive: true });
   await writeFile(OUT, JSON.stringify(file));
   const done = games.filter((g) => g.homeScore !== null).length;

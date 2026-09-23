@@ -1,0 +1,4 @@
+{
+  "_readme": "Manual head-coach corrections, applied before anything else. Each entry sets `coach` for every game of `team` dated from `from` through `to` (inclusive; omit `to` for open-ended). Use for mid-season changes nflverse gets wrong. Team codes are nflverse's (LA = Rams, LV, LAC, WAS).",
+  "overrides": []
+}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { teamName } from "../data/teams";
 import { isFinal } from "../data/types";
+import { currentWeek } from "../data/week";
 import { lineLabel, num, shortDate, signed } from "../format";
 import type { Prediction } from "../model/engine";
 import { betFor, type Strategy } from "../model/metrics";
@@ -33,13 +34,17 @@ function PickCell({ p, strategy }: { p: Prediction; strategy: Strategy }) {
 }
 
 export function WeekPage() {
-  const { run, odds, strategy } = useApp();
+  const { run, odds, strategy, data } = useApp();
   const preds = run!.predictions;
-  const next = preds.find((p) => !isFinal(p.game));
+  const week = currentWeek(data!.games);
+  const next = week ? preds.find((p) => p.game.season === week.season && p.game.week === week.week) : undefined;
   const bookFor = new Map(odds?.games.map((o) => [o.gameId, o]) ?? []);
 
   const upcoming = next ? preds.filter((p) => p.game.season === next.game.season && p.game.week === next.game.week) : [];
-  const lastFinal = [...preds].reverse().find((p) => isFinal(p.game));
+  // Most recent completed week before the one in play (a played Thursday game doesn't count).
+  const lastFinal = [...preds]
+    .reverse()
+    .find((p) => isFinal(p.game) && !(week && p.game.season === week.season && p.game.week === week.week));
   const previous = lastFinal
     ? preds.filter((p) => p.game.season === lastFinal.game.season && p.game.week === lastFinal.game.week)
     : [];
