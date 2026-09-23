@@ -13,7 +13,8 @@
     "log-picks": "tsx scripts/log-picks.ts",
     "odds": "tsx scripts/fetch-odds.ts",
     "pbp": "tsx scripts/build-pbp.ts",
-    "odds-history": "tsx --env-file=.env.local scripts/history/odds-history.ts"
+    "odds-history": "tsx --env-file=.env.local scripts/history/odds-history.ts",
+    "odds-history-analyze": "tsx --env-file=.env.local scripts/history/analyze-moves.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
