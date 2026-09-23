@@ -4,7 +4,9 @@ import type { GameQbs } from "./qb";
 
 /**
  * A prediction recorded by the nightly job before kickoff, with the line available at that
- * time. These are never recomputed, so they form a true out-of-sample record.
+ * time. These are never recomputed, so they form a true out-of-sample record. The top-level
+ * fields refresh each morning until game day (so QB news is in); `first` is frozen at the first
+ * log, usually right after the previous week ends, and is what line-movement tests measure from.
  */
 export interface LoggedPick {
   id: string;
@@ -33,7 +35,14 @@ export interface LoggedPick {
   minGames: number;
   /** Starting QBs as listed when logged, with whether each changed from the team's last game. */
   qb?: GameQbs | null;
+  /**
+   * Everything above as of the first time this game was logged, never updated afterwards.
+   * Entries from before Sep 24, 2026 have their first snapshot from when this was added.
+   */
+  first?: PickSnapshot;
 }
+
+export type PickSnapshot = Omit<LoggedPick, "first">;
 
 export interface PickLogFile {
   /** Settings version the picks were made with; bump when defaults change. */

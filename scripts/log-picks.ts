@@ -4,7 +4,7 @@
 // Run after `npm run data`: npm run log-picks
 import { readFile, writeFile } from "node:fs/promises";
 import type { OddsFile } from "../src/data/odds";
-import type { PickLogFile } from "../src/data/pickLog";
+import type { LoggedPick, PickLogFile, PickSnapshot } from "../src/data/pickLog";
 import { isFinal, type GamesFile } from "../src/data/types";
 import { currentWeek } from "../src/data/week";
 import { runModels } from "../src/model/engine";
@@ -27,6 +27,8 @@ try {
 } catch {
   // No sportsbook odds this run.
 }
+const stripFirst = ({ first: _first, ...rest }: LoggedPick): PickSnapshot => rest;
+
 const bookFor = new Map(odds?.games.map((o) => [o.gameId, o]) ?? []);
 
 const now = new Date();
@@ -42,7 +44,7 @@ let changed = 0;
 for (const p of runModels(games, DEFAULT_SETTINGS).predictions) {
   const g = p.game;
   if (!thisWeek.has(g.id) || isFinal(g) || g.line === null || g.date < today) continue;
-  byId.set(g.id, {
+  const entry: PickSnapshot = {
     id: g.id,
     season: g.season,
     week: g.week,
@@ -63,7 +65,11 @@ for (const p of runModels(games, DEFAULT_SETTINGS).predictions) {
     coverRanks: p.coverRanks,
     minGames: p.minGames,
     qb: p.qb,
-  });
+  };
+  // Freeze the first snapshot; entries logged before it existed use their current values.
+  const prev = byId.get(g.id);
+  const first = prev ? (prev.first ?? stripFirst(prev)) : entry;
+  byId.set(g.id, { ...entry, first });
   changed++;
 }
 

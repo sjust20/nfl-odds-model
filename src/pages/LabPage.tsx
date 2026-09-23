@@ -4,7 +4,7 @@ import { DivergingColumns, StatTile } from "../components/charts";
 import { teamName } from "../data/teams";
 import { isFinal, type Game } from "../data/types";
 import { lineLabel, num, pct, shortDate } from "../format";
-import type { LoggedPick } from "../data/pickLog";
+import type { LoggedPick, PickSnapshot } from "../data/pickLog";
 import type { ComponentDiffs } from "../model/components";
 import type { Prediction, SidePrediction } from "../model/engine";
 import {
@@ -116,7 +116,7 @@ function Grid({ cells, gapMode, title, minN }: { cells: GridCell[]; gapMode: boo
  * sportsbook median when the odds feed was on). Picks logged before the play-by-play model
  * existed have no `pbp` entry, so rules using that model skip them.
  */
-function fromLog(lp: LoggedPick, g: Game): Prediction {
+function fromLog(lp: PickSnapshot, g: Game): Prediction {
   return {
     game: { ...g, line: lp.bookLine ?? lp.line, total: lp.bookTotal ?? lp.total },
     market: lp.market,
@@ -145,6 +145,17 @@ function clv(bet: Bet, closing: Game): number | null {
   return bet.side === "over" ? closing.total - taken.total : taken.total - closing.total;
 }
 
+function ClvLine({ c }: { c: { n: number; avg: number; beat: number; same: number } | null }) {
+  if (!c) return <span className="muted">none yet (needs logged games that have closed)</span>;
+  return (
+    <>
+      {c.avg >= 0 ? "+" : "−"}
+      {Math.abs(c.avg).toFixed(2)} pts per bet; beat the close on {pct(c.beat, 0)} of {c.n} (same number{" "}
+      {pct(c.same, 0)})
+    </>
+  );
+}
+
 /** Grades logged (pre-kickoff) picks using the line available when they were logged. */
 function useLiveRecord(strategy: Strategy) {
   const { pickLog, data } = useApp();
@@ -152,9 +163,17 @@ function useLiveRecord(strategy: Strategy) {
     if (!pickLog || !data) return null;
     const games = new Map(data.games.map((g) => [g.id, g]));
     const bets: { p: Prediction; result: 1 | 0 | 0.5 | null; label: string; clv: number | null }[] = [];
+    // CLV had you bet this rule when each game was first logged (usually right after the previous
+    // week): the line has most of the week to move, so this is the informative version.
+    const earlyClvs: number[] = [];
     for (const lp of pickLog.picks) {
       const g = games.get(lp.id);
       if (!g) continue;
+      if (lp.first && isFinal(g)) {
+        const early = betFor(fromLog(lp.first, g), { ...strategy, fromSeason: 0, toSeason: 9999 });
+        const v = early ? clv(early, g) : null;
+        if (v !== null) earlyClvs.push(v);
+      }
       const p = fromLog(lp, g);
       const bet = betFor(p, { ...strategy, fromSeason: 0, toSeason: 9999 });
       if (!bet) continue;
@@ -171,16 +190,22 @@ function useLiveRecord(strategy: Strategy) {
       graded.filter((b) => b.result === 0).length,
       graded.filter((b) => b.result === 0.5).length,
     );
-    const clvs = bets.flatMap((b) => (b.clv === null ? [] : [b.clv]));
-    const clvSummary = clvs.length
-      ? {
-          n: clvs.length,
-          avg: clvs.reduce((s, v) => s + v, 0) / clvs.length,
-          beat: clvs.filter((v) => v > 0).length / clvs.length,
-          same: clvs.filter((v) => v === 0).length / clvs.length,
-        }
-      : null;
-    return { bets, rec, clv: clvSummary, since: pickLog.picks[0]?.date ?? null };
+    const summarize = (clvs: number[]) =>
+      clvs.length
+        ? {
+            n: clvs.length,
+            avg: clvs.reduce((s, v) => s + v, 0) / clvs.length,
+            beat: clvs.filter((v) => v > 0).length / clvs.length,
+            same: clvs.filter((v) => v === 0).length / clvs.length,
+          }
+        : null;
+    return {
+      bets,
+      rec,
+      clv: summarize(bets.flatMap((b) => (b.clv === null ? [] : [b.clv]))),
+      earlyClv: summarize(earlyClvs),
+      since: pickLog.picks[0]?.date ?? null,
+    };
   }, [pickLog, data, strategy]);
 }
 
@@ -208,14 +233,16 @@ function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
     let towardSum = 0;
     for (const lp of pickLog?.picks ?? []) {
       const g = games.get(lp.id);
-      if (!g || !lp.components) continue;
-      const p = fromLog(lp, g);
+      // Measured from the first time each game was logged, so the line has most of the week to move.
+      const snap = lp.first ?? lp;
+      if (!g || !snap.components) continue;
+      const p = fromLog(snap, g);
       const bet = linePlusComponentsBet(p);
       if (bet) live.push({ lp, bet });
       if (isFinal(g) && g.line !== null && p.game.line !== null) {
         closed++;
         const move = g.line - p.game.line;
-        const adj = lineAdjustment(lp.components);
+        const adj = lineAdjustment(snap.components);
         if (move !== 0 && adj !== 0) {
           moved++;
           if (Math.sign(move) === Math.sign(adj)) agree++;
@@ -251,9 +278,9 @@ function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
         <tbody>
           <tr><td>Backtest 2003–2015 (weights fitted here)</td><td>{line(result.early)}</td></tr>
           <tr><td>Backtest 2016–now (threshold chosen here)</td><td>{line(result.late)}</td></tr>
-          <tr><td><strong>Live (logged before kickoff)</strong></td><td><strong>{line(result.liveRecord)}</strong></td></tr>
+          <tr><td><strong>Live (bet at the first-logged line)</strong></td><td><strong>{line(result.liveRecord)}</strong></td></tr>
           <tr>
-            <td><strong>Line movement toward the adjustment</strong></td>
+            <td><strong>Line movement toward the adjustment, first log to close</strong></td>
             <td>
               {m.moved ? (
                 <>
@@ -279,7 +306,7 @@ function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
               <tr key={lp.id}>
                 <td>{teamName(lp.away)} at {teamName(lp.home)}</td>
                 <td>
-                  {bet.side === "home" ? lp.home : lp.away} ({lineLabel(lp.home, lp.away, lp.bookLine ?? lp.line)}), adjustment{" "}
+                  {bet.side === "home" ? lp.home : lp.away} ({lineLabel(lp.home, lp.away, (lp.first ?? lp).bookLine ?? (lp.first ?? lp).line)}), adjustment{" "}
                   {bet.adj >= 0 ? "+" : "−"}
                   {Math.abs(bet.adj).toFixed(1)}
                 </td>
@@ -582,23 +609,26 @@ export function LabPage() {
                 </strong>
                 {live.rec.wins + live.rec.losses > 0 && <> · {pct(live.rec.pct)}</>}
               </p>
-              <p className="small">
-                <strong>Closing line value: </strong>
-                {live.clv ? (
-                  <>
-                    {live.clv.avg >= 0 ? "+" : "−"}
-                    {Math.abs(live.clv.avg).toFixed(2)} pts per bet; beat the closing line on {pct(live.clv.beat, 0)} of{" "}
-                    {live.clv.n} bets (same number {pct(live.clv.same, 0)})
-                  </>
-                ) : (
-                  <span className="muted">none yet (needs games that have closed)</span>
-                )}
-              </p>
+              <table className="data compact">
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>Closing line value, bet when first logged</strong>
+                    </td>
+                    <td><ClvLine c={live.earlyClv} /></td>
+                  </tr>
+                  <tr>
+                    <td>Closing line value, bet on game morning</td>
+                    <td><ClvLine c={live.clv} /></td>
+                  </tr>
+                </tbody>
+              </table>
               <p className="muted small">
                 Closing line value compares the number you'd have bet with where the market closed. It's a
                 faster check than wins and losses: after a few hundred bets, a real edge shows up as consistently
-                positive CLV. The closing number here is nflverse's, which can differ from the books' median by a
-                half point.
+                positive CLV. The first-logged version is the informative one (the line has most of the week to
+                move); by game morning there are only hours left, so that version sits near zero. The closing
+                number is nflverse's, which can differ from the books' median by a half point.
               </p>
               <table className="data compact">
                 <tbody>
