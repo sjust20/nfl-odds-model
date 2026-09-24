@@ -152,6 +152,47 @@ function Variation({ preds, rule, base }: { preds: Prediction[]; rule: Strategy;
   );
 }
 
+/** The live log scored under the active rule's filters with each model, side by side. */
+function HeadToHead({ rule, base }: { rule: Strategy; base: Record<"market" | "pbp", RuleRecord> }) {
+  const market = useMemo(() => ({ ...rule, model: "market" as const }), [rule]);
+  const pbp = useMemo(() => ({ ...rule, model: "pbp" as const }), [rule]);
+  const live = { market: useLiveRecord(market), pbp: useLiveRecord(pbp) };
+  return (
+    <section className="stack-sm">
+      <h2 className="section-title">Market vs play-by-play, live</h2>
+      <p className="muted small" style={{ margin: 0 }}>
+        Both models are logged before every kickoff, so each can be scored on the same games with this rule's filters,
+        with no hindsight. Play-by-play leads the backtest in both eras; this is where that gets confirmed or not. Closing
+        line value (did the line move toward the pick?) will say something long before the records do.
+      </p>
+      <div className="stat-strip">
+        {(["market", "pbp"] as const).map((m) => {
+          const l = live[m];
+          const n = l ? l.rec.wins + l.rec.losses : 0;
+          return (
+            <div className="stat" key={m}>
+              <div className="k">
+                {MODEL_NAME[m]}
+                {rule.model === m ? " · active" : ""}
+              </div>
+              <div className="v">{n ? `${recordText(l!.rec)}` : "—"}</div>
+              <div className="n">
+                {n ? `${pct(l!.rec.pct)} live · ` : "No graded picks yet · "}
+                {l?.earlyClv
+                  ? `closing line value ${l.earlyClv.avg > 0 ? "+" : ""}${num(l.earlyClv.avg, 2)} pts over ${l.earlyClv.n} picks`
+                  : "closing line value pending"}
+              </div>
+              <div className="n">
+                Backtest {pct(base[m].pre.pct)} (2002–14), {pct(base[m].post.pct)} (2015 on)
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function useWatchList(preds: Prediction[]) {
   return useMemo(() => {
     const tally = (rs: (1 | 0 | 0.5 | null)[]) =>
@@ -170,6 +211,10 @@ export function LabPage() {
   const preds = run!.predictions;
   const s = strategies.spread;
   const r = useMemo(() => ruleRecord(preds, s), [preds, s]);
+  const both = useMemo(
+    () => ({ market: ruleRecord(preds, { ...s, model: "market" }), pbp: ruleRecord(preds, { ...s, model: "pbp" }) }),
+    [preds, s],
+  );
   const seasons = useMemo(() => evaluate(preds, { ...s, fromSeason: 2002, toSeason: 2100 }).bySeason, [preds, s]);
   const live = useLiveRecord(s);
   const watch = useWatchList(preds);
@@ -237,6 +282,8 @@ export function LabPage() {
           ))}
         </div>
       </section>
+
+      <HeadToHead rule={s} base={both} />
 
       <Variation key={JSON.stringify(s)} preds={preds} rule={s} base={r} />
 

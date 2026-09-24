@@ -9,7 +9,7 @@ import { useApp } from "../state";
 export function RankingsPage() {
   const { run, settings, data } = useApp();
   const fixes = (data!.coachCorrections ?? []).filter((c) => c.kind !== "spelling");
-  const [sort, setSort] = useState<ModelKey>("market");
+  const [sort, setSort] = useState<ModelKey>("pbp");
   const r = run!;
   const season = r.history.at(-1)?.season;
   // Trend: this season's weekly snapshots, plus last season's final one as the starting point.
@@ -26,7 +26,8 @@ export function RankingsPage() {
           games. <strong>Market</strong> also learns {Math.round(settings.market.resultWeight * 100)}% from final
           margins. <strong>Play-by-play</strong> takes Market and adds each team's opponent-adjusted efficiency
           (expected points added per play) in four parts: pass offense, pass defense, rush offense and rush
-          defense. History
+          defense. Play-by-play is the default sort: it's slightly closer to final margins (12.85 vs 12.89 pts
+          average miss since 2016). History
           {settings.resetOnCoachChange ? " resets when the head coach changes." : " spans coaching changes."} Home-field
           advantage is currently {num(r.hfa.market)} points.
         </p>
@@ -48,8 +49,8 @@ export function RankingsPage() {
         <label>
           Sort by{" "}
           <select value={sort} onChange={(e) => setSort(e.target.value as ModelKey)}>
-            <option value="market">Market rating</option>
             <option value="pbp">Play-by-play rating</option>
+            <option value="market">Market rating</option>
           </select>
         </label>
       </div>
@@ -70,7 +71,7 @@ export function RankingsPage() {
           </thead>
           <tbody>
             {rows.map((t, i) => {
-              const trend = trendWeeks.map((h) => h.ratings.get(t.team)?.market).filter((v): v is number => v !== undefined);
+              const trend = trendWeeks.map((h) => h.ratings.get(t.team)?.[sort]).filter((v): v is number => v !== undefined);
               return (
                 <tr key={t.team}>
                   <td className="num">{i + 1}</td>
