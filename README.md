@@ -7,21 +7,23 @@ A team's history resets whenever its head coach changes, interim coaches include
 
 ## Pages
 
-- **This week**: the current NFL week's games with the sportsbook line (when the odds feed is on),
-  both models' lines and totals, edges, reliability, and two picks: one from your sides strategy and
-  one from your totals strategy. Each game lists the starting QBs (nflverse's projected starters),
-  flagging any change from the team's previous game, since most of the biggest model edges are QB
-  changes the model can't see. Also shows last week's results, graded both ways.
-- **Power rankings**: Market and Classic ratings, coach tenure, cover stats, and this season's trend.
+- **This week**: verdict first. How many games the sides rule picks, then a card per pick: the bet,
+  the model's number next to the line, how far the line can move before it stops being a pick, the
+  best number across books (when the odds feed is on), which checks it passed, and the rule's full
+  backtest. Every other game is listed under the first check it failed (too little history under
+  the coach, a QB change, too erratic, no line, or no disagreement), with ESPN starter conflicts
+  flagged. A stat strip shows the live record and closing line value. The full table of both
+  models' numbers and last week's results is under "Every game". Framed as a paper-trade record.
+- **How it works**: the weekly routine, this week's games check by check, a glossary, and what the
+  site won't do.
+- **Rankings**: Market and play-by-play ratings, coach tenure, cover stats, and this season's trend.
 - **Matchup**: any two teams, home or neutral site.
 - **Teams**: cover margin by game under the current coach, rating history, game log, and coaching history.
-- **Strategy lab**: separate Sides and Totals tabs, one rule each. Backtest any rule (model edge,
-  reliability, minimum games, or, for sides, betting the high- or low-variance team), with results by
-  season, an edge × reliability grid split into two eras, and the live out-of-sample record. The
-  live record includes closing line value (how far the closing line moved toward each pick). The
-  Sides tab also tracks two fixed ideas without betting them (`src/model/tracked.ts`): Market edge
-  over 6 with no QB change, and "closing line + efficiency components" (rush offense weighted up,
-  pass defense down), scored by its live record and by whether lines move toward it.
+- **Strategy lab**: whether the sides rule beats break-even (95% range vs 52.4%), its record in both
+  eras and live, win rate by season, each part of the rule in plain language, a "test a variation"
+  panel that reruns the full backtest, the two ideas on watch (`src/model/tracked.ts`), and the main
+  research findings. Under "Advanced": the full rule editors for sides and totals, the edge ×
+  reliability grids split into two eras, and the tracked ideas' live records and line-movement checks.
 - **Model settings**: every parameter of both models. Changes
   recompute in the browser.
 

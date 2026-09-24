@@ -157,7 +157,7 @@ function ClvLine({ c }: { c: { n: number; avg: number; beat: number; same: numbe
 }
 
 /** Grades logged (pre-kickoff) picks using the line available when they were logged. */
-function useLiveRecord(strategy: Strategy) {
+export function useLiveRecord(strategy: Strategy) {
   const { pickLog, data } = useApp();
   return useMemo(() => {
     if (!pickLog || !data) return null;
@@ -392,7 +392,8 @@ function TrackedIdea({ preds }: { preds: Prediction[] }) {
   );
 }
 
-export function LabPage() {
+/** The full research lab: rule editor, era grids, tracked ideas in detail. Shown under Advanced. */
+export function AdvancedLab() {
   const { run, strategies, setStrategy } = useApp();
   const [params, setParams] = useSearchParams();
   const kind: BetKind = params.get("bet") === "total" ? "total" : "spread";
@@ -431,11 +432,11 @@ export function LabPage() {
   return (
     <>
       <div className="page-head">
-        <h1>Strategy lab</h1>
+        <h2>Advanced: change the active rules</h2>
         <p className="muted">
-          Every game from {from} on is predicted using only information from before it was played, then graded
-          against the closing line. Break-even at standard −110 odds is <strong>{pct(BREAK_EVEN)}</strong>. There are
-          two rules, one for sides and one for totals. Each drives its own pick column on the This week page.
+          These controls change the rules that make picks on This week (saved in this browser only). Every game
+          from {from} on is predicted using only information from before it was played, then graded against the
+          closing line. Break-even at standard −110 odds is <strong>{pct(BREAK_EVEN)}</strong>.
         </p>
       </div>
 
@@ -685,47 +686,6 @@ export function LabPage() {
         </section>
       </div>
 
-      <section className="card">
-        <h2>What the backtests have shown so far</h2>
-        <ul className="findings">
-          <li>
-            The spreadsheet rule (bet when the model disagrees with the line) wins about 50.5–51% on its own, whatever
-            the edge threshold.
-          </li>
-          <li>
-            The default sides rule (Market model, both teams ≥ 8 games, reliability ≤ 24, no QB changes, any edge)
-            was chosen for reasons rather than tuned, and is fixed for the 2026 season: 50.7% over 883 bets in
-            2002–2026 (48.2% before 2015, 53.7% since). The play-by-play model under the same rule: 52.0% (51.1%,
-            then 53.0%). Both are around break-even, so treat them as paper trading until the live record and
-            closing line value say otherwise.
-          </li>
-          <li>
-            Play-by-play efficiency added almost nothing once closing lines were in: on 2016 onward, margin error
-            was 12.90 for Market and 12.91 for play-by-play, vs 12.71 for the closing line. The real gain from
-            play-by-play data was the QB adjustment, which cut error on QB-change games from 13.85 to 13.44.
-            A model built only from play-by-play, with no lines, did worse (13.22) than one built only from final
-            margins (13.00).
-          </li>
-          <li>
-            Before the QB adjustment, the Market model's biggest edges were mostly QB changes it couldn't see (69% of edges over 6 points), so
-            skipping those games removes uninformed picks. It doesn't create an edge by itself. Edge cutoffs
-            between 1.5 and 3 points didn't help this model either.
-          </li>
-          <li>
-            Reliability only means something once both teams have played at least ~8 games under their coach.
-            Before that, a near-zero SD makes thin samples look like the steadiest teams. With that filter,
-            reliability ≤ ~24 has been the most promising lead: about 52% overall, and 53–54% since 2015 but only
-            about 51% before. The 95% range still includes break-even, and the rule came out of a search over
-            many combinations, so the live record is the real test.
-          </li>
-          <li>Betting the high- or low-variance team (sides only) shows no consistent edge at any rank gap.</li>
-          <li>Totals did well before 2014 and badly since. Large model edges on totals have lost recently.</li>
-          <li>
-            Coach resets: for the Market model, carrying some prior-regime evidence forward predicts better than a
-            hard reset. Keeping all history predicted best of all. Compare them yourself in Model settings.
-          </li>
-        </ul>
-      </section>
     </>
   );
 }

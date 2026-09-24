@@ -21,3 +21,24 @@ export const shortDate = (iso: string) =>
 
 export const matchup = (away: string, home: string, neutral = false) =>
   `${teamName(away)} ${neutral ? "vs" : "at"} ${teamName(home)}`;
+
+const MINUS_SIGN = "\u2212";
+const halfPoints = (x: number) => (Number.isInteger(x) ? String(x) : x.toFixed(1));
+
+/** A team's spread in betting style: "+3", "−3.5", "PK". `line` = points the home team is favored by. */
+export function teamSpread(line: number, side: "home" | "away"): string {
+  const v = side === "home" ? -line : line;
+  if (v === 0) return "PK";
+  return `${v > 0 ? "+" : MINUS_SIGN}${halfPoints(Math.abs(v))}`;
+}
+
+/** American odds: "−110", "+105". */
+export const price = (p: number | null | undefined) => (p == null ? "" : p > 0 ? `+${p}` : `${MINUS_SIGN}${Math.abs(p)}`);
+
+/** "Sun Sep 27 · 1:00 PM ET" from nflverse's date and Eastern kickoff time. */
+export function kickoffLabel(date: string, time?: string): string {
+  const d = new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
+  if (!time) return d;
+  const [h, m] = time.split(":").map(Number);
+  return `${d} · ${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"} ET`;
+}

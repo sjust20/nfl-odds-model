@@ -37,3 +37,6 @@ export const TEAMS: Record<string, { name: string; short: string }> = {
 };
 
 export const teamName = (abbr: string) => TEAMS[abbr]?.short ?? abbr;
+
+/** "Patriots", "49ers": the last word of the full name. */
+export const nickname = (abbr: string) => TEAMS[abbr]?.name.split(" ").pop() ?? abbr;

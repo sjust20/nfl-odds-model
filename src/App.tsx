@@ -1,19 +1,23 @@
 import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
-import { LabPage } from "./pages/LabPage";
+import { HowPage } from "./pages/HowPage";
 import { MatchupPage } from "./pages/MatchupPage";
 import { RankingsPage } from "./pages/RankingsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { LabPage } from "./pages/StrategyLab";
 import { TeamPage } from "./pages/TeamPage";
 import { WeekPage } from "./pages/WeekPage";
 import { AppProvider, useApp } from "./state";
 
 const NAV = [
   ["/", "This week"],
-  ["/rankings", "Power rankings"],
-  ["/matchup", "Matchup"],
+  ["/rankings", "Rankings"],
   ["/team", "Teams"],
+  ["/matchup", "Matchup"],
+] as const;
+
+const NAV_SECONDARY = [
+  ["/how", "How it works"],
   ["/lab", "Strategy lab"],
-  ["/settings", "Model settings"],
 ] as const;
 
 function Shell() {
@@ -38,6 +42,13 @@ function Shell() {
             </NavLink>
           ))}
         </nav>
+        <nav className="nav nav-secondary" aria-label="About the model">
+          {NAV_SECONDARY.map(([to, label]) => (
+            <NavLink key={to} to={to}>
+              {label}
+            </NavLink>
+          ))}
+        </nav>
       </header>
       <main className={`page ${running && run ? "refreshing" : ""}`}>
         {error ? (
@@ -52,6 +63,7 @@ function Shell() {
             <Route path="/team" element={<TeamPage />} />
             <Route path="/team/:abbr" element={<TeamPage />} />
             <Route path="/lab" element={<LabPage />} />
+            <Route path="/how" element={<HowPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         )}
@@ -59,7 +71,7 @@ function Shell() {
       <footer className="footer muted small">
         Scores, closing lines and coaches from{" "}
         <a href="https://github.com/nflverse/nfldata">nflverse</a>. Sportsbook odds from{" "}
-        <a href="https://the-odds-api.com">The Odds API</a> when configured. For research, not betting advice.
+        <a href="https://the-odds-api.com">The Odds API</a> when configured. A research project and paper-trade record, not betting advice.
       </footer>
     </>
   );
