@@ -1894,7 +1894,7 @@
    "date": "2026-10-04",
    "home": "NYG",
    "away": "ARI",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": -2.5,
    "total": 44.5,
    "bookLine": -2.5,
@@ -2020,7 +2020,7 @@
    "date": "2026-10-04",
    "home": "HOU",
    "away": "DAL",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 3,
    "total": 48.5,
    "bookLine": 3,
@@ -2146,7 +2146,7 @@
    "date": "2026-10-04",
    "home": "SF",
    "away": "DEN",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 3,
    "total": 47.5,
    "bookLine": 2.5,
@@ -2272,9 +2272,9 @@
    "date": "2026-10-04",
    "home": "CAR",
    "away": "DET",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": -3.5,
-   "total": 51.5,
+   "total": 50.5,
    "bookLine": -3.5,
    "bookTotal": 51,
    "market": {
@@ -2398,11 +2398,11 @@
    "date": "2026-10-04",
    "home": "TB",
    "away": "GB",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": -3.5,
-   "total": 38.5,
+   "total": 39.5,
    "bookLine": -3.5,
-   "bookTotal": 38.5,
+   "bookTotal": 39.5,
    "market": {
     "line": -0.13947180101093437,
     "total": 49.31779537867574
@@ -2524,20 +2524,20 @@
    "date": "2026-10-04",
    "home": "WAS",
    "away": "IND",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
-   "line": -3.5,
+   "loggedAt": "2026-10-02T18:07:42.750Z",
+   "line": -4.5,
    "total": 47.5,
-   "bookLine": -3.5,
+   "bookLine": -4,
    "bookTotal": 47.5,
    "market": {
-    "line": -0.1498268739194335,
+    "line": -1.5958208951471766,
     "total": 51.108116871307054
    },
    "pbp": {
-    "line": -0.2630652785744752,
+    "line": -1.7813590008636055,
     "total": 51.108116871307054
    },
-   "qbAdj": 1.41264174015088,
+   "qbAdj": -0.5153502881527774,
    "components": {
     "passOff": 2.3651140869462233,
     "passDef": -1.6916382457249135,
@@ -2553,11 +2553,11 @@
    "minGames": 40,
    "qb": {
     "home": {
-     "id": "00-0039910",
-     "name": "Jayden Daniels",
+     "id": "00-0032268",
+     "name": "Marcus Mariota",
      "source": "listed",
      "prev": "Marcus Mariota",
-     "changed": true
+     "changed": false
     },
     "away": {
      "id": "00-0035710",
@@ -2569,9 +2569,9 @@
    },
    "qbCheck": {
     "home": {
-     "listed": "Jayden Daniels",
+     "listed": "Marcus Mariota",
      "espn": "Jayden Daniels",
-     "agree": true
+     "agree": false
     },
     "away": {
      "listed": "Daniel Jones",
@@ -2650,7 +2650,7 @@
    "date": "2026-10-04",
    "home": "CIN",
    "away": "JAX",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 2.5,
    "total": 51.5,
    "bookLine": 2.5,
@@ -2776,7 +2776,7 @@
    "date": "2026-10-04",
    "home": "LV",
    "away": "KC",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": -4.5,
    "total": 47.5,
    "bookLine": -4.5,
@@ -2902,11 +2902,11 @@
    "date": "2026-10-04",
    "home": "PHI",
    "away": "LA",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
-   "line": -3,
-   "total": 43.5,
-   "bookLine": -3,
-   "bookTotal": 43.5,
+   "loggedAt": "2026-10-02T18:07:42.750Z",
+   "line": -3.5,
+   "total": 42.5,
+   "bookLine": -3.5,
+   "bookTotal": 43,
    "market": {
     "line": -1.45983942999982,
     "total": 43.55356116031512
@@ -3028,7 +3028,7 @@
    "date": "2026-10-04",
    "home": "SEA",
    "away": "LAC",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 7,
    "total": 42.5,
    "bookLine": 7,
@@ -3154,11 +3154,11 @@
    "date": "2026-10-04",
    "home": "MIN",
    "away": "MIA",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 10.5,
    "total": 38.5,
    "bookLine": 10.5,
-   "bookTotal": 39,
+   "bookTotal": 38.5,
    "market": {
     "line": 11.375878249289212,
     "total": 37.88040164102837
@@ -3280,11 +3280,11 @@
    "date": "2026-10-04",
    "home": "BUF",
    "away": "NE",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
-   "line": 6.5,
-   "total": 48.5,
-   "bookLine": 6.5,
-   "bookTotal": 48.5,
+   "loggedAt": "2026-10-02T18:07:42.750Z",
+   "line": 7,
+   "total": 49.5,
+   "bookLine": 7,
+   "bookTotal": 49.5,
    "market": {
     "line": 3.4132714208603088,
     "total": 49.155828156508456
@@ -3406,10 +3406,10 @@
    "date": "2026-10-04",
    "home": "CHI",
    "away": "NYJ",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 3.5,
    "total": 43.5,
-   "bookLine": 3,
+   "bookLine": 3.5,
    "bookTotal": 43,
    "market": {
     "line": 7.340365286894202,
@@ -3532,7 +3532,7 @@
    "date": "2026-10-04",
    "home": "BAL",
    "away": "TEN",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 11.5,
    "total": 42.5,
    "bookLine": 11.5,
@@ -3658,11 +3658,11 @@
    "date": "2026-10-05",
    "home": "NO",
    "away": "ATL",
-   "loggedAt": "2026-10-01T18:38:02.413Z",
+   "loggedAt": "2026-10-02T18:07:42.750Z",
    "line": 2.5,
    "total": 47.5,
    "bookLine": 2.5,
-   "bookTotal": 47.5,
+   "bookTotal": 48,
    "market": {
     "line": 2.4783681914092854,
     "total": 41.346820180892585
