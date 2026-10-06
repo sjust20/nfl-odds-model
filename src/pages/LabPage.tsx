@@ -619,7 +619,7 @@ export function AdvancedLab() {
                     <td><ClvLine c={live.earlyClv} /></td>
                   </tr>
                   <tr>
-                    <td>Closing line value, bet on game morning</td>
+                    <td>Closing line value, bet at the last log before kickoff</td>
                     <td><ClvLine c={live.clv} /></td>
                   </tr>
                 </tbody>
@@ -628,7 +628,7 @@ export function AdvancedLab() {
                 Closing line value compares the number you'd have bet with where the market closed. It's a
                 faster check than wins and losses: after a few hundred bets, a real edge shows up as consistently
                 positive CLV. The first-logged version is the informative one (the line has most of the week to
-                move); by game morning there are only hours left, so that version sits near zero. The closing
+                move); by the last log there are only hours left, so that version sits near zero. The closing
                 number is nflverse's, which can differ from the books' median by a half point.
               </p>
               <table className="data compact">

@@ -7,8 +7,8 @@ import { useWeek } from "./useWeek";
 
 const ROUTINE = [
   ["Tuesday", "Last week's games are graded, ratings update, and each new game's first line and prediction are logged and frozen."],
-  ["Every morning", "Lines, starting QBs and coaches refresh. Picks can appear or drop off as QB news and line moves come in."],
-  ["Game day", "The last morning log before kickoff is the pick of record. The closing line grades it, win or lose."],
+  ["Every 4 hours", "Lines, starting QBs and coaches refresh. Picks can appear or drop off as QB news and line moves come in."],
+  ["Game day", "The last log before kickoff is the pick of record. The closing line grades it, win or lose."],
 ] as const;
 
 const CHECK_LABEL: Record<Check, string> = {

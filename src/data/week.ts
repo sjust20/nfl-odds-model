@@ -15,3 +15,21 @@ export function currentWeek(games: Game[], today = new Date().toISOString().slic
     games: games.filter((g) => g.season === next.season && g.week === next.week),
   };
 }
+
+/** UTC offset of US Eastern time at a given instant, in minutes (-240 in summer, -300 in winter). */
+function easternOffsetMinutes(ms: number): number {
+  const name = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", timeZoneName: "shortOffset" })
+    .formatToParts(ms)
+    .find((p) => p.type === "timeZoneName")?.value;
+  const m = name && /GMT([+-])(\d+)(?::(\d+))?/.exec(name);
+  return m ? (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3] ?? 0)) : -300;
+}
+
+/**
+ * Kickoff as epoch milliseconds, from nflverse's US Eastern date and time. Without a time, the
+ * start of the game day (Eastern) is used, so an unknown kickoff never counts as still upcoming.
+ */
+export function kickoffMs(g: Pick<Game, "date" | "time">): number {
+  const naive = Date.parse(`${g.date}T${g.time ?? "00:00"}:00Z`);
+  return naive - easternOffsetMinutes(naive) * 60e3;
+}
