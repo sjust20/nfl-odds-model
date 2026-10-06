@@ -1,6 +1,7 @@
 // Pulls current NFL spreads and totals from The Odds API into public/data/odds.json.
 // Cost: 2 credits per pull (2 markets × 1 region). To stay within the free tier this reuses
-// the copy already deployed at SITE_URL when it is under MAX_AGE_HOURS old, so extra builds are free.
+// the copy already deployed at SITE_URL when it is under MAX_AGE_HOURS old and covers the current
+// week, so extra builds are free and a new week's opening lines are pulled on the first run.
 //
 // Env: ODDS_API_KEY (skips quietly when unset), SITE_URL (optional, the deployed site root).
 // Run after `npm run data`: npm run odds
@@ -12,7 +13,8 @@ import { currentWeek } from "../src/data/week";
 
 const OUT = new URL("../public/data/odds.json", import.meta.url);
 const GAMES = new URL("../public/data/games.json", import.meta.url);
-const MAX_AGE_HOURS = 20;
+// The workflow runs every 4 hours; just under that so each scheduled run pulls fresh lines.
+const MAX_AGE_HOURS = 3.5;
 const API = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/";
 
 interface ApiOutcome {
@@ -33,13 +35,15 @@ interface ApiEvent {
   }[];
 }
 
-async function reuseDeployed(): Promise<boolean> {
+async function reuseDeployed(thisWeek: Set<string>): Promise<boolean> {
   const site = process.env.SITE_URL;
   if (!site) return false;
   try {
     const res = await fetch(new URL("data/odds.json", site.endsWith("/") ? site : `${site}/`));
     if (!res.ok) return false;
     const cached: OddsFile = await res.json();
+    // A copy from last week (or with no games) is stale however recent it is.
+    if (!cached.games.length || !cached.games.every((o) => thisWeek.has(o.gameId))) return false;
     const ageHours = (Date.now() - Date.parse(cached.fetchedAt)) / 3.6e6;
     if (!(ageHours < MAX_AGE_HOURS)) return false;
     await writeFile(OUT, JSON.stringify(cached));
@@ -72,13 +76,6 @@ function toBook(b: ApiEvent["bookmakers"][number], ev: ApiEvent): BookOdds {
 }
 
 async function main() {
-  if (await reuseDeployed()) return;
-  const key = process.env.ODDS_API_KEY;
-  if (!key) {
-    console.log("ODDS_API_KEY not set; skipping sportsbook odds");
-    return;
-  }
-
   // Only the current NFL week: from now through a day after its last game.
   const { games }: GamesFile = JSON.parse(await readFile(GAMES, "utf8"));
   const week = currentWeek(games);
@@ -87,6 +84,12 @@ async function main() {
     return;
   }
   const thisWeek = new Set(week.games.map((g) => g.id));
+  if (await reuseDeployed(thisWeek)) return;
+  const key = process.env.ODDS_API_KEY;
+  if (!key) {
+    console.log("ODDS_API_KEY not set; skipping sportsbook odds");
+    return;
+  }
   const lastDate = week.games.reduce((m, g) => (g.date > m ? g.date : m), week.games[0].date);
   const from = new Date();
   const to = new Date(Date.parse(`${lastDate}T00:00:00Z`) + 2 * 86400e3);

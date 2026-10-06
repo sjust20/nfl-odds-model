@@ -2,8 +2,10 @@ name: Update data and deploy
 
 on:
   schedule:
-    # 13:00 UTC daily (9am ET): after overnight results, before the early kickoffs.
-    - cron: "0 13 * * *"
+    # Every 4 hours at :17 UTC. GitHub delays scheduled runs, by hours at busy times (the top of
+    # the hour is the worst), so one daily run could land late in the afternoon. Several runs a day
+    # pick up a new week soon after Monday night's result is in. Picks stop updating at kickoff.
+    - cron: "17 */4 * * *"
   push:
     branches: [main]
   workflow_dispatch:
@@ -39,11 +41,11 @@ jobs:
       - name: Tests
         run: npm test
 
-      - name: Sportsbook odds (daily, cached)
+      - name: Sportsbook odds (cached between scheduled runs)
         run: npm run odds
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-          # Reuse the deployed copy if it's under 20h old, so pushes don't spend credits.
+          # Reuse the deployed copy if it's this week's and under 3.5h old, so pushes don't spend credits.
           SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
 
       - name: Log upcoming predictions

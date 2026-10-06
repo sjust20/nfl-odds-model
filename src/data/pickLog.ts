@@ -6,7 +6,7 @@ import type { QbCheck } from "./types";
 /**
  * A prediction recorded by the nightly job before kickoff, with the line available at that
  * time. These are never recomputed, so they form a true out-of-sample record. The top-level
- * fields refresh each morning until game day (so QB news is in); `first` is frozen at the first
+ * fields refresh on every run until kickoff (so QB news is in); `first` is frozen at the first
  * log, usually right after the previous week ends, and is what line-movement tests measure from.
  */
 export interface LoggedPick {

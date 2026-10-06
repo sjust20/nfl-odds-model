@@ -1,4 +1,4 @@
-/** Sportsbook numbers for one game, cached daily from The Odds API. */
+/** Sportsbook numbers for one game, pulled every few hours from The Odds API. */
 export interface BookOdds {
   key: string;
   title: string;

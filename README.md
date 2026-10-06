@@ -56,8 +56,9 @@ over/under statistics remain (`src/model/ats.ts`, verified against the spreadshe
 - Scores, closing lines, totals and head coaches for every game: [nflverse `games.csv`](https://github.com/nflverse/nfldata),
   downloaded on each build (`npm run data`, into `public/data/games.json`, not committed).
 - Sportsbook odds (optional): [The Odds API](https://the-odds-api.com), spreads and totals from US
-  books. Each pull costs 2 credits (2 markets × 1 region). The workflow pulls at most once a day and
-  otherwise reuses the copy on the live site if it's under 20 hours old, so about 60 credits a month.
+  books. Each pull costs 2 credits (2 markets × 1 region). Each scheduled run (every 4 hours) pulls
+  fresh lines; other runs reuse the copy on the live site if it's this week's and under 3.5 hours old.
+  That's at most 6 pulls a day, about 360 credits a month in season, none in the offseason.
   Check The Odds API's terms before publishing their data on a public site.
 - Play-by-play: nflverse `play_by_play_<season>.csv.gz`, aggregated per game and team (plays,
   expected points added, success, dropbacks, and each QB's dropbacks and EPA) into
@@ -68,8 +69,8 @@ over/under statistics remain (`src/model/ats.ts`, verified against the spreadshe
   and corrects the current season; near-identical names are only respelled, so they can't cause a
   false reset. ESPN only knows today's coach, so past seasons rely on nflverse. Manual date-ranged
   fixes go in `data/coach-overrides.json` and always win. Corrections are listed on the site.
-- Pick log (`public/data/pick-log.json`, committed): each day, predictions for the current NFL week
-  are written with the line available at the time. An entry freezes on game day, so it's a true
+- Pick log (`public/data/pick-log.json`, committed): every run, predictions for the current NFL week
+  are written with the line available at the time. An entry freezes at kickoff, so it's a true
   out-of-sample record.
 
 ## Historical odds (private)
@@ -109,8 +110,9 @@ npm run tune        # grid-search Market settings (slow)
 2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
 3. Optional odds feed: in **Settings → Secrets and variables → Actions**, add the secret
    `ODDS_API_KEY`. If the site isn't at `https://<owner>.github.io/<repo>/`, also add the variable
-   `SITE_URL` so the daily cache check finds it.
-4. The workflow (`.github/workflows/update.yml`) runs daily at 13:00 UTC, on every push, and on
+   `SITE_URL` so the odds cache check finds it.
+4. The workflow (`.github/workflows/update.yml`) runs every 4 hours (at :17 UTC; GitHub often starts
+   scheduled runs late), on every push, and on
    demand. It downloads data, runs tests, pulls odds, logs picks (committing the log), builds, and
    deploys. If any step fails, the site stays on the previous version.
 

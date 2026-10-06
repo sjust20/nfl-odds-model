@@ -1,12 +1,12 @@
 // Records default-settings predictions for the current NFL week's games into
 // public/data/pick-log.json (committed to the repo by the nightly workflow).
-// A game's entry keeps updating until its game day, then is frozen.
+// A game's entry keeps updating until kickoff, then is frozen.
 // Run after `npm run data`: npm run log-picks
 import { readFile, writeFile } from "node:fs/promises";
 import type { OddsFile } from "../src/data/odds";
 import type { LoggedPick, PickLogFile, PickSnapshot } from "../src/data/pickLog";
 import { isFinal, type GamesFile } from "../src/data/types";
-import { currentWeek } from "../src/data/week";
+import { currentWeek, kickoffMs } from "../src/data/week";
 import { runModels } from "../src/model/engine";
 import { DEFAULT_SETTINGS } from "../src/model/settings";
 
@@ -33,7 +33,6 @@ const stripFirst = ({ first: _first, ...rest }: LoggedPick): PickSnapshot => res
 const bookFor = new Map(odds?.games.map((o) => [o.gameId, o]) ?? []);
 
 const now = new Date();
-const today = now.toISOString().slice(0, 10);
 const week = currentWeek(games);
 const thisWeek = new Set(week?.games.map((g) => g.id));
 const final = new Set(games.filter(isFinal).map((g) => g.id));
@@ -44,7 +43,10 @@ let changed = 0;
 
 for (const p of runModels(games, DEFAULT_SETTINGS).predictions) {
   const g = p.game;
-  if (!thisWeek.has(g.id) || isFinal(g) || g.line === null || g.date < today) continue;
+  if (!thisWeek.has(g.id) || isFinal(g) || g.line === null) continue;
+  // Never update a game that has kicked off (by nflverse's time or the sportsbook's, whichever is earlier).
+  const commence = Date.parse(bookFor.get(g.id)?.commence ?? "");
+  if (Math.min(kickoffMs(g), Number.isNaN(commence) ? Infinity : commence) <= now.getTime()) continue;
   const entry: PickSnapshot = {
     id: g.id,
     season: g.season,
