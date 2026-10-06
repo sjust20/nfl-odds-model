@@ -24,6 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The branch tip, not the triggering commit: a queued run must see the pick log that the
+          # run before it committed, or its push is rejected.
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-node@v7
         with:
@@ -58,6 +62,8 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "Log upcoming predictions, refresh play-by-play [skip ci]"
+            # Pick up any push made while this ran (fails, rather than guessing, on a real conflict).
+            git pull --rebase origin "$GITHUB_REF_NAME"
             git push
           fi
 
