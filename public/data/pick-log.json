@@ -5800,7 +5800,7 @@
    "date": "2026-10-18",
    "home": "LA",
    "away": "ARI",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 12.5,
    "total": 51.5,
    "bookLine": 12.5,
@@ -5926,7 +5926,7 @@
    "date": "2026-10-18",
    "home": "CLE",
    "away": "BAL",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": -3,
    "total": 39.5,
    "bookLine": -3,
@@ -6052,7 +6052,7 @@
    "date": "2026-10-18",
    "home": "LV",
    "away": "BUF",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": -5.5,
    "total": 53.5,
    "bookLine": -4.5,
@@ -6178,7 +6178,7 @@
    "date": "2026-10-18",
    "home": "PHI",
    "away": "CAR",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": -3,
    "total": 39.5,
    "bookLine": -3,
@@ -6224,8 +6224,8 @@
    "qbCheck": {
     "home": {
      "listed": "Tanner McKee",
-     "espn": "Jalen Hurts",
-     "agree": false
+     "espn": "Tanner McKee",
+     "agree": true
     },
     "away": {
      "listed": "Bryce Young",
@@ -6304,20 +6304,20 @@
    "date": "2026-10-18",
    "home": "ATL",
    "away": "CHI",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": -1.5,
    "total": 52.5,
    "bookLine": -1,
-   "bookTotal": 52,
+   "bookTotal": 52.5,
    "market": {
-    "line": 1.0780874375621403,
+    "line": -2.495531013371622,
     "total": 46.31727268256467
    },
    "pbp": {
-    "line": 0.7445178754115942,
+    "line": -3.007781498068857,
     "total": 46.31727268256467
    },
-   "qbAdj": 2.0316157082810835,
+   "qbAdj": -2.7332088929639333,
    "components": {
     "passOff": -3.5718794460045786,
     "passDef": 1.488190937806996,
@@ -6340,11 +6340,11 @@
      "changed": false
     },
     "away": {
-     "id": "00-0038416",
-     "name": "Tyson Bagent",
+     "id": "00-0039918",
+     "name": "Caleb Williams",
      "source": "listed",
      "prev": "Tyson Bagent",
-     "changed": false
+     "changed": true
     }
    },
    "qbCheck": {
@@ -6354,9 +6354,9 @@
      "agree": true
     },
     "away": {
-     "listed": "Tyson Bagent",
+     "listed": "Caleb Williams",
      "espn": "Caleb Williams",
-     "agree": false
+     "agree": true
     }
    },
    "first": {
@@ -6430,11 +6430,11 @@
    "date": "2026-10-18",
    "home": "GB",
    "away": "DAL",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 1.5,
    "total": 53.5,
    "bookLine": 1,
-   "bookTotal": 53,
+   "bookTotal": 53.5,
    "market": {
     "line": 2.4587301671531803,
     "total": 51.58453728636217
@@ -6556,7 +6556,7 @@
    "date": "2026-10-18",
    "home": "JAX",
    "away": "HOU",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 2.5,
    "total": 42.5,
    "bookLine": 2.5,
@@ -6682,7 +6682,7 @@
    "date": "2026-10-18",
    "home": "KC",
    "away": "LAC",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 7.5,
    "total": 41.5,
    "bookLine": 7.5,
@@ -6808,10 +6808,10 @@
    "date": "2026-10-18",
    "home": "NYG",
    "away": "NO",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": -1.5,
    "total": 46.5,
-   "bookLine": -0.5,
+   "bookLine": -1,
    "bookTotal": 46,
    "market": {
     "line": 0.658848793866216,
@@ -6934,7 +6934,7 @@
    "date": "2026-10-18",
    "home": "NE",
    "away": "NYJ",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 7.5,
    "total": 43.5,
    "bookLine": 7,
@@ -7060,7 +7060,7 @@
    "date": "2026-10-18",
    "home": "TB",
    "away": "PIT",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": -2.5,
    "total": 38.5,
    "bookLine": -2.5,
@@ -7186,7 +7186,7 @@
    "date": "2026-10-18",
    "home": "IND",
    "away": "TEN",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 7,
    "total": 44.5,
    "bookLine": 7,
@@ -7312,7 +7312,7 @@
    "date": "2026-10-19",
    "home": "SF",
    "away": "WAS",
-   "loggedAt": "2026-10-17T18:30:35.686Z",
+   "loggedAt": "2026-10-17T22:17:57.352Z",
    "line": 7.5,
    "total": 52.5,
    "bookLine": 7.5,
