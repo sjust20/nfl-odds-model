@@ -7430,6 +7430,1770 @@
      }
     }
    }
+  },
+  {
+   "id": "2026_07_NE_CHI",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-22",
+   "home": "CHI",
+   "away": "NE",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 3,
+   "total": 50.5,
+   "bookLine": 3,
+   "bookTotal": 50.5,
+   "market": {
+    "line": 1.6291879019240303,
+    "total": 46.20428573354142
+   },
+   "pbp": {
+    "line": 1.8545094761890946,
+    "total": 46.20428573354142
+   },
+   "qbAdj": 2.298793374714207,
+   "components": {
+    "passOff": -1.629917202381597,
+    "passDef": -1.6148787448101145,
+    "rushOff": 1.265180426163746,
+    "rushDef": -0.8222610130563524
+   },
+   "reliability": 26,
+   "totalReliability": 42,
+   "coverRanks": [
+    16,
+    10
+   ],
+   "minGames": 25,
+   "qb": {
+    "home": {
+     "id": "00-0039918",
+     "name": "Caleb Williams",
+     "source": "listed",
+     "prev": "Caleb Williams",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0039851",
+     "name": "Drake Maye",
+     "source": "listed",
+     "prev": "Drake Maye",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Caleb Williams",
+     "espn": "Caleb Williams",
+     "agree": true
+    },
+    "away": {
+     "listed": "Drake Maye",
+     "espn": "Drake Maye",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_NE_CHI",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-22",
+    "home": "CHI",
+    "away": "NE",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 3,
+    "total": 50.5,
+    "bookLine": 3,
+    "bookTotal": 50.5,
+    "market": {
+     "line": 1.6291879019240303,
+     "total": 46.20428573354142
+    },
+    "pbp": {
+     "line": 1.8545094761890946,
+     "total": 46.20428573354142
+    },
+    "qbAdj": 2.298793374714207,
+    "components": {
+     "passOff": -1.629917202381597,
+     "passDef": -1.6148787448101145,
+     "rushOff": 1.265180426163746,
+     "rushDef": -0.8222610130563524
+    },
+    "reliability": 26,
+    "totalReliability": 42,
+    "coverRanks": [
+     16,
+     10
+    ],
+    "minGames": 25,
+    "qb": {
+     "home": {
+      "id": "00-0039918",
+      "name": "Caleb Williams",
+      "source": "listed",
+      "prev": "Caleb Williams",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0039851",
+      "name": "Drake Maye",
+      "source": "listed",
+      "prev": "Drake Maye",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Caleb Williams",
+      "espn": "Caleb Williams",
+      "agree": true
+     },
+     "away": {
+      "listed": "Drake Maye",
+      "espn": "Drake Maye",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_CIN_BAL",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "BAL",
+   "away": "CIN",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 2.5,
+   "total": 51.5,
+   "bookLine": 2.5,
+   "bookTotal": 51,
+   "market": {
+    "line": -1.5087613821033818,
+    "total": 48.55268107097997
+   },
+   "pbp": {
+    "line": -1.3375390603286799,
+    "total": 48.55268107097997
+   },
+   "qbAdj": -1.9995751628503682,
+   "components": {
+    "passOff": 1.0989120335605622,
+    "passDef": -0.08061793321330754,
+    "rushOff": 0.5383466011174822,
+    "rushDef": 1.3002060044562564
+   },
+   "reliability": 28,
+   "totalReliability": 31,
+   "coverRanks": [
+    8,
+    20
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0035993",
+     "name": "Tyler Huntley",
+     "source": "listed",
+     "prev": "Tyler Huntley",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0036442",
+     "name": "Joe Burrow",
+     "source": "listed",
+     "prev": "Joe Burrow",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Tyler Huntley",
+     "espn": "Lamar Jackson",
+     "agree": false
+    },
+    "away": {
+     "listed": "Joe Burrow",
+     "espn": "Joe Burrow",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_CIN_BAL",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "BAL",
+    "away": "CIN",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 2.5,
+    "total": 51.5,
+    "bookLine": 2.5,
+    "bookTotal": 51,
+    "market": {
+     "line": -1.5087613821033818,
+     "total": 48.55268107097997
+    },
+    "pbp": {
+     "line": -1.3375390603286799,
+     "total": 48.55268107097997
+    },
+    "qbAdj": -1.9995751628503682,
+    "components": {
+     "passOff": 1.0989120335605622,
+     "passDef": -0.08061793321330754,
+     "rushOff": 0.5383466011174822,
+     "rushDef": 1.3002060044562564
+    },
+    "reliability": 28,
+    "totalReliability": 31,
+    "coverRanks": [
+     8,
+     20
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0035993",
+      "name": "Tyler Huntley",
+      "source": "listed",
+      "prev": "Tyler Huntley",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0036442",
+      "name": "Joe Burrow",
+      "source": "listed",
+      "prev": "Joe Burrow",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Tyler Huntley",
+      "espn": "Lamar Jackson",
+      "agree": false
+     },
+     "away": {
+      "listed": "Joe Burrow",
+      "espn": "Joe Burrow",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_CLE_TEN",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "TEN",
+   "away": "CLE",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": -1.5,
+   "total": 38.5,
+   "bookLine": -2,
+   "bookTotal": 38.5,
+   "market": {
+    "line": -2.606823320081435,
+    "total": 35.330103958528994
+   },
+   "pbp": {
+    "line": -1.8160657162515381,
+    "total": 35.330103958528994
+   },
+   "qbAdj": -0.22344714335200308,
+   "components": {
+    "passOff": -1.9500099873806251,
+    "passDef": -5.784967343334653,
+    "rushOff": 1.5179803965761507,
+    "rushDef": -0.2687906951545739
+   },
+   "reliability": 13,
+   "totalReliability": 5,
+   "coverRanks": [
+    9,
+    4
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0040676",
+     "name": "Cam Ward",
+     "source": "listed",
+     "prev": "Cam Ward",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0033537",
+     "name": "Deshaun Watson",
+     "source": "listed",
+     "prev": "Deshaun Watson",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Cam Ward",
+     "espn": "Cam Ward",
+     "agree": true
+    },
+    "away": {
+     "listed": "Deshaun Watson",
+     "espn": "Deshaun Watson",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_CLE_TEN",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "TEN",
+    "away": "CLE",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": -1.5,
+    "total": 38.5,
+    "bookLine": -2,
+    "bookTotal": 38.5,
+    "market": {
+     "line": -2.606823320081435,
+     "total": 35.330103958528994
+    },
+    "pbp": {
+     "line": -1.8160657162515381,
+     "total": 35.330103958528994
+    },
+    "qbAdj": -0.22344714335200308,
+    "components": {
+     "passOff": -1.9500099873806251,
+     "passDef": -5.784967343334653,
+     "rushOff": 1.5179803965761507,
+     "rushDef": -0.2687906951545739
+    },
+    "reliability": 13,
+    "totalReliability": 5,
+    "coverRanks": [
+     9,
+     4
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0040676",
+      "name": "Cam Ward",
+      "source": "listed",
+      "prev": "Cam Ward",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0033537",
+      "name": "Deshaun Watson",
+      "source": "listed",
+      "prev": "Deshaun Watson",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Cam Ward",
+      "espn": "Cam Ward",
+      "agree": true
+     },
+     "away": {
+      "listed": "Deshaun Watson",
+      "espn": "Deshaun Watson",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_DEN_ARI",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "ARI",
+   "away": "DEN",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": -4.5,
+   "total": 43.5,
+   "bookLine": -4,
+   "bookTotal": 43.5,
+   "market": {
+    "line": -6.123238271600022,
+    "total": 44.65394766870794
+   },
+   "pbp": {
+    "line": -5.2685003098274805,
+    "total": 44.65394766870794
+   },
+   "qbAdj": -0.08509431364016215,
+   "components": {
+    "passOff": 0.9729154738886819,
+    "passDef": -7.982741622902179,
+    "rushOff": -0.3869354529308113,
+    "rushDef": 0.39159379965133423
+   },
+   "reliability": 52,
+   "totalReliability": 45,
+   "coverRanks": [
+    31,
+    21
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0033119",
+     "name": "Jacoby Brissett",
+     "source": "listed",
+     "prev": "Jacoby Brissett",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0039732",
+     "name": "Bo Nix",
+     "source": "listed",
+     "prev": "Bo Nix",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jacoby Brissett",
+     "espn": "Jacoby Brissett",
+     "agree": true
+    },
+    "away": {
+     "listed": "Bo Nix",
+     "espn": "Bo Nix",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_DEN_ARI",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "ARI",
+    "away": "DEN",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": -4.5,
+    "total": 43.5,
+    "bookLine": -4,
+    "bookTotal": 43.5,
+    "market": {
+     "line": -6.123238271600022,
+     "total": 44.65394766870794
+    },
+    "pbp": {
+     "line": -5.2685003098274805,
+     "total": 44.65394766870794
+    },
+    "qbAdj": -0.08509431364016215,
+    "components": {
+     "passOff": 0.9729154738886819,
+     "passDef": -7.982741622902179,
+     "rushOff": -0.3869354529308113,
+     "rushDef": 0.39159379965133423
+    },
+    "reliability": 52,
+    "totalReliability": 45,
+    "coverRanks": [
+     31,
+     21
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0033119",
+      "name": "Jacoby Brissett",
+      "source": "listed",
+      "prev": "Jacoby Brissett",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0039732",
+      "name": "Bo Nix",
+      "source": "listed",
+      "prev": "Bo Nix",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Jacoby Brissett",
+      "espn": "Jacoby Brissett",
+      "agree": true
+     },
+     "away": {
+      "listed": "Bo Nix",
+      "espn": "Bo Nix",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_GB_DET",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "DET",
+   "away": "GB",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 3,
+   "total": 53.5,
+   "bookLine": 3,
+   "bookTotal": 53.5,
+   "market": {
+    "line": 3.116957111029926,
+    "total": 51.00163026048036
+   },
+   "pbp": {
+    "line": 4.565512411220601,
+    "total": 51.00163026048036
+   },
+   "qbAdj": -0.1737803842262818,
+   "components": {
+    "passOff": 1.347718314417173,
+    "passDef": -4.614522931470851,
+    "rushOff": 2.5709737243378763,
+    "rushDef": 0.1088739560911221
+   },
+   "reliability": 42,
+   "totalReliability": 50,
+   "coverRanks": [
+    27,
+    15
+   ],
+   "minGames": 94,
+   "qb": {
+    "home": {
+     "id": "00-0033106",
+     "name": "Jared Goff",
+     "source": "listed",
+     "prev": "Jared Goff",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0036264",
+     "name": "Jordan Love",
+     "source": "listed",
+     "prev": "Jordan Love",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jared Goff",
+     "espn": "Jared Goff",
+     "agree": true
+    },
+    "away": {
+     "listed": "Jordan Love",
+     "espn": "Jordan Love",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_GB_DET",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "DET",
+    "away": "GB",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 3,
+    "total": 53.5,
+    "bookLine": 3,
+    "bookTotal": 53.5,
+    "market": {
+     "line": 3.116957111029926,
+     "total": 51.00163026048036
+    },
+    "pbp": {
+     "line": 4.565512411220601,
+     "total": 51.00163026048036
+    },
+    "qbAdj": -0.1737803842262818,
+    "components": {
+     "passOff": 1.347718314417173,
+     "passDef": -4.614522931470851,
+     "rushOff": 2.5709737243378763,
+     "rushDef": 0.1088739560911221
+    },
+    "reliability": 42,
+    "totalReliability": 50,
+    "coverRanks": [
+     27,
+     15
+    ],
+    "minGames": 94,
+    "qb": {
+     "home": {
+      "id": "00-0033106",
+      "name": "Jared Goff",
+      "source": "listed",
+      "prev": "Jared Goff",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0036264",
+      "name": "Jordan Love",
+      "source": "listed",
+      "prev": "Jordan Love",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Jared Goff",
+      "espn": "Jared Goff",
+      "agree": true
+     },
+     "away": {
+      "listed": "Jordan Love",
+      "espn": "Jordan Love",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_IND_MIN",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "MIN",
+   "away": "IND",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 6.5,
+   "total": 41.5,
+   "bookLine": 6,
+   "bookTotal": 41.5,
+   "market": {
+    "line": 5.67482179894221,
+    "total": 43.11769563125992
+   },
+   "pbp": {
+    "line": 4.217890862359546,
+    "total": 43.11769563125992
+   },
+   "qbAdj": 0.5910925467597621,
+   "components": {
+    "passOff": 0.30658311508611163,
+    "passDef": 6.783640136554831,
+    "rushOff": -3.3815307843127824,
+    "rushDef": 1.842398760743211
+   },
+   "reliability": 24,
+   "totalReliability": 35,
+   "coverRanks": [
+    17,
+    7
+   ],
+   "minGames": 57,
+   "qb": {
+    "home": {
+     "id": "00-0035228",
+     "name": "Kyler Murray",
+     "source": "listed",
+     "prev": "Kyler Murray",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0035710",
+     "name": "Daniel Jones",
+     "source": "listed",
+     "prev": "Daniel Jones",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Kyler Murray",
+     "espn": "Kyler Murray",
+     "agree": true
+    },
+    "away": {
+     "listed": "Daniel Jones",
+     "espn": "Daniel Jones",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_IND_MIN",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "MIN",
+    "away": "IND",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 6.5,
+    "total": 41.5,
+    "bookLine": 6,
+    "bookTotal": 41.5,
+    "market": {
+     "line": 5.67482179894221,
+     "total": 43.11769563125992
+    },
+    "pbp": {
+     "line": 4.217890862359546,
+     "total": 43.11769563125992
+    },
+    "qbAdj": 0.5910925467597621,
+    "components": {
+     "passOff": 0.30658311508611163,
+     "passDef": 6.783640136554831,
+     "rushOff": -3.3815307843127824,
+     "rushDef": 1.842398760743211
+    },
+    "reliability": 24,
+    "totalReliability": 35,
+    "coverRanks": [
+     17,
+     7
+    ],
+    "minGames": 57,
+    "qb": {
+     "home": {
+      "id": "00-0035228",
+      "name": "Kyler Murray",
+      "source": "listed",
+      "prev": "Kyler Murray",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0035710",
+      "name": "Daniel Jones",
+      "source": "listed",
+      "prev": "Daniel Jones",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Kyler Murray",
+      "espn": "Kyler Murray",
+      "agree": true
+     },
+     "away": {
+      "listed": "Daniel Jones",
+      "espn": "Daniel Jones",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_KC_SEA",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "SEA",
+   "away": "KC",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 2.5,
+   "total": 42.5,
+   "bookLine": 2.5,
+   "bookTotal": 42.5,
+   "market": {
+    "line": -0.18665008964671603,
+    "total": 43.21339532657528
+   },
+   "pbp": {
+    "line": -1.647631496621638,
+    "total": 43.21339532657528
+   },
+   "qbAdj": -1.8959648396720978,
+   "components": {
+    "passOff": -0.8114070862645111,
+    "passDef": 3.8051316839761706,
+    "rushOff": -3.3062488368023017,
+    "rushDef": 1.0180140450663664
+   },
+   "reliability": 25,
+   "totalReliability": 50,
+   "coverRanks": [
+    14,
+    11
+   ],
+   "minGames": 43,
+   "qb": {
+    "home": {
+     "id": "00-0035704",
+     "name": "Drew Lock",
+     "source": "listed",
+     "prev": "Sam Darnold",
+     "changed": true
+    },
+    "away": {
+     "id": "00-0033873",
+     "name": "Patrick Mahomes",
+     "source": "listed",
+     "prev": "Patrick Mahomes",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Drew Lock",
+     "espn": "Sam Darnold",
+     "agree": false
+    },
+    "away": {
+     "listed": "Patrick Mahomes",
+     "espn": "Patrick Mahomes",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_KC_SEA",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "SEA",
+    "away": "KC",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 2.5,
+    "total": 42.5,
+    "bookLine": 2.5,
+    "bookTotal": 42.5,
+    "market": {
+     "line": -0.18665008964671603,
+     "total": 43.21339532657528
+    },
+    "pbp": {
+     "line": -1.647631496621638,
+     "total": 43.21339532657528
+    },
+    "qbAdj": -1.8959648396720978,
+    "components": {
+     "passOff": -0.8114070862645111,
+     "passDef": 3.8051316839761706,
+     "rushOff": -3.3062488368023017,
+     "rushDef": 1.0180140450663664
+    },
+    "reliability": 25,
+    "totalReliability": 50,
+    "coverRanks": [
+     14,
+     11
+    ],
+    "minGames": 43,
+    "qb": {
+     "home": {
+      "id": "00-0035704",
+      "name": "Drew Lock",
+      "source": "listed",
+      "prev": "Sam Darnold",
+      "changed": true
+     },
+     "away": {
+      "id": "00-0033873",
+      "name": "Patrick Mahomes",
+      "source": "listed",
+      "prev": "Patrick Mahomes",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Drew Lock",
+      "espn": "Sam Darnold",
+      "agree": false
+     },
+     "away": {
+      "listed": "Patrick Mahomes",
+      "espn": "Patrick Mahomes",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_LA_LV",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "LV",
+   "away": "LA",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": -4.5,
+   "total": 47.5,
+   "bookLine": -4.5,
+   "bookTotal": 47.5,
+   "market": {
+    "line": -4.358654891520354,
+    "total": 49.8940728350626
+   },
+   "pbp": {
+    "line": -5.323559083495783,
+    "total": 49.8940728350626
+   },
+   "qbAdj": 0.1658182305207236,
+   "components": {
+    "passOff": -2.154002561641563,
+    "passDef": -3.4749650334980733,
+    "rushOff": -3.9700983952421636,
+    "rushDef": -0.4108786923005724
+   },
+   "reliability": 53,
+   "totalReliability": 31,
+   "coverRanks": [
+    29,
+    24
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0029604",
+     "name": "Kirk Cousins",
+     "source": "listed",
+     "prev": "Kirk Cousins",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0026498",
+     "name": "Matthew Stafford",
+     "source": "listed",
+     "prev": "Matthew Stafford",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Kirk Cousins",
+     "espn": "Kirk Cousins",
+     "agree": true
+    },
+    "away": {
+     "listed": "Matthew Stafford",
+     "espn": "Matthew Stafford",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_LA_LV",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "LV",
+    "away": "LA",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": -4.5,
+    "total": 47.5,
+    "bookLine": -4.5,
+    "bookTotal": 47.5,
+    "market": {
+     "line": -4.358654891520354,
+     "total": 49.8940728350626
+    },
+    "pbp": {
+     "line": -5.323559083495783,
+     "total": 49.8940728350626
+    },
+    "qbAdj": 0.1658182305207236,
+    "components": {
+     "passOff": -2.154002561641563,
+     "passDef": -3.4749650334980733,
+     "rushOff": -3.9700983952421636,
+     "rushDef": -0.4108786923005724
+    },
+    "reliability": 53,
+    "totalReliability": 31,
+    "coverRanks": [
+     29,
+     24
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0029604",
+      "name": "Kirk Cousins",
+      "source": "listed",
+      "prev": "Kirk Cousins",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0026498",
+      "name": "Matthew Stafford",
+      "source": "listed",
+      "prev": "Matthew Stafford",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Kirk Cousins",
+      "espn": "Kirk Cousins",
+      "agree": true
+     },
+     "away": {
+      "listed": "Matthew Stafford",
+      "espn": "Matthew Stafford",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_MIA_NYJ",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "NYJ",
+   "away": "MIA",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 4.5,
+   "total": 38.5,
+   "bookLine": 5,
+   "bookTotal": 39,
+   "market": {
+    "line": 4.783817963388893,
+    "total": 39.445358565579475
+   },
+   "pbp": {
+    "line": 4.348660664190848,
+    "total": 39.445358565579475
+   },
+   "qbAdj": 0.21512480329771838,
+   "components": {
+    "passOff": 0.7947495303788792,
+    "passDef": 2.461971717269058,
+    "rushOff": -1.1703932161954167,
+    "rushDef": 0.6084125335013896
+   },
+   "reliability": 7,
+   "totalReliability": 29,
+   "coverRanks": [
+    5,
+    2
+   ],
+   "minGames": 5,
+   "qb": {
+    "home": {
+     "id": "00-0030565",
+     "name": "Geno Smith",
+     "source": "listed",
+     "prev": "Geno Smith",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0038128",
+     "name": "Malik Willis",
+     "source": "listed",
+     "prev": "Malik Willis",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Geno Smith",
+     "espn": "Geno Smith",
+     "agree": true
+    },
+    "away": {
+     "listed": "Malik Willis",
+     "espn": "Malik Willis",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_MIA_NYJ",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "NYJ",
+    "away": "MIA",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 4.5,
+    "total": 38.5,
+    "bookLine": 5,
+    "bookTotal": 39,
+    "market": {
+     "line": 4.783817963388893,
+     "total": 39.445358565579475
+    },
+    "pbp": {
+     "line": 4.348660664190848,
+     "total": 39.445358565579475
+    },
+    "qbAdj": 0.21512480329771838,
+    "components": {
+     "passOff": 0.7947495303788792,
+     "passDef": 2.461971717269058,
+     "rushOff": -1.1703932161954167,
+     "rushDef": 0.6084125335013896
+    },
+    "reliability": 7,
+    "totalReliability": 29,
+    "coverRanks": [
+     5,
+     2
+    ],
+    "minGames": 5,
+    "qb": {
+     "home": {
+      "id": "00-0030565",
+      "name": "Geno Smith",
+      "source": "listed",
+      "prev": "Geno Smith",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0038128",
+      "name": "Malik Willis",
+      "source": "listed",
+      "prev": "Malik Willis",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Geno Smith",
+      "espn": "Geno Smith",
+      "agree": true
+     },
+     "away": {
+      "listed": "Malik Willis",
+      "espn": "Malik Willis",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_NYG_HOU",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "HOU",
+   "away": "NYG",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 10,
+   "total": 42.5,
+   "bookLine": 9.5,
+   "bookTotal": 43,
+   "market": {
+    "line": 8.192302455778933,
+    "total": 41.63768458735148
+   },
+   "pbp": {
+    "line": 8.502361534936039,
+    "total": 41.63768458735148
+   },
+   "qbAdj": 0.16672048615245783,
+   "components": {
+    "passOff": 1.934036434611764,
+    "passDef": 2.7872426080736283,
+    "rushOff": -0.15234882047887893,
+    "rushDef": 2.762286340008154
+   },
+   "reliability": 29,
+   "totalReliability": 39,
+   "coverRanks": [
+    23,
+    6
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0039163",
+     "name": "C.J. Stroud",
+     "source": "listed",
+     "prev": "C.J. Stroud",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0031503",
+     "name": "Jameis Winston",
+     "source": "listed",
+     "prev": "Jameis Winston",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "C.J. Stroud",
+     "espn": "C.J. Stroud",
+     "agree": true
+    },
+    "away": {
+     "listed": "Jameis Winston",
+     "espn": "Jameis Winston",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_NYG_HOU",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "HOU",
+    "away": "NYG",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 10,
+    "total": 42.5,
+    "bookLine": 9.5,
+    "bookTotal": 43,
+    "market": {
+     "line": 8.192302455778933,
+     "total": 41.63768458735148
+    },
+    "pbp": {
+     "line": 8.502361534936039,
+     "total": 41.63768458735148
+    },
+    "qbAdj": 0.16672048615245783,
+    "components": {
+     "passOff": 1.934036434611764,
+     "passDef": 2.7872426080736283,
+     "rushOff": -0.15234882047887893,
+     "rushDef": 2.762286340008154
+    },
+    "reliability": 29,
+    "totalReliability": 39,
+    "coverRanks": [
+     23,
+     6
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0039163",
+      "name": "C.J. Stroud",
+      "source": "listed",
+      "prev": "C.J. Stroud",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0031503",
+      "name": "Jameis Winston",
+      "source": "listed",
+      "prev": "Jameis Winston",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "C.J. Stroud",
+      "espn": "C.J. Stroud",
+      "agree": true
+     },
+     "away": {
+      "listed": "Jameis Winston",
+      "espn": "Jameis Winston",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_PIT_NO",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "NO",
+   "away": "PIT",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": -3.5,
+   "total": 44.5,
+   "bookLine": -3.5,
+   "bookTotal": 44,
+   "market": {
+    "line": -3.640157041619858,
+    "total": 44.726399650450034
+   },
+   "pbp": {
+    "line": -4.388404073409468,
+    "total": 44.726399650450034
+   },
+   "qbAdj": 0.0017523523585095263,
+   "components": {
+    "passOff": 1.0811335627397702,
+    "passDef": -1.1386624522259634,
+    "rushOff": -2.5488774374281697,
+    "rushDef": -0.6333860462533862
+   },
+   "reliability": 15,
+   "totalReliability": 23,
+   "coverRanks": [
+    12,
+    3
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0040743",
+     "name": "Tyler Shough",
+     "source": "listed",
+     "prev": "Tyler Shough",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0023459",
+     "name": "Aaron Rodgers",
+     "source": "listed",
+     "prev": "Aaron Rodgers",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Tyler Shough",
+     "espn": "Tyler Shough",
+     "agree": true
+    },
+    "away": {
+     "listed": "Aaron Rodgers",
+     "espn": "Aaron Rodgers",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_PIT_NO",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "NO",
+    "away": "PIT",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": -3.5,
+    "total": 44.5,
+    "bookLine": -3.5,
+    "bookTotal": 44,
+    "market": {
+     "line": -3.640157041619858,
+     "total": 44.726399650450034
+    },
+    "pbp": {
+     "line": -4.388404073409468,
+     "total": 44.726399650450034
+    },
+    "qbAdj": 0.0017523523585095263,
+    "components": {
+     "passOff": 1.0811335627397702,
+     "passDef": -1.1386624522259634,
+     "rushOff": -2.5488774374281697,
+     "rushDef": -0.6333860462533862
+    },
+    "reliability": 15,
+    "totalReliability": 23,
+    "coverRanks": [
+     12,
+     3
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0040743",
+      "name": "Tyler Shough",
+      "source": "listed",
+      "prev": "Tyler Shough",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0023459",
+      "name": "Aaron Rodgers",
+      "source": "listed",
+      "prev": "Aaron Rodgers",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Tyler Shough",
+      "espn": "Tyler Shough",
+      "agree": true
+     },
+     "away": {
+      "listed": "Aaron Rodgers",
+      "espn": "Aaron Rodgers",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_SF_ATL",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "ATL",
+   "away": "SF",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": -3.5,
+   "total": 49.5,
+   "bookLine": -3.5,
+   "bookTotal": 49.5,
+   "market": {
+    "line": -2.912212606643461,
+    "total": 50.12300532762262
+   },
+   "pbp": {
+    "line": -4.1187117148403205,
+    "total": 50.12300532762262
+   },
+   "qbAdj": 0.42763236996336784,
+   "components": {
+    "passOff": -8.582848124157604,
+    "passDef": 1.3898230216139569,
+    "rushOff": 0.020157210600729003,
+    "rushDef": 0.024820693485626506
+   },
+   "reliability": 57,
+   "totalReliability": 31,
+   "coverRanks": [
+    32,
+    25
+   ],
+   "minGames": 6,
+   "qb": {
+    "home": {
+     "id": "00-0039917",
+     "name": "Michael Penix Jr.",
+     "source": "listed",
+     "prev": "Michael Penix Jr.",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0037834",
+     "name": "Brock Purdy",
+     "source": "listed",
+     "prev": "Brock Purdy",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Michael Penix Jr.",
+     "espn": "Michael Penix Jr.",
+     "agree": true
+    },
+    "away": {
+     "listed": "Brock Purdy",
+     "espn": "Brock Purdy",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_SF_ATL",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "ATL",
+    "away": "SF",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": -3.5,
+    "total": 49.5,
+    "bookLine": -3.5,
+    "bookTotal": 49.5,
+    "market": {
+     "line": -2.912212606643461,
+     "total": 50.12300532762262
+    },
+    "pbp": {
+     "line": -4.1187117148403205,
+     "total": 50.12300532762262
+    },
+    "qbAdj": 0.42763236996336784,
+    "components": {
+     "passOff": -8.582848124157604,
+     "passDef": 1.3898230216139569,
+     "rushOff": 0.020157210600729003,
+     "rushDef": 0.024820693485626506
+    },
+    "reliability": 57,
+    "totalReliability": 31,
+    "coverRanks": [
+     32,
+     25
+    ],
+    "minGames": 6,
+    "qb": {
+     "home": {
+      "id": "00-0039917",
+      "name": "Michael Penix Jr.",
+      "source": "listed",
+      "prev": "Michael Penix Jr.",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0037834",
+      "name": "Brock Purdy",
+      "source": "listed",
+      "prev": "Brock Purdy",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Michael Penix Jr.",
+      "espn": "Michael Penix Jr.",
+      "agree": true
+     },
+     "away": {
+      "listed": "Brock Purdy",
+      "espn": "Brock Purdy",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_TB_CAR",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-25",
+   "home": "CAR",
+   "away": "TB",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": 3.5,
+   "total": 44.5,
+   "bookLine": 3,
+   "bookTotal": 44.5,
+   "market": {
+    "line": 5.436373921199814,
+    "total": 44.17449705368495
+   },
+   "pbp": {
+    "line": 5.996720101361068,
+    "total": 44.17449705368495
+   },
+   "qbAdj": 0.890356673777453,
+   "components": {
+    "passOff": 5.831402723857621,
+    "passDef": -1.1634048040968379,
+    "rushOff": 0.13692282717099227,
+    "rushDef": -1.683012519372634
+   },
+   "reliability": 43,
+   "totalReliability": 48,
+   "coverRanks": [
+    30,
+    13
+   ],
+   "minGames": 40,
+   "qb": {
+    "home": {
+     "id": "00-0039150",
+     "name": "Bryce Young",
+     "source": "listed",
+     "prev": "Bryce Young",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0041251",
+     "name": "Jalon Daniels",
+     "source": "listed",
+     "prev": "Jalon Daniels",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Bryce Young",
+     "espn": "Bryce Young",
+     "agree": true
+    },
+    "away": {
+     "listed": "Jalon Daniels",
+     "espn": "Baker Mayfield",
+     "agree": false
+    }
+   },
+   "first": {
+    "id": "2026_07_TB_CAR",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-25",
+    "home": "CAR",
+    "away": "TB",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": 3.5,
+    "total": 44.5,
+    "bookLine": 3,
+    "bookTotal": 44.5,
+    "market": {
+     "line": 5.436373921199814,
+     "total": 44.17449705368495
+    },
+    "pbp": {
+     "line": 5.996720101361068,
+     "total": 44.17449705368495
+    },
+    "qbAdj": 0.890356673777453,
+    "components": {
+     "passOff": 5.831402723857621,
+     "passDef": -1.1634048040968379,
+     "rushOff": 0.13692282717099227,
+     "rushDef": -1.683012519372634
+    },
+    "reliability": 43,
+    "totalReliability": 48,
+    "coverRanks": [
+     30,
+     13
+    ],
+    "minGames": 40,
+    "qb": {
+     "home": {
+      "id": "00-0039150",
+      "name": "Bryce Young",
+      "source": "listed",
+      "prev": "Bryce Young",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0041251",
+      "name": "Jalon Daniels",
+      "source": "listed",
+      "prev": "Jalon Daniels",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Bryce Young",
+      "espn": "Bryce Young",
+      "agree": true
+     },
+     "away": {
+      "listed": "Jalon Daniels",
+      "espn": "Baker Mayfield",
+      "agree": false
+     }
+    }
+   }
+  },
+  {
+   "id": "2026_07_DAL_PHI",
+   "season": 2026,
+   "week": 7,
+   "date": "2026-10-26",
+   "home": "PHI",
+   "away": "DAL",
+   "loggedAt": "2026-10-20T04:49:27.503Z",
+   "line": -4.5,
+   "total": 44.5,
+   "bookLine": -4.5,
+   "bookTotal": 44,
+   "market": {
+    "line": 0.5753664821557282,
+    "total": 46.831717410503984
+   },
+   "pbp": {
+    "line": -1.434548210053281,
+    "total": 46.831717410503984
+   },
+   "qbAdj": 1.2168037210991076,
+   "components": {
+    "passOff": -4.842716158059412,
+    "passDef": 7.1240608294558765,
+    "rushOff": -1.8550769770612172,
+    "rushDef": 0.5375122411784111
+   },
+   "reliability": 37,
+   "totalReliability": 29,
+   "coverRanks": [
+    19,
+    18
+   ],
+   "minGames": 23,
+   "qb": {
+    "home": {
+     "id": "00-0036389",
+     "name": "Jalen Hurts",
+     "source": "listed",
+     "prev": "Tanner McKee",
+     "changed": true
+    },
+    "away": {
+     "id": "00-0033077",
+     "name": "Dak Prescott",
+     "source": "listed",
+     "prev": "Dak Prescott",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Jalen Hurts",
+     "espn": "Tanner McKee",
+     "agree": false
+    },
+    "away": {
+     "listed": "Dak Prescott",
+     "espn": "Dak Prescott",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_07_DAL_PHI",
+    "season": 2026,
+    "week": 7,
+    "date": "2026-10-26",
+    "home": "PHI",
+    "away": "DAL",
+    "loggedAt": "2026-10-20T04:49:27.503Z",
+    "line": -4.5,
+    "total": 44.5,
+    "bookLine": -4.5,
+    "bookTotal": 44,
+    "market": {
+     "line": 0.5753664821557282,
+     "total": 46.831717410503984
+    },
+    "pbp": {
+     "line": -1.434548210053281,
+     "total": 46.831717410503984
+    },
+    "qbAdj": 1.2168037210991076,
+    "components": {
+     "passOff": -4.842716158059412,
+     "passDef": 7.1240608294558765,
+     "rushOff": -1.8550769770612172,
+     "rushDef": 0.5375122411784111
+    },
+    "reliability": 37,
+    "totalReliability": 29,
+    "coverRanks": [
+     19,
+     18
+    ],
+    "minGames": 23,
+    "qb": {
+     "home": {
+      "id": "00-0036389",
+      "name": "Jalen Hurts",
+      "source": "listed",
+      "prev": "Tanner McKee",
+      "changed": true
+     },
+     "away": {
+      "id": "00-0033077",
+      "name": "Dak Prescott",
+      "source": "listed",
+      "prev": "Dak Prescott",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Jalen Hurts",
+      "espn": "Tanner McKee",
+      "agree": false
+     },
+     "away": {
+      "listed": "Dak Prescott",
+      "espn": "Dak Prescott",
+      "agree": true
+     }
+    }
+   }
   }
  ]
 }
