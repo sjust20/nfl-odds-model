@@ -7,6 +7,7 @@ import type { Prediction } from "../model/engine";
 import { BREAK_EVEN, evaluate, record, type BetRecord, type Strategy } from "../model/metrics";
 import { BIG_EDGE_NO_QB, LINE_PLUS_COMPONENTS_MIN, linePlusComponentsBet } from "../model/tracked";
 import { useApp } from "../state";
+import { KillRuleSection } from "./KillRule";
 import { AdvancedLab, useLiveRecord } from "./LabPage";
 import { ruleRecord, type RuleRecord } from "./useWeek";
 
@@ -246,6 +247,8 @@ export function LabPage() {
           </div>
         </div>
       </div>
+
+      <KillRuleSection />
 
       <section className="stack-sm">
         <h2 className="section-title">Win rate by season</h2>

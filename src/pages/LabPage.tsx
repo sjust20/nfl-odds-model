@@ -18,8 +18,10 @@ import {
   type BetMarket,
   type BetRecord,
   type GridCell,
+  type ModelName,
   type Strategy,
 } from "../model/metrics";
+import { KILL_RULE, killStatus, summarizeMoves } from "../model/killRule";
 import { bigEdgeNoQb, LINE_PLUS_COMPONENTS, LINE_PLUS_COMPONENTS_MIN, lineAdjustment, linePlusComponentsBet } from "../model/tracked";
 import { DEFAULT_STRATEGIES, useApp, type BetKind } from "../state";
 
@@ -176,6 +178,41 @@ function ClvLine({ c }: { c: { n: number; avg: number; beat: number; same: numbe
   );
 }
 
+/** The side a model leans to on every lined game, with no filters. */
+const leanOf = (model: ModelName): Strategy => ({
+  pick: "model",
+  model,
+  market: "spread",
+  minEdge: 0,
+  maxReliability: null,
+  minGames: 0,
+  skipQbChange: false,
+  fromSeason: 0,
+  toSeason: 9999,
+});
+
+/** Progress on the pre-registered kill rule (src/model/killRule.ts). */
+export function useKillRule() {
+  const { pickLog, data } = useApp();
+  return useMemo(() => {
+    if (!pickLog || !data) return null;
+    const games = new Map(data.games.map((g) => [g.id, g]));
+    const lean = leanOf(KILL_RULE.model);
+    const moves: number[] = [];
+    for (const lp of pickLog.picks) {
+      const g = games.get(lp.id);
+      if (!g || g.season !== KILL_RULE.season || !lp.first || !isFinal(g)) continue;
+      const v = clvFrom(lp.first, lp, g, lean);
+      if (v !== null) moves.push(v);
+    }
+    const regular = data.games.filter((g) => g.season === KILL_RULE.season && g.type === "REG");
+    const seasonOver = regular.length > 0 && regular.every(isFinal);
+    const deadline = regular.reduce((m, g) => (g.date > m ? g.date : m), "");
+    const summary = summarizeMoves(moves);
+    return { summary, status: killStatus(summary, seasonOver), deadline };
+  }, [pickLog, data]);
+}
+
 /** Grades logged (pre-kickoff) picks using the line available when they were logged. */
 export function useLiveRecord(strategy: Strategy) {
   const { pickLog, data } = useApp();
@@ -188,17 +225,7 @@ export function useLiveRecord(strategy: Strategy) {
     const earlyClvs: number[] = [];
     // The same, on every lined game: take whichever side the rule's model leans to, with no filters.
     // This tracks whether the line moves toward the model at all, independent of the pick rule.
-    const lean: Strategy = {
-      pick: "model",
-      model: strategy.model,
-      market: "spread",
-      minEdge: 0,
-      maxReliability: null,
-      minGames: 0,
-      skipQbChange: false,
-      fromSeason: 0,
-      toSeason: 9999,
-    };
+    const lean = leanOf(strategy.model);
     const allClvs: number[] = [];
     for (const lp of pickLog.picks) {
       const g = games.get(lp.id);
