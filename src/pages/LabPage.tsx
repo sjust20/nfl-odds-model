@@ -166,13 +166,31 @@ export function useLiveRecord(strategy: Strategy) {
     // CLV had you bet this rule when each game was first logged (usually right after the previous
     // week): the line has most of the week to move, so this is the informative version.
     const earlyClvs: number[] = [];
+    // The same, on every lined game: take whichever side the rule's model leans to, with no filters.
+    // This tracks whether the line moves toward the model at all, independent of the pick rule.
+    const lean: Strategy = {
+      pick: "model",
+      model: strategy.model,
+      market: "spread",
+      minEdge: 0,
+      maxReliability: null,
+      minGames: 0,
+      skipQbChange: false,
+      fromSeason: 0,
+      toSeason: 9999,
+    };
+    const allClvs: number[] = [];
     for (const lp of pickLog.picks) {
       const g = games.get(lp.id);
       if (!g) continue;
       if (lp.first && isFinal(g)) {
-        const early = betFor(fromLog(lp.first, g), { ...strategy, fromSeason: 0, toSeason: 9999 });
+        const firstPred = fromLog(lp.first, g);
+        const early = betFor(firstPred, { ...strategy, fromSeason: 0, toSeason: 9999 });
         const v = early ? clv(early, g) : null;
         if (v !== null) earlyClvs.push(v);
+        const leanBet = betFor(firstPred, lean);
+        const a = leanBet ? clv(leanBet, g) : null;
+        if (a !== null) allClvs.push(a);
       }
       const p = fromLog(lp, g);
       const bet = betFor(p, { ...strategy, fromSeason: 0, toSeason: 9999 });
@@ -204,6 +222,7 @@ export function useLiveRecord(strategy: Strategy) {
       rec,
       clv: summarize(bets.flatMap((b) => (b.clv === null ? [] : [b.clv]))),
       earlyClv: summarize(earlyClvs),
+      allClv: summarize(allClvs),
       since: pickLog.picks[0]?.date ?? null,
     };
   }, [pickLog, data, strategy]);
@@ -614,8 +633,12 @@ export function AdvancedLab() {
                 <tbody>
                   <tr>
                     <td>
-                      <strong>Closing line value, bet when first logged</strong>
+                      <strong>Closing line value, every lined game, model's side when first logged</strong>
                     </td>
+                    <td><ClvLine c={live.allClv} /></td>
+                  </tr>
+                  <tr>
+                    <td>Closing line value, this rule's picks, bet when first logged</td>
                     <td><ClvLine c={live.earlyClv} /></td>
                   </tr>
                   <tr>
@@ -627,7 +650,9 @@ export function AdvancedLab() {
               <p className="muted small">
                 Closing line value compares the number you'd have bet with where the market closed. It's a
                 faster check than wins and losses: after a few hundred bets, a real edge shows up as consistently
-                positive CLV. The first-logged version is the informative one (the line has most of the week to
+                positive CLV. The every-game row takes the model's side on all lined games, with no filters, so
+                it measures whether the market moves toward the model at all, on far more games than the rule
+                picks. The first-logged versions are the informative ones (the line has most of the week to
                 move); by the last log there are only hours left, so that version sits near zero. The closing
                 number is nflverse's, which can differ from the books' median by a half point.
               </p>

@@ -26,7 +26,7 @@ const GLOSSARY = [
   ["Market model", "Rates each team from how the market has priced it under its current head coach, nudged toward actual results and adjusted for the starting QB."],
   ["Play-by-play model", "The Market model's number plus pass and rush efficiency (expected points per play) on offense and defense."],
   ["Reliability", "How steadily a team has beaten or missed the line. Lower is steadier; the rule adds both teams' ranks."],
-  ["Closing line value", "Did the line move toward our side after we logged the pick? Beating the closing line is the best early sign of a real edge, long before win-loss records settle."],
+  ["Closing line value", "Did the line move toward the model's side between the first log and kickoff? Tracked on every lined game, not just picks. Beating the closing line is the best early sign of a real edge, long before win-loss records settle."],
   ["Coach reset", "A team's history starts over when its head coach changes, interim coaches included."],
 ] as const;
 

@@ -394,13 +394,13 @@ export function WeekPage() {
         </div>
         <div className="stat">
           <div className="k">Closing line value</div>
-          <div className={`v ${live?.earlyClv ? (live.earlyClv.avg > 0 ? "good" : live.earlyClv.avg < 0 ? "bad" : "") : ""}`}>
-            {live?.earlyClv ? `${live.earlyClv.avg > 0 ? "+" : ""}${num(live.earlyClv.avg, 2)}` : "—"}
+          <div className={`v ${live?.allClv ? (live.allClv.avg > 0 ? "good" : live.allClv.avg < 0 ? "bad" : "") : ""}`}>
+            {live?.allClv ? `${live.allClv.avg > 0 ? "+" : ""}${num(live.allClv.avg, 2)}` : "—"}
           </div>
           <div className="n">
-            {live?.earlyClv
-              ? `Pts per pick, first log vs close (${live.earlyClv.n} picks)`
-              : "Did the line move our way after we logged it?"}
+            {live?.allClv
+              ? `Pts per game, model's side at first log vs close. Moved our way ${pct(live.allClv.beat, 0)}, against ${pct(1 - live.allClv.beat - live.allClv.same, 0)} of ${live.allClv.n} games`
+              : "Did the line move toward the model after we logged it?"}
           </div>
         </div>
         <div className="stat">
