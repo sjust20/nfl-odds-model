@@ -399,7 +399,7 @@ export function WeekPage() {
           </div>
           <div className="n">
             {live?.allClv
-              ? `Pts per game, model's side at first log vs close. Moved our way ${pct(live.allClv.beat, 0)}, against ${pct(1 - live.allClv.beat - live.allClv.same, 0)} of ${live.allClv.n} games`
+              ? `Pts per game, model's side, first log to kickoff (same source both ends). Moved our way ${pct(live.allClv.beat, 0)}, against ${pct(1 - live.allClv.beat - live.allClv.same, 0)} of ${live.allClv.n} games`
               : "Did the line move toward the model after we logged it?"}
           </div>
         </div>
