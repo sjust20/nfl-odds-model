@@ -7,6 +7,7 @@ import type { Prediction } from "../model/engine";
 import { activeChecks, holdsUntil, type Check } from "../model/explain";
 import { BREAK_EVEN, type Bet, type BetRecord, type Strategy } from "../model/metrics";
 import { useApp } from "../state";
+import { KillRuleStat } from "./KillRule";
 import { useLiveRecord } from "./LabPage";
 import { bestNumber, useWeek, type RuleRecord, type WeekItem } from "./useWeek";
 import { WeekDetail } from "./WeekDetail";
@@ -392,17 +393,7 @@ export function WeekPage() {
             {live?.since ? `Logged before kickoff since ${shortDate(live.since)}` : "Starts once picks are logged"}
           </div>
         </div>
-        <div className="stat">
-          <div className="k">Closing line value</div>
-          <div className={`v ${live?.earlyClv ? (live.earlyClv.avg > 0 ? "good" : live.earlyClv.avg < 0 ? "bad" : "") : ""}`}>
-            {live?.earlyClv ? `${live.earlyClv.avg > 0 ? "+" : ""}${num(live.earlyClv.avg, 2)}` : "—"}
-          </div>
-          <div className="n">
-            {live?.earlyClv
-              ? `Pts per pick, first log vs close (${live.earlyClv.n} picks)`
-              : "Did the line move our way after we logged it?"}
-          </div>
-        </div>
+        <KillRuleStat />
         <div className="stat">
           <div className="k">Rule since 2002</div>
           <div className="v">{pct(w.sidesRecord.all.pct)}</div>

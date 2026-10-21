@@ -27,6 +27,13 @@ A team's history resets whenever its head coach changes, interim coaches include
 - **Model settings**: every parameter of both models. Changes
   recompute in the browser.
 
+## Kill rule
+
+Set on Oct 21, 2026 (`src/model/killRule.ts`): if, by the end of the 2026 regular season, the line
+hasn't moved toward the play-by-play model's side by at least +0.15 points per game on average, and
+toward it more often than away, across every lined game from first log to the last line before
+kickoff, the betting idea is shelved. Shown on the This week page and the Strategy lab.
+
 ## Models
 
 - **Market** (`src/model/market.ts`): weighted least squares over recent closing lines, pulled 30%

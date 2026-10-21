@@ -15,10 +15,13 @@ import {
   record,
   strategyGrid,
   type Bet,
+  type BetMarket,
   type BetRecord,
   type GridCell,
+  type ModelName,
   type Strategy,
 } from "../model/metrics";
+import { KILL_RULE, killStatus, summarizeMoves } from "../model/killRule";
 import { bigEdgeNoQb, LINE_PLUS_COMPONENTS, LINE_PLUS_COMPONENTS_MIN, lineAdjustment, linePlusComponentsBet } from "../model/tracked";
 import { DEFAULT_STRATEGIES, useApp, type BetKind } from "../state";
 
@@ -132,17 +135,36 @@ function fromLog(lp: PickSnapshot, g: Game): Prediction {
 }
 
 /**
- * Closing line value in points: how far the closing number moved toward the side we took.
- * Positive means we got a better number than the market closed at.
+ * Where a game's number started and finished, with both ends from the same source so a gap between
+ * sources can't pass for movement: the sportsbook median at `open` and at `last` (the last log before
+ * kickoff) when both have it, otherwise nflverse's number at `open` and nflverse's closing number.
  */
-function clv(bet: Bet, closing: Game): number | null {
-  const taken = bet.prediction.game;
-  if (bet.side === "home" || bet.side === "away") {
-    if (closing.line === null || taken.line === null) return null;
-    return bet.side === "home" ? closing.line - taken.line : taken.line - closing.line;
-  }
-  if (closing.total === null || taken.total === null) return null;
-  return bet.side === "over" ? closing.total - taken.total : taken.total - closing.total;
+function lineMove(open: PickSnapshot, last: PickSnapshot, g: Game, market: BetMarket): { from: number; to: number; books: boolean } | null {
+  const [openBook, lastBook, openLine, close] =
+    market === "spread"
+      ? [open.bookLine, last.bookLine, open.line, g.line]
+      : [open.bookTotal, last.bookTotal, open.total, g.total];
+  if (open.loggedAt !== last.loggedAt && openBook != null && lastBook != null) return { from: openBook, to: lastBook, books: true };
+  if (openLine !== null && close !== null) return { from: openLine, to: close, books: false };
+  return null;
+}
+
+/**
+ * Closing line value in points: how far the number moved toward the side we took.
+ * Positive means we got a better number than the market finished at.
+ */
+function clv(side: Bet["side"], m: { from: number; to: number }): number {
+  return side === "home" || side === "over" ? m.to - m.from : m.from - m.to;
+}
+
+/** CLV of betting `s` at the `open` snapshot, deciding the side at the same number the movement starts from. */
+function clvFrom(open: PickSnapshot, last: PickSnapshot, g: Game, s: Strategy): number | null {
+  const m = lineMove(open, last, g, s.market);
+  if (!m) return null;
+  const p = fromLog(open, g);
+  const game = s.market === "spread" ? { ...p.game, line: m.from } : { ...p.game, total: m.from };
+  const bet = betFor({ ...p, game }, { ...s, fromSeason: 0, toSeason: 9999 });
+  return bet ? clv(bet.side, m) : null;
 }
 
 function ClvLine({ c }: { c: { n: number; avg: number; beat: number; same: number } | null }) {
@@ -156,6 +178,41 @@ function ClvLine({ c }: { c: { n: number; avg: number; beat: number; same: numbe
   );
 }
 
+/** The side a model leans to on every lined game, with no filters. */
+const leanOf = (model: ModelName): Strategy => ({
+  pick: "model",
+  model,
+  market: "spread",
+  minEdge: 0,
+  maxReliability: null,
+  minGames: 0,
+  skipQbChange: false,
+  fromSeason: 0,
+  toSeason: 9999,
+});
+
+/** Progress on the pre-registered kill rule (src/model/killRule.ts). */
+export function useKillRule() {
+  const { pickLog, data } = useApp();
+  return useMemo(() => {
+    if (!pickLog || !data) return null;
+    const games = new Map(data.games.map((g) => [g.id, g]));
+    const lean = leanOf(KILL_RULE.model);
+    const moves: number[] = [];
+    for (const lp of pickLog.picks) {
+      const g = games.get(lp.id);
+      if (!g || g.season !== KILL_RULE.season || !lp.first || !isFinal(g)) continue;
+      const v = clvFrom(lp.first, lp, g, lean);
+      if (v !== null) moves.push(v);
+    }
+    const regular = data.games.filter((g) => g.season === KILL_RULE.season && g.type === "REG");
+    const seasonOver = regular.length > 0 && regular.every(isFinal);
+    const deadline = regular.reduce((m, g) => (g.date > m ? g.date : m), "");
+    const summary = summarizeMoves(moves);
+    return { summary, status: killStatus(summary, seasonOver), deadline };
+  }, [pickLog, data]);
+}
+
 /** Grades logged (pre-kickoff) picks using the line available when they were logged. */
 export function useLiveRecord(strategy: Strategy) {
   const { pickLog, data } = useApp();
@@ -166,13 +223,18 @@ export function useLiveRecord(strategy: Strategy) {
     // CLV had you bet this rule when each game was first logged (usually right after the previous
     // week): the line has most of the week to move, so this is the informative version.
     const earlyClvs: number[] = [];
+    // The same, on every lined game: take whichever side the rule's model leans to, with no filters.
+    // This tracks whether the line moves toward the model at all, independent of the pick rule.
+    const lean = leanOf(strategy.model);
+    const allClvs: number[] = [];
     for (const lp of pickLog.picks) {
       const g = games.get(lp.id);
       if (!g) continue;
       if (lp.first && isFinal(g)) {
-        const early = betFor(fromLog(lp.first, g), { ...strategy, fromSeason: 0, toSeason: 9999 });
-        const v = early ? clv(early, g) : null;
+        const v = clvFrom(lp.first, lp, g, strategy);
         if (v !== null) earlyClvs.push(v);
+        const a = clvFrom(lp.first, lp, g, lean);
+        if (a !== null) allClvs.push(a);
       }
       const p = fromLog(lp, g);
       const bet = betFor(p, { ...strategy, fromSeason: 0, toSeason: 9999 });
@@ -181,8 +243,9 @@ export function useLiveRecord(strategy: Strategy) {
         bet.side === "home" || bet.side === "away"
           ? `${bet.side === "home" ? g.home : g.away} (${lineLabel(g.home, g.away, p.game.line!)})`
           : `${bet.side === "over" ? "Over" : "Under"} ${p.game.total}`;
-      // nflverse's line becomes the closing line once the game has been played.
-      bets.push({ p, result: bet.result, label, clv: isFinal(g) ? clv(bet, g) : null });
+      // No book number after the last log, so this one runs from nflverse's line then to its close.
+      const m = isFinal(g) ? lineMove(lp, lp, g, strategy.market) : null;
+      bets.push({ p, result: bet.result, label, clv: m ? clv(bet.side, m) : null });
     }
     const graded = bets.filter((b) => b.result !== null);
     const rec = record(
@@ -204,6 +267,7 @@ export function useLiveRecord(strategy: Strategy) {
       rec,
       clv: summarize(bets.flatMap((b) => (b.clv === null ? [] : [b.clv]))),
       earlyClv: summarize(earlyClvs),
+      allClv: summarize(allClvs),
       since: pickLog.picks[0]?.date ?? null,
     };
   }, [pickLog, data, strategy]);
@@ -225,7 +289,7 @@ function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
       );
     const games = new Map(data!.games.map((g) => [g.id, g]));
     const live: { lp: LoggedPick; bet: NonNullable<ReturnType<typeof linePlusComponentsBet>> }[] = [];
-    // Line movement: did the line move from when we logged it to the close in the direction the
+    // Line movement: did the line move from when we logged it to kickoff in the direction the
     // components pointed? Every logged game counts here, not just the bets.
     let agree = 0;
     let moved = 0;
@@ -239,9 +303,10 @@ function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
       const p = fromLog(snap, g);
       const bet = linePlusComponentsBet(p);
       if (bet) live.push({ lp, bet });
-      if (isFinal(g) && g.line !== null && p.game.line !== null) {
+      const m = isFinal(g) ? lineMove(snap, lp, g, "spread") : null;
+      if (m) {
         closed++;
-        const move = g.line - p.game.line;
+        const move = m.to - m.from;
         const adj = lineAdjustment(snap.components);
         if (move !== 0 && adj !== 0) {
           moved++;
@@ -280,7 +345,7 @@ function LinePlusComponentsIdea({ preds }: { preds: Prediction[] }) {
           <tr><td>Backtest 2016–now (threshold chosen here)</td><td>{line(result.late)}</td></tr>
           <tr><td><strong>Live (bet at the first-logged line)</strong></td><td><strong>{line(result.liveRecord)}</strong></td></tr>
           <tr>
-            <td><strong>Line movement toward the adjustment, first log to close</strong></td>
+            <td><strong>Line movement toward the adjustment, first log to kickoff</strong></td>
             <td>
               {m.moved ? (
                 <>
@@ -614,8 +679,12 @@ export function AdvancedLab() {
                 <tbody>
                   <tr>
                     <td>
-                      <strong>Closing line value, bet when first logged</strong>
+                      <strong>Closing line value, every lined game, model's side when first logged</strong>
                     </td>
+                    <td><ClvLine c={live.allClv} /></td>
+                  </tr>
+                  <tr>
+                    <td>Closing line value, this rule's picks, bet when first logged</td>
                     <td><ClvLine c={live.earlyClv} /></td>
                   </tr>
                   <tr>
@@ -627,9 +696,12 @@ export function AdvancedLab() {
               <p className="muted small">
                 Closing line value compares the number you'd have bet with where the market closed. It's a
                 faster check than wins and losses: after a few hundred bets, a real edge shows up as consistently
-                positive CLV. The first-logged version is the informative one (the line has most of the week to
-                move); by the last log there are only hours left, so that version sits near zero. The closing
-                number is nflverse's, which can differ from the books' median by a half point.
+                positive CLV. Both ends of each comparison come from the same source: the sportsbook median
+                when the game was first logged and at its last log before kickoff (usually a few hours out),
+                or nflverse's line then and at the close when the odds feed missed either log. The every-game row takes the model's side on all lined games, with no filters, so
+                it measures whether the market moves toward the model at all, on far more games than the rule
+                picks. The first-logged versions are the informative ones (the line has most of the week to
+                move); the last-log version only has the hours before kickoff, so it sits near zero.
               </p>
               <table className="data compact">
                 <tbody>
