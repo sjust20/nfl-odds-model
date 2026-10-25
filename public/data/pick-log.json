@@ -8194,11 +8194,11 @@
    "date": "2026-10-25",
    "home": "SEA",
    "away": "KC",
-   "loggedAt": "2026-10-25T19:02:47.348Z",
+   "loggedAt": "2026-10-25T22:32:52.881Z",
    "line": 3,
    "total": 42.5,
    "bookLine": 3,
-   "bookTotal": 42.5,
+   "bookTotal": 43,
    "market": {
     "line": 0.8779375618341664,
     "total": 43.21339532657528
@@ -9076,7 +9076,7 @@
    "date": "2026-10-26",
    "home": "PHI",
    "away": "DAL",
-   "loggedAt": "2026-10-25T19:02:47.348Z",
+   "loggedAt": "2026-10-25T22:32:52.881Z",
    "line": -4.5,
    "total": 43.5,
    "bookLine": -4.5,
