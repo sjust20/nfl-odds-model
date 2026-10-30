@@ -9328,7 +9328,7 @@
    "date": "2026-11-01",
    "home": "DAL",
    "away": "ARI",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 7,
    "total": 54.5,
    "bookLine": 7,
@@ -9454,11 +9454,11 @@
    "date": "2026-11-01",
    "home": "TB",
    "away": "ATL",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 2.5,
-   "total": 44.5,
+   "total": 43.5,
    "bookLine": 2.5,
-   "bookTotal": 44,
+   "bookTotal": 43.5,
    "market": {
     "line": 2.9009361913464256,
     "total": 46.197512527331924
@@ -9580,20 +9580,20 @@
    "date": "2026-11-01",
    "home": "BUF",
    "away": "BAL",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 3,
    "total": 54.5,
    "bookLine": 3,
    "bookTotal": 54.5,
    "market": {
-    "line": 5.462484212781979,
+    "line": 1.3795459253212607,
     "total": 51.90745626052469
    },
    "pbp": {
-    "line": 6.217323428857745,
+    "line": 1.9302382270239913,
     "total": 51.90745626052469
    },
-   "qbAdj": 1.1710259785910992,
+   "qbAdj": -4.272891738023191,
    "components": {
     "passOff": 3.677354113576424,
     "passDef": -1.0240505619656808,
@@ -9616,11 +9616,11 @@
      "changed": false
     },
     "away": {
-     "id": "00-0035993",
-     "name": "Tyler Huntley",
+     "id": "00-0034796",
+     "name": "Lamar Jackson",
      "source": "listed",
      "prev": "Tyler Huntley",
-     "changed": false
+     "changed": true
     }
    },
    "qbCheck": {
@@ -9630,9 +9630,9 @@
      "agree": true
     },
     "away": {
-     "listed": "Tyler Huntley",
+     "listed": "Lamar Jackson",
      "espn": "Lamar Jackson",
-     "agree": false
+     "agree": true
     }
    },
    "first": {
@@ -9706,7 +9706,7 @@
    "date": "2026-11-01",
    "home": "PIT",
    "away": "CLE",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 3.5,
    "total": 39.5,
    "bookLine": 3.5,
@@ -9832,7 +9832,7 @@
    "date": "2026-11-01",
    "home": "JAX",
    "away": "IND",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 10,
    "total": 46.5,
    "bookLine": 10,
@@ -9958,7 +9958,7 @@
    "date": "2026-11-01",
    "home": "DEN",
    "away": "KC",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": -1.5,
    "total": 40.5,
    "bookLine": -1,
@@ -10084,7 +10084,7 @@
    "date": "2026-11-01",
    "home": "LA",
    "away": "LAC",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 6.5,
    "total": 45.5,
    "bookLine": 6.5,
@@ -10210,10 +10210,10 @@
    "date": "2026-11-01",
    "home": "NYJ",
    "away": "LV",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 1.5,
    "total": 45.5,
-   "bookLine": 1.5,
+   "bookLine": 1,
    "bookTotal": 45.5,
    "market": {
     "line": 0.8382166620988964,
@@ -10336,7 +10336,7 @@
    "date": "2026-11-01",
    "home": "DET",
    "away": "MIN",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 3,
    "total": 46.5,
    "bookLine": 3.5,
@@ -10462,7 +10462,7 @@
    "date": "2026-11-01",
    "home": "MIA",
    "away": "NE",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": -7,
    "total": 43.5,
    "bookLine": -7,
@@ -10588,11 +10588,11 @@
    "date": "2026-11-01",
    "home": "WAS",
    "away": "PHI",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 6,
    "total": 40.5,
    "bookLine": 6,
-   "bookTotal": 40,
+   "bookTotal": 40.5,
    "market": {
     "line": -1.45213773524228,
     "total": 41.65606755149779
@@ -10714,7 +10714,7 @@
    "date": "2026-11-01",
    "home": "CIN",
    "away": "TEN",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 12.5,
    "total": 46.5,
    "bookLine": 12.5,
@@ -10840,7 +10840,7 @@
    "date": "2026-11-02",
    "home": "SEA",
    "away": "CHI",
-   "loggedAt": "2026-10-30T15:02:25.160Z",
+   "loggedAt": "2026-10-30T20:47:59.672Z",
    "line": 3,
    "total": 46.5,
    "bookLine": 3,
