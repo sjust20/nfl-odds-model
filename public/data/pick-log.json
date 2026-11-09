@@ -12730,11 +12730,11 @@
    "date": "2026-11-09",
    "home": "MIN",
    "away": "BUF",
-   "loggedAt": "2026-11-09T06:25:38.051Z",
-   "line": -3,
-   "total": 43.5,
-   "bookLine": -3,
-   "bookTotal": 44,
+   "loggedAt": "2026-11-09T18:47:45.435Z",
+   "line": -3.5,
+   "total": 45.5,
+   "bookLine": -3.5,
+   "bookTotal": 45,
    "market": {
     "line": -0.9362451808510135,
     "total": 46.16341656833667
