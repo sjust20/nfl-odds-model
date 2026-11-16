@@ -14494,9 +14494,9 @@
    "date": "2026-11-16",
    "home": "BAL",
    "away": "LAC",
-   "loggedAt": "2026-11-16T06:27:07.988Z",
+   "loggedAt": "2026-11-16T18:31:29.651Z",
    "line": 4.5,
-   "total": 38.5,
+   "total": 39.5,
    "bookLine": 4.5,
    "bookTotal": 39,
    "market": {
@@ -14540,7 +14540,7 @@
    "qbCheck": {
     "home": {
      "listed": "Tyler Huntley",
-     "espn": "Jacoby Brissett",
+     "espn": null,
      "agree": false
     },
     "away": {
