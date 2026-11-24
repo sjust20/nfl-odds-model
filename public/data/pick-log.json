@@ -16258,25 +16258,25 @@
    "date": "2026-11-25",
    "home": "LA",
    "away": "GB",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 2.5,
    "total": 44.5,
    "bookLine": 2.5,
    "bookTotal": 44,
    "market": {
-    "line": 5.580951469173542,
+    "line": 5.580953796447516,
     "total": 45.67012319881963
    },
    "pbp": {
-    "line": 6.431623166012167,
+    "line": 6.441832202547809,
     "total": 45.67012319881963
    },
-   "qbAdj": -0.02114472810283534,
+   "qbAdj": -0.021141625070869238,
    "components": {
-    "passOff": -0.50331038605614,
-    "passDef": 1.6626256337283352,
-    "rushOff": 3.761277293491755,
-    "rushDef": 1.2343948439847814
+    "passOff": -0.4983729849480373,
+    "passDef": 1.6663427340462613,
+    "rushOff": 3.798040464488068,
+    "rushDef": 1.248329183492187
    },
    "reliability": 39,
    "totalReliability": 48,
@@ -16384,25 +16384,25 @@
    "date": "2026-11-26",
    "home": "DET",
    "away": "CHI",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": -2.5,
    "total": 55.5,
    "bookLine": -2.5,
-   "bookTotal": 55,
+   "bookTotal": 55.5,
    "market": {
-    "line": 1.6588249998159792,
+    "line": 1.6588633526716925,
     "total": 53.03130914280688
    },
    "pbp": {
-    "line": 2.5869206230880817,
+    "line": 2.5866913654571393,
     "total": 53.03130914280688
    },
-   "qbAdj": -0.27097555759836534,
+   "qbAdj": -0.27092442045741433,
    "components": {
-    "passOff": 2.9606136858739864,
-    "passDef": -2.6103681667561633,
-    "rushOff": 1.2745801461793387,
-    "rushDef": 0.41066384363678904
+    "passOff": 2.9605569620470558,
+    "passDef": -2.61079322705056,
+    "rushOff": 1.2741188540626884,
+    "rushDef": 0.40904311018278405
    },
    "reliability": 41,
    "totalReliability": 62,
@@ -16510,25 +16510,25 @@
    "date": "2026-11-26",
    "home": "BUF",
    "away": "KC",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 3,
-   "total": 48.5,
-   "bookLine": 2.75,
-   "bookTotal": 48,
+   "total": 47.5,
+   "bookLine": 2.5,
+   "bookTotal": 47.5,
    "market": {
-    "line": 2.0767968869706057,
+    "line": 2.076802006200561,
     "total": 49.32206934677854
    },
    "pbp": {
-    "line": 1.9348958804069714,
+    "line": 1.9319817613259311,
     "total": 49.32206934677854
    },
-   "qbAdj": -0.04051885504934627,
+   "qbAdj": -0.040512029409405514,
    "components": {
-    "passOff": 0.5264059110044688,
-    "passDef": 1.2154658644981142,
-    "rushOff": 1.109293154116881,
-    "rushDef": -1.3465443637121897
+    "passOff": 0.5248353776451942,
+    "passDef": 1.214467141733209,
+    "rushOff": 1.1011517252872067,
+    "rushDef": -1.3542666395358411
    },
    "reliability": 13,
    "totalReliability": 39,
@@ -16636,25 +16636,25 @@
    "date": "2026-11-26",
    "home": "DAL",
    "away": "PHI",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 8.5,
-   "total": 48.5,
-   "bookLine": 8.75,
+   "total": 47.5,
+   "bookLine": 8.5,
    "bookTotal": 48,
    "market": {
-    "line": 6.851741426391553,
+    "line": 6.851578368796289,
     "total": 49.34641863612619
    },
    "pbp": {
-    "line": 8.579424727739251,
+    "line": 8.57126549767612,
     "total": 49.34641863612619
    },
-   "qbAdj": 0.5345768018388446,
+   "qbAdj": 0.5343593917118251,
    "components": {
-    "passOff": 7.233811062744619,
-    "passDef": -4.369668596568422,
-    "rushOff": 2.26478449657141,
-    "rushDef": -1.8118290332415794
+    "passOff": 7.229450402638574,
+    "passDef": -4.371125654468015,
+    "rushOff": 2.2360063425224803,
+    "rushDef": -1.8207813233294503
    },
    "reliability": 37,
    "totalReliability": 31,
@@ -16762,25 +16762,25 @@
    "date": "2026-11-27",
    "home": "PIT",
    "away": "DEN",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": -3,
    "total": 38.5,
-   "bookLine": -2.5,
+   "bookLine": -2.75,
    "bookTotal": 38,
    "market": {
-    "line": -2.9338000716352477,
+    "line": -2.933798584230113,
     "total": 41.18489450740303
    },
    "pbp": {
-    "line": -2.631032030408977,
+    "line": -2.6432685101731073,
     "total": 41.18489450740303
    },
-   "qbAdj": -0.01266367585600392,
+   "qbAdj": -0.012661692649157674,
    "components": {
-    "passOff": -2.833685393357135,
-    "passDef": -2.6706715547213475,
-    "rushOff": 1.3783474361541095,
-    "rushDef": 0.655896551469597
+    "passOff": -2.8387826140602845,
+    "passDef": -2.679703851489834,
+    "rushOff": 1.3547335166277403,
+    "rushDef": 0.599866338075575
    },
    "reliability": 26,
    "totalReliability": 37,
@@ -16888,25 +16888,25 @@
    "date": "2026-11-29",
    "home": "MIN",
    "away": "ATL",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
-   "line": 6.5,
+   "loggedAt": "2026-11-24T19:29:46.601Z",
+   "line": 7,
    "total": 42.5,
    "bookLine": 7,
    "bookTotal": 42.5,
    "market": {
-    "line": 4.447221667686135,
+    "line": 4.447213541341588,
     "total": 39.970415051136335
    },
    "pbp": {
-    "line": 3.609122189463248,
+    "line": 3.6158346217221236,
     "total": 39.970415051136335
    },
-   "qbAdj": 0.3916398526419786,
+   "qbAdj": 0.3916290175159165,
    "components": {
-    "passOff": 0.27541921539667147,
-    "passDef": 4.22237313943556,
-    "rushOff": -1.6723144529936809,
-    "rushDef": 0.9836994832807802
+    "passOff": 0.27799067443978115,
+    "passDef": 4.225530808140479,
+    "rushOff": -1.661424057937594,
+    "rushDef": 1.0159543713314052
    },
    "reliability": 53,
    "totalReliability": 23,
@@ -17014,25 +17014,25 @@
    "date": "2026-11-29",
    "home": "HOU",
    "away": "BAL",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 6.5,
    "total": 46.5,
-   "bookLine": 6.5,
-   "bookTotal": 46.5,
+   "bookLine": 7,
+   "bookTotal": 47,
    "market": {
-    "line": 8.067065705720092,
+    "line": 8.06735094252528,
     "total": 43.1062570677033
    },
    "pbp": {
-    "line": 7.842106051323761,
+    "line": 7.847229482628094,
     "total": 43.1062570677033
    },
-   "qbAdj": 0.48442585256447257,
+   "qbAdj": 0.4848061683047229,
    "components": {
-    "passOff": 3.1167949375597503,
-    "passDef": 2.553647636932653,
-    "rushOff": -1.6178940413666587,
-    "rushDef": 0.450305119545999
+    "passOff": 3.117731609579559,
+    "passDef": 2.556332906590042,
+    "rushOff": -1.609223731773778,
+    "rushDef": 0.4730513398040114
    },
    "reliability": 35,
    "totalReliability": 21,
@@ -17140,25 +17140,25 @@
    "date": "2026-11-29",
    "home": "CLE",
    "away": "LV",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 4.5,
    "total": 41.5,
    "bookLine": 4.5,
    "bookTotal": 41,
    "market": {
-    "line": 3.1297447195709998,
+    "line": 3.1291592771321777,
     "total": 44.65669308995331
    },
    "pbp": {
-    "line": 2.4470843979060577,
+    "line": 2.440011619439618,
     "total": 44.65669308995331
    },
-   "qbAdj": 2.3157878726493903,
+   "qbAdj": 2.3150072827309613,
    "components": {
-    "passOff": -3.303598971049875,
-    "passDef": 4.217539720856743,
-    "rushOff": 0.7721163170975832,
-    "rushDef": 0.5882854460366627
+    "passOff": -3.3072256991516675,
+    "passDef": 4.214407394094344,
+    "rushOff": 0.7563447221200702,
+    "rushDef": 0.56655950964603
    },
    "reliability": 17,
    "totalReliability": 3,
@@ -17266,25 +17266,25 @@
    "date": "2026-11-29",
    "home": "LAC",
    "away": "NE",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 1.5,
    "total": 35.5,
    "bookLine": 1,
    "bookTotal": 35.5,
    "market": {
-    "line": -2.1168093219316084,
+    "line": -2.1168104936837797,
     "total": 45.09968399368847
    },
    "pbp": {
-    "line": -2.9599812065694575,
+    "line": -2.957070526819103,
     "total": 45.09968399368847
    },
-   "qbAdj": 0.005492860835755089,
+   "qbAdj": 0.005491298499526506,
    "components": {
-    "passOff": -5.769117845556171,
-    "passDef": 0.276161849782583,
-    "rushOff": -0.10043359690222653,
-    "rushDef": -0.3465454831717818
+    "passOff": -5.767845871160539,
+    "passDef": 0.27711678618945945,
+    "rushOff": -0.09277280031936763,
+    "rushDef": -0.33796720638944666
    },
    "reliability": 41,
    "totalReliability": 14,
@@ -17386,31 +17386,157 @@
    }
   },
   {
+   "id": "2026_12_NO_CIN",
+   "season": 2026,
+   "week": 12,
+   "date": "2026-11-29",
+   "home": "CIN",
+   "away": "NO",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
+   "line": 10,
+   "total": 50.5,
+   "bookLine": 10,
+   "bookTotal": 50.5,
+   "market": {
+    "line": 9.164292003905825,
+    "total": 50.52656590170792
+   },
+   "pbp": {
+    "line": 10.409032993896243,
+    "total": 50.52656590170792
+   },
+   "qbAdj": 0.0016125259270915494,
+   "components": {
+    "passOff": 6.003940395939629,
+    "passDef": -0.8937263826205214,
+    "rushOff": 1.9027431814666291,
+    "rushDef": -0.8172571059760863
+   },
+   "reliability": 31,
+   "totalReliability": 31,
+   "coverRanks": [
+    22,
+    9
+   ],
+   "minGames": 27,
+   "qb": {
+    "home": {
+     "id": "00-0036442",
+     "name": "Joe Burrow",
+     "source": "listed",
+     "prev": "Joe Burrow",
+     "changed": false
+    },
+    "away": {
+     "id": "00-0040743",
+     "name": "Tyler Shough",
+     "source": "listed",
+     "prev": "Tyler Shough",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Joe Burrow",
+     "espn": "Joe Burrow",
+     "agree": true
+    },
+    "away": {
+     "listed": "Tyler Shough",
+     "espn": "Tyler Shough",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_12_NO_CIN",
+    "season": 2026,
+    "week": 12,
+    "date": "2026-11-29",
+    "home": "CIN",
+    "away": "NO",
+    "loggedAt": "2026-11-24T19:29:46.601Z",
+    "line": 10,
+    "total": 50.5,
+    "bookLine": 10,
+    "bookTotal": 50.5,
+    "market": {
+     "line": 9.164292003905825,
+     "total": 50.52656590170792
+    },
+    "pbp": {
+     "line": 10.409032993896243,
+     "total": 50.52656590170792
+    },
+    "qbAdj": 0.0016125259270915494,
+    "components": {
+     "passOff": 6.003940395939629,
+     "passDef": -0.8937263826205214,
+     "rushOff": 1.9027431814666291,
+     "rushDef": -0.8172571059760863
+    },
+    "reliability": 31,
+    "totalReliability": 31,
+    "coverRanks": [
+     22,
+     9
+    ],
+    "minGames": 27,
+    "qb": {
+     "home": {
+      "id": "00-0036442",
+      "name": "Joe Burrow",
+      "source": "listed",
+      "prev": "Joe Burrow",
+      "changed": false
+     },
+     "away": {
+      "id": "00-0040743",
+      "name": "Tyler Shough",
+      "source": "listed",
+      "prev": "Tyler Shough",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Joe Burrow",
+      "espn": "Joe Burrow",
+      "agree": true
+     },
+     "away": {
+      "listed": "Tyler Shough",
+      "espn": "Tyler Shough",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
    "id": "2026_12_NYG_IND",
    "season": 2026,
    "week": 12,
    "date": "2026-11-29",
    "home": "IND",
    "away": "NYG",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": -6.5,
    "total": 41.5,
    "bookLine": -6.5,
    "bookTotal": 41.5,
    "market": {
-    "line": -2.7719418528708877,
+    "line": -2.7714220845548985,
     "total": 42.52543347240748
    },
    "pbp": {
-    "line": -2.8138971451082413,
+    "line": -2.826727448378559,
     "total": 42.52543347240748
    },
-   "qbAdj": -0.8089573313660022,
+   "qbAdj": -0.8082643069446833,
    "components": {
-    "passOff": -6.208574062885888,
-    "passDef": -2.12730216755951,
-    "rushOff": 1.7498263203972098,
-    "rushDef": 0.07499517811558781
+    "passOff": -6.217261911155362,
+    "passDef": -2.131526944076506,
+    "rushOff": 1.703549434685655,
+    "rushDef": 0.05561437333265408
    },
    "reliability": 14,
    "totalReliability": 28,
@@ -17518,25 +17644,25 @@
    "date": "2026-11-29",
    "home": "MIA",
    "away": "NYJ",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": -3.5,
    "total": 40.5,
    "bookLine": -3.5,
    "bookTotal": 41,
    "market": {
-    "line": -1.7215661633812558,
+    "line": -1.721281853485807,
     "total": 40.38906070208663
    },
    "pbp": {
-    "line": -2.5989581217520223,
+    "line": -2.602402101187409,
     "total": 40.38906070208663
    },
-   "qbAdj": -1.7116548808904266,
+   "qbAdj": -1.7112758010298281,
    "components": {
-    "passOff": -1.9750473616134667,
-    "passDef": 2.622000979829852,
-    "rushOff": -0.7170662432973699,
-    "rushDef": 0.7938252247038925
+    "passOff": -1.9759595793811282,
+    "passDef": 2.619846753750961,
+    "rushOff": -0.7174508313865704,
+    "rushDef": 0.7657841653017401
    },
    "reliability": 6,
    "totalReliability": 28,
@@ -17644,25 +17770,25 @@
    "date": "2026-11-29",
    "home": "SF",
    "away": "SEA",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 3,
    "total": 46.5,
    "bookLine": 3,
-   "bookTotal": 46.5,
+   "bookTotal": 45.5,
    "market": {
-    "line": 2.1923056231838176,
+    "line": 2.192415443815399,
     "total": 45.57054787637143
    },
    "pbp": {
-    "line": 3.688438721427181,
+    "line": 3.6901692610155346,
     "total": 45.57054787637143
    },
-   "qbAdj": -0.7791349588115666,
+   "qbAdj": -0.7789885313027918,
    "components": {
-    "passOff": 5.419348863488759,
-    "passDef": -4.250492708342563,
-    "rushOff": 2.33972869250932,
-    "rushDef": -0.7517608900491546
+    "passOff": 5.418709895021202,
+    "passDef": -4.249629393951785,
+    "rushOff": 2.347832669416774,
+    "rushDef": -0.7521854542176739
    },
    "reliability": 38,
    "totalReliability": 55,
@@ -17770,25 +17896,25 @@
    "date": "2026-11-29",
    "home": "JAX",
    "away": "TEN",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 14.5,
    "total": 47.5,
-   "bookLine": 14.75,
+   "bookLine": 14.5,
    "bookTotal": 47.5,
    "market": {
-    "line": 14.714339720876604,
+    "line": 14.71433972100422,
     "total": 47.37124987353279
    },
    "pbp": {
-    "line": 14.8333012249318,
+    "line": 14.833929877229266,
     "total": 47.37124987353279
    },
-   "qbAdj": 0.000002433498780818333,
+   "qbAdj": 0.0000024336689376930343,
    "components": {
-    "passOff": 6.83985859482376,
-    "passDef": 8.33185604575818,
-    "rushOff": 0.3757945780664699,
-    "rushDef": 1.7337146056534567
+    "passOff": 6.841442999722136,
+    "passDef": 8.332868514399788,
+    "rushOff": 0.3756466262856433,
+    "rushDef": 1.7386997746809414
    },
    "reliability": 31,
    "totalReliability": 43,
@@ -17890,31 +18016,157 @@
    }
   },
   {
+   "id": "2026_12_WAS_ARI",
+   "season": 2026,
+   "week": 12,
+   "date": "2026-11-29",
+   "home": "ARI",
+   "away": "WAS",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
+   "line": -7.5,
+   "total": 42.5,
+   "bookLine": -7.5,
+   "bookTotal": 41.75,
+   "market": {
+    "line": -2.9674024996359236,
+    "total": 43.94261637280955
+   },
+   "pbp": {
+    "line": -2.736229397148451,
+    "total": 43.94261637280955
+   },
+   "qbAdj": 0.6029171273584891,
+   "components": {
+    "passOff": -2.093037580555217,
+    "passDef": -3.3985109567381158,
+    "rushOff": 0.4159462638421153,
+    "rushDef": 0.4825488582278683
+   },
+   "reliability": 59,
+   "totalReliability": 21,
+   "coverRanks": [
+    30,
+    29
+   ],
+   "minGames": 11,
+   "qb": {
+    "home": {
+     "id": "00-0035289",
+     "name": "Gardner Minshew",
+     "source": "listed",
+     "prev": "Josh Johnson",
+     "changed": true
+    },
+    "away": {
+     "id": "00-0039910",
+     "name": "Jayden Daniels",
+     "source": "listed",
+     "prev": "Jayden Daniels",
+     "changed": false
+    }
+   },
+   "qbCheck": {
+    "home": {
+     "listed": "Gardner Minshew",
+     "espn": "Carson Beck",
+     "agree": false
+    },
+    "away": {
+     "listed": "Jayden Daniels",
+     "espn": "Jayden Daniels",
+     "agree": true
+    }
+   },
+   "first": {
+    "id": "2026_12_WAS_ARI",
+    "season": 2026,
+    "week": 12,
+    "date": "2026-11-29",
+    "home": "ARI",
+    "away": "WAS",
+    "loggedAt": "2026-11-24T19:29:46.601Z",
+    "line": -7.5,
+    "total": 42.5,
+    "bookLine": -7.5,
+    "bookTotal": 41.75,
+    "market": {
+     "line": -2.9674024996359236,
+     "total": 43.94261637280955
+    },
+    "pbp": {
+     "line": -2.736229397148451,
+     "total": 43.94261637280955
+    },
+    "qbAdj": 0.6029171273584891,
+    "components": {
+     "passOff": -2.093037580555217,
+     "passDef": -3.3985109567381158,
+     "rushOff": 0.4159462638421153,
+     "rushDef": 0.4825488582278683
+    },
+    "reliability": 59,
+    "totalReliability": 21,
+    "coverRanks": [
+     30,
+     29
+    ],
+    "minGames": 11,
+    "qb": {
+     "home": {
+      "id": "00-0035289",
+      "name": "Gardner Minshew",
+      "source": "listed",
+      "prev": "Josh Johnson",
+      "changed": true
+     },
+     "away": {
+      "id": "00-0039910",
+      "name": "Jayden Daniels",
+      "source": "listed",
+      "prev": "Jayden Daniels",
+      "changed": false
+     }
+    },
+    "qbCheck": {
+     "home": {
+      "listed": "Gardner Minshew",
+      "espn": "Carson Beck",
+      "agree": false
+     },
+     "away": {
+      "listed": "Jayden Daniels",
+      "espn": "Jayden Daniels",
+      "agree": true
+     }
+    }
+   }
+  },
+  {
    "id": "2026_12_CAR_TB",
    "season": 2026,
    "week": 12,
    "date": "2026-11-30",
    "home": "TB",
    "away": "CAR",
-   "loggedAt": "2026-11-24T04:47:26.878Z",
+   "loggedAt": "2026-11-24T19:29:46.601Z",
    "line": 3,
    "total": 43.5,
    "bookLine": 3,
    "bookTotal": 43.5,
    "market": {
-    "line": 3.0160956058313166,
+    "line": 3.01599059854661,
     "total": 45.304549129392754
    },
    "pbp": {
-    "line": 2.213182724677898,
+    "line": 2.2095611311330146,
     "total": 45.304549129392754
    },
-   "qbAdj": 0.39341262510270286,
+   "qbAdj": 0.393272615389761,
    "components": {
-    "passOff": -3.1013060509913295,
-    "passDef": 3.5457534001516,
-    "rushOff": -0.3765657985212218,
-    "rushDef": 0.7736964308461365
+    "passOff": -3.1029469816583815,
+    "passDef": 3.5433696696625256,
+    "rushOff": -0.37889214756856066,
+    "rushDef": 0.7506507305608402
    },
    "reliability": 47,
    "totalReliability": 44,
