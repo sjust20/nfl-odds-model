@@ -16888,7 +16888,7 @@
    "date": "2026-11-29",
    "home": "MIN",
    "away": "ATL",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
+   "loggedAt": "2026-11-28T00:02:03.226Z",
    "line": 7,
    "total": 41.5,
    "bookLine": 7,
@@ -17014,7 +17014,7 @@
    "date": "2026-11-29",
    "home": "HOU",
    "away": "BAL",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
+   "loggedAt": "2026-11-28T00:02:03.226Z",
    "line": 6.5,
    "total": 47.5,
    "bookLine": 6.5,
@@ -17140,11 +17140,11 @@
    "date": "2026-11-29",
    "home": "CLE",
    "away": "LV",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
+   "loggedAt": "2026-11-28T00:02:03.226Z",
    "line": 4.5,
    "total": 39.5,
    "bookLine": 4.5,
-   "bookTotal": 40,
+   "bookTotal": 39.5,
    "market": {
     "line": 3.1291592771321777,
     "total": 44.65669308995331
@@ -17266,20 +17266,20 @@
    "date": "2026-11-29",
    "home": "LAC",
    "away": "NE",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
-   "line": -2.5,
-   "total": 35.5,
-   "bookLine": -2,
-   "bookTotal": 35.5,
+   "loggedAt": "2026-11-28T00:02:03.226Z",
+   "line": -3,
+   "total": 34.5,
+   "bookLine": -3,
+   "bookTotal": 35,
    "market": {
-    "line": -2.1168104936837797,
+    "line": -3.3462072062638617,
     "total": 45.09968399368847
    },
    "pbp": {
-    "line": -2.9570548766565654,
+    "line": -4.247921424865652,
     "total": 45.09968399368847
    },
-   "qbAdj": 0.005491298499526506,
+   "qbAdj": -1.633704318273916,
    "components": {
     "passOff": -5.767845871160539,
     "passDef": 0.27711678618945945,
@@ -17295,11 +17295,11 @@
    "minGames": 31,
    "qb": {
     "home": {
-     "id": "00-0036355",
-     "name": "Justin Herbert",
+     "id": "00-0040464",
+     "name": "DJ Uiagalelei",
      "source": "listed",
      "prev": "Justin Herbert",
-     "changed": false
+     "changed": true
     },
     "away": {
      "id": "00-0039851",
@@ -17311,9 +17311,9 @@
    },
    "qbCheck": {
     "home": {
-     "listed": "Justin Herbert",
+     "listed": "DJ Uiagalelei",
      "espn": "Justin Herbert",
-     "agree": true
+     "agree": false
     },
     "away": {
      "listed": "Drake Maye",
@@ -17392,11 +17392,11 @@
    "date": "2026-11-29",
    "home": "CIN",
    "away": "NO",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
-   "line": 10,
-   "total": 49.5,
+   "loggedAt": "2026-11-28T00:02:03.226Z",
+   "line": 9.5,
+   "total": 48.5,
    "bookLine": 10,
-   "bookTotal": 49,
+   "bookTotal": 48.5,
    "market": {
     "line": 9.164292003905825,
     "total": 50.52656590170792
@@ -17518,8 +17518,8 @@
    "date": "2026-11-29",
    "home": "IND",
    "away": "NYG",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
-   "line": -6,
+   "loggedAt": "2026-11-28T00:02:03.226Z",
+   "line": -5.5,
    "total": 41.5,
    "bookLine": -6,
    "bookTotal": 41.5,
@@ -17644,10 +17644,10 @@
    "date": "2026-11-29",
    "home": "MIA",
    "away": "NYJ",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
+   "loggedAt": "2026-11-28T00:02:03.226Z",
    "line": -5.5,
    "total": 39.5,
-   "bookLine": -5,
+   "bookLine": -5.5,
    "bookTotal": 40,
    "market": {
     "line": -1.721281853485807,
@@ -17770,20 +17770,20 @@
    "date": "2026-11-29",
    "home": "SF",
    "away": "SEA",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
-   "line": 3,
-   "total": 43.5,
-   "bookLine": 3,
-   "bookTotal": 43.5,
+   "loggedAt": "2026-11-28T00:02:03.226Z",
+   "line": -1.5,
+   "total": 42.5,
+   "bookLine": -1.5,
+   "bookTotal": 42.5,
    "market": {
-    "line": 2.192415443815399,
+    "line": -2.1916602268260226,
     "total": 45.57054787637143
    },
    "pbp": {
-    "line": 3.6901686885617377,
+    "line": -0.9131107656117554,
     "total": 45.57054787637143
    },
-   "qbAdj": -0.7789885313027918,
+   "qbAdj": -6.624422758824687,
    "components": {
     "passOff": 5.418709895021202,
     "passDef": -4.249629393951785,
@@ -17799,11 +17799,11 @@
    "minGames": 47,
    "qb": {
     "home": {
-     "id": "00-0037834",
-     "name": "Brock Purdy",
+     "id": "00-0036972",
+     "name": "Mac Jones",
      "source": "listed",
      "prev": "Brock Purdy",
-     "changed": false
+     "changed": true
     },
     "away": {
      "id": "00-0034869",
@@ -17815,9 +17815,9 @@
    },
    "qbCheck": {
     "home": {
-     "listed": "Brock Purdy",
+     "listed": "Mac Jones",
      "espn": "Brock Purdy",
-     "agree": true
+     "agree": false
     },
     "away": {
      "listed": "Sam Darnold",
@@ -17896,11 +17896,11 @@
    "date": "2026-11-29",
    "home": "JAX",
    "away": "TEN",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
-   "line": 14.5,
+   "loggedAt": "2026-11-28T00:02:03.226Z",
+   "line": 14,
    "total": 48.5,
-   "bookLine": 14.5,
-   "bookTotal": 49,
+   "bookLine": 14,
+   "bookTotal": 48,
    "market": {
     "line": 14.71433972100422,
     "total": 47.37124987353279
@@ -18022,20 +18022,20 @@
    "date": "2026-11-29",
    "home": "ARI",
    "away": "WAS",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
+   "loggedAt": "2026-11-28T00:02:03.226Z",
    "line": -6.5,
    "total": 41.5,
    "bookLine": -6.5,
    "bookTotal": 41.5,
    "market": {
-    "line": -2.9674024996359236,
+    "line": -2.7268318085755565,
     "total": 43.94261637280955
    },
    "pbp": {
-    "line": -2.736228976043604,
+    "line": -2.483629750430219,
     "total": 43.94261637280955
    },
-   "qbAdj": 0.6029171273584891,
+   "qbAdj": 0.9236780487723121,
    "components": {
     "passOff": -2.093037580555217,
     "passDef": -3.3985109567381158,
@@ -18051,11 +18051,11 @@
    "minGames": 11,
    "qb": {
     "home": {
-     "id": "00-0035289",
-     "name": "Gardner Minshew",
+     "id": "00-0026300",
+     "name": "Josh Johnson",
      "source": "listed",
      "prev": "Josh Johnson",
-     "changed": true
+     "changed": false
     },
     "away": {
      "id": "00-0039910",
@@ -18067,7 +18067,7 @@
    },
    "qbCheck": {
     "home": {
-     "listed": "Gardner Minshew",
+     "listed": "Josh Johnson",
      "espn": "Carson Beck",
      "agree": false
     },
@@ -18148,7 +18148,7 @@
    "date": "2026-11-30",
    "home": "TB",
    "away": "CAR",
-   "loggedAt": "2026-11-27T13:50:36.179Z",
+   "loggedAt": "2026-11-28T00:02:03.226Z",
    "line": 3,
    "total": 43.5,
    "bookLine": 3,
